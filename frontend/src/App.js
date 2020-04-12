@@ -1,5 +1,6 @@
 import React from 'react';
 import Firstpage from './components/pages/Firstpage';
+import './App.css';
 
 function App() {
   return (

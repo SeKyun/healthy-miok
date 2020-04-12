@@ -1,7 +1,7 @@
 import React from 'react';
 
-const button = () => {
+const Secondpage = () => {
   return <div></div>;
 };
 
-export default button;
+export default Secondpage;
