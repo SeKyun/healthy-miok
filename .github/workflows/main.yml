@@ -13,7 +13,8 @@ jobs:
 
       - name: Install Dependencies    # 의존 파일 설치
         working-directory: ./frontend
-        run: npm install
+        run: yarn
 
       - name: Build                   # React Build
-        run: npm run build
+        working-directory: ./frontend
+        run: yarn build
