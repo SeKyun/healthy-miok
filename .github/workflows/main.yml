@@ -12,6 +12,7 @@ jobs:
         uses: actions/checkout@master
 
       - name: Install Dependencies    # 의존 파일 설치
+        working-directory: ./frontend
         run: npm install
 
       - name: Build                   # React Build
