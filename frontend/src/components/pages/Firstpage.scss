@@ -1,0 +1,20 @@
+div {
+  background-color: #282c34;
+  display: flex;
+  min-height: 100%;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  font-size: calc(20px + 2vmin);
+  color: white;
+  & .title {
+    height: 50%;
+  }
+  & .yesno {
+    flex-direction: row;
+    margin: 10px;
+    & button {
+      margin: 0 10px 0 0;
+    }
+  }
+}
