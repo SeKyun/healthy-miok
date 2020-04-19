@@ -58,5 +58,5 @@
     "@storybook/preset-create-react-app": "^2.1.1",
     "@storybook/react": "^5.3.18"
   },
-  "proxy": "http://localhost:3001"
+  "proxy": "http://miok.site:3001"
 }
