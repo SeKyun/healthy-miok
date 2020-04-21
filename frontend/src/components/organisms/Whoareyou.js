@@ -19,12 +19,6 @@ const Whoareyou = () => {
               : history.push('/Error');
           }}
         />
-        {/* <Button ghost onClick={() => history.push('/secondpage')}>
-          예
-        </Button>
-        <Button ghost onClick={() => history.push('/Error')}>
-          아니오
-        </Button> */}
       </div>
     </div>
   );
