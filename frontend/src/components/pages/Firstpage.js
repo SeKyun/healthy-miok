@@ -4,7 +4,7 @@ import Whoareyou from '../organisms/Whoareyou';
 
 const Firstpage = () => {
   return (
-    <div>
+    <div className="FirstPage">
       <Whoareyou />
     </div>
   );

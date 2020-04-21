@@ -1,9 +1,9 @@
 import React from 'react';
 import Welcome from '../organisms/Welcome';
-
+import './Secondpage.scss';
 const Secondpage = () => {
   return (
-    <div>
+    <div className="SecondPage">
       <Welcome />
     </div>
   );
