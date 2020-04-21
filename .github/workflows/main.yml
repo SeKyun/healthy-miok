@@ -25,5 +25,9 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           script: |
-            whoami
-            ls -al
+            cd healthy-miok
+            git pull
+            cd frontend
+            sudo yarn
+            sudo yarn build
+
