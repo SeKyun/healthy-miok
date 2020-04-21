@@ -1,7 +1,7 @@
 import React from 'react';
 
 const NotWelcome = () => {
-  return <div>Miok님이 아니시면 들어가실 수 없어요..</div>;
+  return <div>허가된 사용자가 아닙니다. 돌아가주세요..</div>;
 };
 
 export default NotWelcome;
