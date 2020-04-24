@@ -1,10 +1,20 @@
 import React from 'react';
 import './Mainpage.scss';
+import { Layout } from 'antd';
+import Antmenu from '../organisms/Antmenu.js';
+const { Header, Footer, Sider, Content } = Layout;
 const Mainpage = () => {
   return (
-    <div className="MainPage">
-      메인 페이지 입니다. 테스트 배포가 되었습니까?
-    </div>
+    <Layout>
+      <Header>
+        <Antmenu />
+      </Header>
+      <Layout>
+        <Sider>Sider</Sider>
+        <Content>Content</Content>
+      </Layout>
+      <Footer>Footer</Footer>
+    </Layout>
   );
 };
 

@@ -14,7 +14,7 @@ const Whoareyou = () => {
           enterButton="확인"
           size="middle"
           onSearch={(value) => {
-            value === '미옥'
+            value === '박미옥'
               ? history.push('/secondpage')
               : history.push('/Error');
           }}
