@@ -1,5 +1,6 @@
-.MainPage {
-  justify-content: normal;
-  background-color: black;
-  color: white;
+.ant-layout {
+  height: 100%;
+  & > .ant-layout-footer {
+    bottom: 0px;
+  }
 }
