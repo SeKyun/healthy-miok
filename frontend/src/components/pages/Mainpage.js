@@ -2,7 +2,7 @@ import React from 'react';
 import './Mainpage.scss';
 import { Layout } from 'antd';
 import Antmenu from '../organisms/Antmenu.js';
-const { Header, Footer, Sider, Content } = Layout;
+const { Header, Footer, Content } = Layout;
 const Mainpage = () => {
   return (
     <Layout>
