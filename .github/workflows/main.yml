@@ -18,3 +18,16 @@ jobs:
       - name: Build                   # React Build
         working-directory: ./frontend
         run: yarn build
+      - name: executing remote ssh commands using password 
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}  #ssh 이용 배포
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          script: |
+            cd healthy-miok
+            git pull
+            cd frontend
+            sudo yarn
+            sudo yarn build
+
