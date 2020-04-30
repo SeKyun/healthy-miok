@@ -1,0 +1,23 @@
+.Footer {
+  color: white;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 1.25em;
+  & > .question {
+    flex: 1;
+  }
+  & > .maker {
+    flex: 1;
+    right: 0;
+    display: flex;
+    flex-direction: row;
+
+    & > div {
+      margin: 0 2em;
+    }
+    & > button {
+      margin: 0 1em;
+    }
+  }
+}

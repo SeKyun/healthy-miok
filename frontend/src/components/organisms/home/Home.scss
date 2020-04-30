@@ -1,0 +1,24 @@
+@media all and (orientation: landscape) {
+  .Home {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    div {
+      display: flex;
+      flex-direction: row;
+      margin: 0 200px;
+      button {
+        border-radius: 12px;
+        font-size: 36px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 200px;
+        margin: 20px;
+        flex: 1;
+      }
+    }
+  }
+}
