@@ -5,7 +5,7 @@ const Antmenu = (props) => {
   const { func } = props;
   return (
     <div>
-      <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
+      <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['0']}>
         <Menu.Item
           key="0"
           onClick={() => {
