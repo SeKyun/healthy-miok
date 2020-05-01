@@ -1,6 +1,6 @@
 import React from 'react';
 import { Menu } from 'antd';
-
+import './Antmenu.scss';
 const Antmenu = (props) => {
   const { func } = props;
   return (

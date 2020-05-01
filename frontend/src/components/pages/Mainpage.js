@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Mainpage.scss';
 import { Layout } from 'antd';
-import Antmenu from '../organisms/Antmenu.js';
+import Antmenu from '../organisms/header/Antmenu.js';
 import SelectMenu from './SelectMenu';
 import Footers from '../organisms/Footer/Footers';
 const { Header, Footer, Content } = Layout;
