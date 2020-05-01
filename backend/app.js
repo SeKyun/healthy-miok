@@ -21,9 +21,13 @@ app.use(cookieParser());
 // possible error point 
 app.use(express.static(path.join(__dirname, "../frontend/public")));
 
+
 // possible error point
 app.use('/api', indexRouter);
 app.use('/users', usersRouter);
+
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
