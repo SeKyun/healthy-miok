@@ -1,6 +1,6 @@
 name: React build
-on: 
-  push:                               # master Branch에서 push 이벤트가 일어났을 때만 실행
+on:
+  push: # master Branch에서 push 이벤트가 일어났을 때만 실행
     branches:
       - master
 
@@ -8,20 +8,29 @@ jobs:
   build:
     runs-on: ubuntu-18.04
     steps:
-      - name: Checkout source code.   # 레포지토리 체크아웃
+      - name: Checkout source code. # 레포지토리 체크아웃
         uses: actions/checkout@master
 
-      - name: Install Dependencies    # 의존 파일 설치
+      - name: Install Dependencies # 의존 파일 설치
         working-directory: ./frontend
         run: yarn
 
-      - name: Build                   # React Build
+      - name: Install Backend Dependencies # backend 의존 파일 설치
+        working-directory: ./backend
+        run: npm install
+
+      - name: Build # React Build
         working-directory: ./frontend
         run: yarn build
-      - name: executing remote ssh commands using password 
+
+      - name: Backend Check # node server check
+        working-directory: ./backend
+        run: npm start
+
+      - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.HOST }}  #ssh 이용 배포
+          host: ${{ secrets.HOST }} #ssh 이용 배포
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           script: |
@@ -30,4 +39,8 @@ jobs:
             cd frontend
             sudo yarn
             sudo yarn build
-
+            cd .. 
+            cd backend
+            pm2 stop www
+            npm install
+            npm start

@@ -5,7 +5,8 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
   res.json([
     {id: 1, username: "somebody"},
-    {id: 2, username: "sombody_else"}
+    {id: 2, username: "sombody_else"},
+    {id: 3, username: "sein"}
   ])
 });
 
