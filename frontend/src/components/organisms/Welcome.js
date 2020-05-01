@@ -7,7 +7,7 @@ const Welcome = () => {
   useEffect(() => {
     try {
       axios.get('/api/greeting').then((response) => {
-        console.log(response.data.result);
+        console.log(response);
         setMessage(response.data.result[0].content);
       });
     } catch (error) {
