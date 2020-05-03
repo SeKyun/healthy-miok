@@ -1,7 +1,12 @@
 import React from 'react';
+import BloodsugarWrapper from '../../organisms/home/bloodSugar/bloodsugar';
 
 const Bloodsugar = () => {
-  return <div>혈당 페이지 입니다.</div>;
+  return (
+    <div style={{ height: '100%' }}>
+      <BloodsugarWrapper />
+    </div>
+  );
 };
 
 export default Bloodsugar;

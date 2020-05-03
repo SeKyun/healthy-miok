@@ -15,7 +15,7 @@ const Welcome = () => {
     }
     const timer = setTimeout(() => {
       history.push('/main');
-    }, 2000);
+    }, 3000);
     return () => clearTimeout(timer);
   }, []);
   return <div>{message}</div>;
