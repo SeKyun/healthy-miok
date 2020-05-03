@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Tag } from 'antd';
+import { Table } from 'antd';
 const { Column, ColumnGroup } = Table;
 const History = () => {
   return (
