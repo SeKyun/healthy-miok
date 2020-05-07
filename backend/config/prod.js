@@ -6,3 +6,10 @@ module.exports = {
     mysqlPASSWORD: secrets.mysqlPASSWORD, 
     mysqlDATABASE: secrets.mysqlDATABASE
 }
+
+// module.exports = {
+//     mysqlHOST: process.env.mysqlHOST,
+//     mysqlUSER: process.env.mysqlUSER, 
+//     mysqlPASSWORD: process.env.mysqlPASSWORD, 
+//     mysqlDATABASE: process.env.mysqlDATABASE
+// }
