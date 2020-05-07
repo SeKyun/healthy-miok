@@ -108,4 +108,7 @@ dist/
 tmp/
 temp/
 
+# Database Config file during 'development' mode
+dev.js
+
 # End of https://www.gitignore.io/api/node

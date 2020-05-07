@@ -1,12 +1,13 @@
 const mysql = require("mysql"); 
+const config = require('../config/key'); 
 
 let pool = mysql.createPool({
     connectionLimit: 50, 
-    host: "healthy-miok-db.css640snysar.ap-northeast-2.rds.amazonaws.com", 
-    port: 3306, 
-    user: "admin", 
-    password: "jigunmiok1118", 
-    database: "healthy_miok"
+    host: config.mysqlHOST,
+    port: config.mysqlPORT, 
+    user: config.mysqlUSER, 
+    password: config.mysqlPASSWORD, 
+    database: config.mysqlDATABASE
 
 }); 
 
