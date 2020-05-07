@@ -8,15 +8,15 @@ let controller = require("../../controllers/blood_sugar_controller");
 
 /* REGISTER the new blood sugar data */
 router.post('/', controller.register); 
-// /* GET blood sugar data */
-// router.get('/', controller.get-all);
+/* GET blood sugar data */
+router.get('/', controller.get_all);
 // /* DELETE all blood sugar data registered */
-// router.delete('/', constroller.delete-all); 
+router.delete('/', controller.delete_all); 
 
 // /* GET the blood sugar data of a specific id */
-// router.get('/record', controller.get-record); 
+router.get('/record', controller.get_record); 
 // /* UPDATE the blood sugar data of a specific id */
-// router.put('/record', controller.update-record); 
+router.put('/record', controller.update_record); 
 // /* DELETE the blood sugar data of a specific id */
 // router.delete('/record', controller.delete-record); 
 
