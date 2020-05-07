@@ -3,7 +3,7 @@ let router = express.Router();
 let path = require("path"); 
 
 let greeting = require("./greeting"); 
-let blood_sugar = require("./blood_suger"); 
+let blood_sugar = require("./blood_sugar"); 
 
 /* GET home page. */
 // possible error point 
