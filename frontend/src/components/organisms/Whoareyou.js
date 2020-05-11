@@ -2,11 +2,11 @@ import React from 'react';
 import 'antd/dist/antd.css';
 import { Input } from 'antd';
 import history from '../pages/history';
-
+import './Whoareyou.scss';
 const Whoareyou = () => {
   const { Search } = Input;
   return (
-    <div>
+    <div className="Whoareyou">
       <div className="title">이름이 어떻게 되세요?</div>
       <div className="yesno">
         <Search
