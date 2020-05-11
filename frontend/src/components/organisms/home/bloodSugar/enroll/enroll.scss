@@ -1,9 +1,13 @@
 .enroll {
-  text-align: center;
-  padding: 10% 15%;
-  #radio-group {
-    padding: 1em;
-    border: 1px solid black;
-    border-radius: 1em;
+  height: 100%;
+  .ant-form {
+    margin: 12em 0;
+    .ant-form-item {
+      font-size: 2em;
+      line-height: 1em;
+      label {
+        font-size: 1em;
+      }
+    }
   }
 }

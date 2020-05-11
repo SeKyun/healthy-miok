@@ -1,19 +1,5 @@
 .FirstPage {
-  position: absolute;
-  left: 47%;
-  top: 47%;
-  margin-left: -150px;
-  margin-top: -50px;
-  text-align: center;
-  font-size: calc(20px + 2vmin);
-  color: white;
-
-  @media screen and (max-width: 768px) {
-    /* 모바일에 사용될 스트일 시트를 여기에 작성합니다. */
-    left: 53%;
-    top: 46%;
-  }
-
+  height: 100%;
   & .yesno {
     flex-direction: row;
     margin: 10px;
