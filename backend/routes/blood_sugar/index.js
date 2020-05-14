@@ -18,17 +18,17 @@ router.get('/record', controller.get_record);
 // /* UPDATE the blood sugar data of a specific id */
 router.put('/record', controller.update_record); 
 // /* DELETE the blood sugar data of a specific id */
-// router.delete('/record', controller.delete-record); 
+router.delete('/record', controller.delete_record); 
 
 // /* GET blood sugar data of a specific date */
-// router.get('/date/:date', controller.get-records-date); 
+router.get('/date/:date', controller.get_records_date); 
 // /* DELETE blood sugar data of a specific date */
 // router.delete('/date/:date', controller.delete-records-date); 
 
 // /* GET blood sugar data of a specific time */
-// router.get('/when/:when', controller.get-records-when); 
+router.get('/when/:when', controller.get_records_when); 
 
 // /* GET blood sugar data of a specific status */ 
-// router.get('/status/:status', controller.get-records-staus); 
+// router.get('/status/:status', controller.get-records-status); 
 
 module.exports = router; 
