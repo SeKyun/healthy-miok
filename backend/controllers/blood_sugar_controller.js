@@ -118,7 +118,38 @@ exports.get_record = function (req, res) {
     });
 }
 
-// possible error point 
+// get info by using today and when
+// *** possible error point ***
+exports.get_record_today_when = function (req, res) {
+    let today = req.query.today; 
+    let when = req.query.when; 
+
+    let sql = `SELECT * FROM blood_sugar WHERE _today=? AND _when=?`; 
+    db.query(sql, [today, when], function (err, result) {
+        if (err) {
+            return res.status(500).send({
+                msg: "database ERROR - while connecting to blood_sugar table",
+                success: false, 
+                result: err
+              });
+        }
+
+        else if (! result[0]) {
+            return res.status(401).send({
+                msg: "there is no data with the date and when value", 
+                success: false, 
+                result: result
+            }); 
+        }
+
+        return res.status(200).send({
+            msg: "blood sugar data has been sent",
+            success: true, 
+            result: result
+        });
+    })
+}
+
 /** 
  * - today, _when 은 바꿀 수 없음
  * status _value 에 맞게 다시 계산
