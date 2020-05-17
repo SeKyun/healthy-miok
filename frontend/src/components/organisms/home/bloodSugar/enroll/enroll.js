@@ -11,7 +11,16 @@ import {
 import './enroll.scss';
 import moment from 'moment';
 import axios from 'axios';
-
+const formatDate = (d) => {
+  console.log(d);
+  const year = d._d.getFullYear();
+  let month = d._d.getMonth() + 1;
+  let date = d._d.getDate();
+  console.log(month);
+  month = month < 10 ? `0${month}` : month;
+  date = date < 10 ? `0${date}` : date;
+  return `${year}-${month}-${date}`;
+};
 const Enroll = () => {
   const dateFormat = 'YYYY/MM/DD';
   const formItemLayout = {
@@ -21,20 +30,26 @@ const Enroll = () => {
 
   const [form] = Form.useForm();
   const [isAvailable, setAvailable] = React.useState(true);
-  const onChange = (e) => {
+  const [today, setToday] = React.useState(
+    formatDate(moment(new Date(), dateFormat)),
+  );
+
+  const onChange = async (e) => {
     if (e.target.value === '기타') {
       setAvailable(false);
     } else {
       setAvailable(true);
     }
+    console.log(today);
+
+    const response = await axios.get(
+      `http://miok.site:3001/api/blood-sugar/date/${form.getFieldValue(today)}`,
+    );
+    console.log(response);
   };
-  const formatDate = (d) => {
-    const year = d._i.getFullYear();
-    let month = d._i.getMonth();
-    let date = d._i.getDate();
-    month = month < 10 ? `0${month}` : month;
-    date = date < 10 ? `0${date}` : date;
-    return `${year}-${month}-${date}`;
+  const onChangeToday = (date, dateString) => {
+    console.log(dateString);
+    setToday(dateString);
   };
   const onFinish = async (data) => {
     data.today = formatDate(data.today);
@@ -67,7 +82,7 @@ const Enroll = () => {
       >
         <Form.Item name="today" wrapperCol={{ span: 12, offset: 11 }}>
           <DatePicker
-            defaultValue={moment(new Date(), dateFormat)}
+            onChange={onChangeToday}
             format={dateFormat}
             value={moment(new Date(), dateFormat)}
           />
@@ -109,10 +124,7 @@ const Enroll = () => {
           </Form.Item>
 
           <Form.Item name="date" style={{ display: 'inline-block' }}>
-            <DatePicker
-              defaultValue={moment(new Date(), dateFormat)}
-              format={dateFormat}
-            />
+            <DatePicker format={dateFormat} />
           </Form.Item>
         </Form.Item>
 

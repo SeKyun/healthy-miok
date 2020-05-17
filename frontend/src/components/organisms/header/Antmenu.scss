@@ -1,10 +1,15 @@
 .ant-layout-header {
+  background-color: #40a9ff;
   div {
+    .ant-menu {
+      background-color: #40a9ff;
+    }
     ul {
       display: flex;
       justify-content: center;
       .ant-menu-item {
         font-size: 2vw;
+        color: black;
       }
     }
   }
