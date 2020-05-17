@@ -13,6 +13,8 @@ exports.register = function (req, res) {
         memo: req.body.memo 
     }; 
 
+    console.log(req_data); 
+
     // status 설정
     req_data._status = lib.setBloodSugarStatus(req_data._value, req_data._when); 
 
@@ -89,7 +91,7 @@ exports.delete_all = function (req, res) {
 // possible error point 
 exports.get_record = function (req, res) {
     let id = req.query.id; 
-    let sql = `SELECT * FROM blood_sugar WEHRE id=?`; 
+    let sql = `SELECT * FROM blood_sugar WHERE id=?`; 
     db.query(sql, [id], function (err, result) {
         if (err) {
             return res.status(500).send({
