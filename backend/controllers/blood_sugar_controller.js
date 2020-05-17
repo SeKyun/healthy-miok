@@ -21,7 +21,7 @@ exports.register = function (req, res) {
         req_data.desc_etc = req.body.desc_etc; 
     }
 
-    let sql = `INSERT INTO blood_sugar SET`; 
+    let sql = `INSERT INTO blood_sugar SET ?`; 
     db.query(sql, req_data, function (err, result) {
         if (err) {
             return res.status(500).send ({
