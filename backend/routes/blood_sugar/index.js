@@ -14,18 +14,13 @@ router.get('/', controller.get_all);
 // /* DELETE all blood sugar data registered */
 router.delete('/', controller.delete_all); 
 
-// // /* GET the blood sugar data of a specific id */
-// router.get('/record', controller.get_record); 
-// // /* UPDATE the blood sugar data of a specific id */
-// router.put('/record', controller.update_record); 
-// // /* DELETE the blood sugar data of a specific id */
-// router.delete('/record', controller.delete_record); 
-
 /* GET the blood sugar data of a specific today and when value */
-router.get('/record', controller.get_record_today_when); 
+router.get('/record', controller.get_record); 
+/* UPDATE the edited blood sugar data of a specific today and when value */
+router.put('/record', controller.update_record);
 
 // /* GET blood sugar data of a specific date */
-router.get('/date/:date', controller.get_records_date); 
+router.get('/date/:date', controller.get_records_today); 
 // /* DELETE blood sugar data of a specific date */
 // router.delete('/date/:date', controller.delete-records-date); 
 
