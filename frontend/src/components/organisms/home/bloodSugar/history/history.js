@@ -1,11 +1,34 @@
 import React from 'react';
-import { Table } from 'antd';
+import { DatePicker, Table, Button } from 'antd';
+import './history.scss';
+import moment from 'moment';
+import axios from 'axios';
+
 const { Column, ColumnGroup } = Table;
+const { RangePicker } = DatePicker;
+
 const History = () => {
+  const dateFormat = 'YYYY/MM/DD';
+  const date = new Date();
+  const getData = async () => {
+    const response = await axios.get('http://miok.site:3001/api/blood-sugar');
+    console.log(response);
+  };
   return (
     <div>
-      {' '}
-      <Table>
+      <div style={{ textAlign: 'center', margin: '3%' }}>
+        <RangePicker
+          size="large"
+          defaultValue={[
+            moment(new Date(), dateFormat),
+            moment(new Date(date.setMonth(date.getMonth() + 3)), dateFormat),
+          ]}
+        />
+        <Button size="large" onClick={getData}>
+          조회
+        </Button>
+      </div>
+      <Table bordered={true}>
         <ColumnGroup title="날짜">
           <Column title="월" dataIndex="firstName" key="firstName" />
           <Column title="일" dataIndex="lastName" key="lastName" />
