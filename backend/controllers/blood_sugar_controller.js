@@ -42,7 +42,7 @@ exports.register = function (req, res) {
 }
 
 exports.get_all = function (req, res) {
-    let sql = `SELECT * FROM blood_sugar`; 
+    let sql = `SELECT * FROM blood_sugar ORDER BY today DESC`; 
 
     db.query(sql, function (err, result) {
         if (err) {

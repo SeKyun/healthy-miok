@@ -10,6 +10,7 @@ let controller = require("../../controllers/blood_sugar_controller");
 router.post('/', controller.register); 
 /* GET blood sugar data */
 router.get('/', controller.get_all);
+
 // /* DELETE all blood sugar data registered */
 router.delete('/', controller.delete_all); 
 
