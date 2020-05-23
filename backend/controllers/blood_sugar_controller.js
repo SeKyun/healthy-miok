@@ -3,6 +3,7 @@ const lib = require('../library/blood_sugar_lib');
 const res_handler = require('../library/status_handler'); 
 const resource = "blood_sugar"; 
 const moment = require('moment'); 
+const url = require('url'); 
 
 // possible error point 
 exports.register = function (req, res) {
@@ -68,8 +69,11 @@ exports.delete_all = function (req, res) {
 // get info by using today and when
 // *** possible error point ***
 exports.get_record = function (req, res) {
-    let today = req.query.today; 
-    let when = req.query.when; 
+    var queryData = url.parse(req.url, true).query; 
+    let today = queryData.today; 
+    let when = queryData.when; 
+
+    console.log(queryData); 
 
     let sql = `SELECT * FROM blood_sugar WHERE today=? AND _when=?`; 
     db.query(sql, [today, when], function (err, result) {
