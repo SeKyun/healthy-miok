@@ -1,26 +1,10 @@
 import React from 'react';
-import {
-  Button,
-  DatePicker,
-  Form,
-  Radio,
-  TimePicker,
-  InputNumber,
-  Input,
-} from 'antd';
+import { Button, DatePicker, Form, Radio, InputNumber, Input } from 'antd';
 import './enroll.scss';
 import moment from 'moment';
 import axios from 'axios';
-const formatDate = (d) => {
-  console.log(d);
-  const year = d._d.getFullYear();
-  let month = d._d.getMonth() + 1;
-  let date = d._d.getDate();
-  console.log(month);
-  month = month < 10 ? `0${month}` : month;
-  date = date < 10 ? `0${date}` : date;
-  return `${year}-${month}-${date}`;
-};
+import { formatDate } from '../../../../../utils/formatDate.js';
+
 const Enroll = () => {
   const dateFormat = 'YYYY/MM/DD';
   const formItemLayout = {
@@ -29,38 +13,79 @@ const Enroll = () => {
   };
 
   const [form] = Form.useForm();
-  const [isAvailable, setAvailable] = React.useState(true);
+  const [isDisable, setDisable] = React.useState(true);
+  const [isUpdate, setUpdate] = React.useState(false);
   const [today, setToday] = React.useState(
     formatDate(moment(new Date(), dateFormat)),
   );
 
+  const removeFormData = () => {
+    form.setFieldsValue({
+      desc_etc: null,
+      value: null,
+      memo: null,
+    });
+  };
   const onChange = async (e) => {
     if (e.target.value === '기타') {
-      setAvailable(false);
+      setDisable(false);
     } else {
-      setAvailable(true);
+      setDisable(true);
     }
     console.log(today);
-
+    console.log(e.target.value);
     const response = await axios.get(
-      `http://miok.site:3001/api/blood-sugar/date/${form.getFieldValue(today)}`,
+      `http://miok.site:3001/api/blood-sugar/record/`,
+      {
+        params: {
+          today: today,
+          when: e.target.value,
+        },
+      },
     );
     console.log(response);
+    console.log(response.status);
+    if (response.status === 200) {
+      setUpdate(true);
+      form.setFieldsValue({
+        when: response.data.result[0].when,
+        desc_etc: response.data.result[0].desc_etc,
+        value: response.data.result[0]._value,
+        memo: response.data.result[0].memo,
+      });
+    } else if (response.status === 204) {
+      setUpdate(false);
+      removeFormData();
+    } else {
+      console.log('에러코드 발생');
+    }
   };
+
   const onChangeToday = (date, dateString) => {
     console.log(dateString);
     setToday(dateString);
+    removeFormData();
+    setUpdate(false);
+    setDisable(true);
   };
+
   const onFinish = async (data) => {
     data.today = formatDate(data.today);
-    data.time = data.time._d.toTimeString().split(' ')[0];
-    data.date = formatDate(data.date);
     console.log(data);
-    const response = await axios.post(
-      'http://miok.site:3001/api/blood-sugar',
-      data,
-    );
-    console.log(response);
+    if (isUpdate) {
+      // TODO 이쪽 부분 수정해야함
+      const response = await axios.post(
+        'http://miok.site:3001/api/blood-sugar',
+        data,
+      );
+      console.log(response);
+    } else {
+      const response = await axios.post(
+        'http://miok.site:3001/api/blood-sugar',
+        data,
+      );
+      console.log(response);
+    }
   };
   return (
     <div className="enroll">
@@ -74,8 +99,6 @@ const Enroll = () => {
           today: moment(new Date(), dateFormat),
           when: null,
           desc_etc: null,
-          time: null,
-          date: moment(new Date(), dateFormat),
           value: 0,
           memo: null,
         }}
@@ -110,22 +133,8 @@ const Enroll = () => {
         <Form.Item name="desc_etc" label="기타내용">
           <Input
             placeholder="기타내용을 선택시 입력합니다"
-            disabled={isAvailable}
+            disabled={isDisable}
           />
-        </Form.Item>
-
-        <Form.Item label="시간" style={{ marginBottom: 0 }}>
-          <Form.Item
-            name="time"
-            style={{ display: 'inline-block' }}
-            rules={[{ required: true, message: '측정 시간을 선택해주세요' }]}
-          >
-            <TimePicker use12Hours format="h:mm a" />
-          </Form.Item>
-
-          <Form.Item name="date" style={{ display: 'inline-block' }}>
-            <DatePicker format={dateFormat} />
-          </Form.Item>
         </Form.Item>
 
         <Form.Item name="value" label="수치">
@@ -141,7 +150,7 @@ const Enroll = () => {
 
         <Form.Item colon={false} wrapperCol={{ span: 12, offset: 12 }}>
           <Button type="primary" htmlType="submit">
-            등록
+            {isUpdate ? '수정' : '등록'}
           </Button>
         </Form.Item>
       </Form>
