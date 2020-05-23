@@ -10,7 +10,7 @@ const { RangePicker } = DatePicker;
 const History = () => {
   const dateFormat = 'YYYY/MM/DD';
   const date = new Date();
-  const [dataSource, setDataSource] = React.useState([
+  const [dataSource] = React.useState([
     {
       key: 1,
       month: 5,
