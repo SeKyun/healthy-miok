@@ -13,6 +13,7 @@ const Enroll = () => {
   };
 
   const [form] = Form.useForm();
+  const [dataID, setDataID] = React.useState();
   const [isDisable, setDisable] = React.useState(true);
   const [isUpdate, setUpdate] = React.useState(false);
   const [today, setToday] = React.useState(
@@ -32,8 +33,6 @@ const Enroll = () => {
     } else {
       setDisable(true);
     }
-    console.log(today);
-    console.log(e.target.value);
     const response = await axios.get(
       `http://miok.site:3001/api/blood-sugar/record/`,
       {
@@ -43,12 +42,10 @@ const Enroll = () => {
         },
       },
     );
-    console.log(response);
-    console.log(response.status);
     if (response.status === 200) {
       setUpdate(true);
+      setDataID(response.data.result[0].id);
       form.setFieldsValue({
-        when: response.data.result[0].when,
         desc_etc: response.data.result[0].desc_etc,
         value: response.data.result[0]._value,
         memo: response.data.result[0].memo,
@@ -74,8 +71,8 @@ const Enroll = () => {
     console.log(data);
     if (isUpdate) {
       // TODO 이쪽 부분 수정해야함
-      const response = await axios.post(
-        'http://miok.site:3001/api/blood-sugar',
+      const response = await axios.put(
+        `http://miok.site:3001/api/blood-sugar/id/${dataID}`,
         data,
       );
       console.log(response);
@@ -84,6 +81,7 @@ const Enroll = () => {
         'http://miok.site:3001/api/blood-sugar',
         data,
       );
+      removeFormData();
       console.log(response);
     }
   };
