@@ -10,9 +10,15 @@ let controller = require("../../controllers/blood_sugar_controller");
 router.post('/', controller.register); 
 /* GET blood sugar data */
 router.get('/', controller.get_all);
-
 // /* DELETE all blood sugar data registered */
 router.delete('/', controller.delete_all); 
+
+/* GET blood_sugar data by id */
+router.get('/id/:id', controller.get_record_id); 
+/* UPDATE blood_sugar data by id */
+router.get('/id/:id', controller.update_record_id); 
+/* DELETE blood_sugar data by id */
+router.get('/id/:id', controller.delete_record_id); 
 
 /* GET the blood sugar data of a specific today and when value */
 router.get('/record', controller.get_record); 
