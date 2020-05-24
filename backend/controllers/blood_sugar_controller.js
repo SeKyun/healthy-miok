@@ -150,7 +150,7 @@ exports.delete_record = function (req, res) {
 }
 
 
-// url: /id/:id - id 를 이용해 데이터 접근 
+// url: /id/:id - id 를 이용해 데이터 접근 s
 exports.get_record_id = function (req, res) {
     let id = req.params.id; 
     let sql = `SELECT * FROM blood_sugar WHERE id=?`; 
@@ -172,7 +172,7 @@ exports.update_record_id = function (req, res) {
     let req_data = {
         desc_etc: req.body.des_etc, 
         _value: req.body.value, 
-        _memo: req.body.memo,
+        memo: req.body.memo,
         edited: now.format("YYYY-MM-DD HH:mm:ss")
     }
 
