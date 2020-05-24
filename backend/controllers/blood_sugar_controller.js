@@ -149,10 +149,10 @@ exports.update_record = function (req, res) {
 exports.get_records_date = function (req, res) {
     var queryData = url.parse(req.url, true).query; 
     let startDate = queryData.startDate; 
-    let startDate = queryData.endDate; 
+    let endDate = queryData.endDate; 
 
     console.log("queryData: ", queryData); 
-    
+
     let sql = `SELECT * FROM blood_sugar WHERE today >=${startDate} AND today <= ${endDate}`; 
     db.query(sql, function (err, result) {
         if (err) {
