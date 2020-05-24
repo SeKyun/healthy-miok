@@ -42,5 +42,5 @@ jobs:
             cd .. 
             cd backend
             pm2 stop www
-            npm install
-            npm start
+            sudo npm install
+            sudo npm start

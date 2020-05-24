@@ -10,8 +10,7 @@ const Home = () => {
           history.push('/bloodSugar');
         }}
       >
-        혈당
-        {/* <img src="/images/diabetes.png" alt="diabetes" /> */}
+        <img src="/images/menu/diabetes.png" alt="혈당" />
       </Button>
 
       <Button
@@ -19,14 +18,14 @@ const Home = () => {
           history.push('/bloodPressure');
         }}
       >
-        혈압
+        <img src="/images/menu/blood_pressure.png" alt="혈압" />
       </Button>
       <Button
         onClick={() => {
           history.push('/weight');
         }}
       >
-        체중
+        <img src="/images/menu/weight.png" alt="체중" />
       </Button>
 
       <Button
@@ -34,21 +33,21 @@ const Home = () => {
           history.push('/insulin');
         }}
       >
-        인슐린
+        <img src="/images/menu/insuline.png" alt="인슐린" />
       </Button>
       <Button
         onClick={() => {
           history.push('/treatment');
         }}
       >
-        투약 및 처치
+        <img src="/images/menu/injectOrTreatment.png" alt="투약 및 치료" />
       </Button>
       <Button
         onClick={() => {
           history.push('/exercise');
         }}
       >
-        운동
+        <img src="/images/menu/exercise.png" alt="운동" />
       </Button>
 
       <Button
@@ -56,21 +55,21 @@ const Home = () => {
           history.push('/foods');
         }}
       >
-        음식
+        <img src="/images/menu/foodCare.png" alt="식단" />
       </Button>
       <Button
         onClick={() => {
           history.push('/stressAndHappy');
         }}
       >
-        스트레스 & 행복지수
+        <img src="/images/menu/stressAndHappiness.png" alt="식단" />
       </Button>
       <Button
         onClick={() => {
           history.push('/todayJob');
         }}
       >
-        오늘의 일
+        <img src="/images/menu/todayJob.png" alt="식단" />
       </Button>
     </div>
   );

@@ -6,7 +6,7 @@ const Welcome = () => {
   const [message, setMessage] = useState('');
   useEffect(() => {
     try {
-      axios.get('/api/greeting').then((response) => {
+      axios.get('http://miok.site:3001/api/greeting').then((response) => {
         console.log(response);
         setMessage(response.data.result[0].content);
       });
