@@ -145,6 +145,59 @@ exports.update_record = function (req, res) {
     }) 
 }
 
+exports.delete_record = function (req, res) {
+
+}
+
+
+// url: /id/:id - id 를 이용해 데이터 접근 
+exports.get_record_id = function (req, res) {
+    let id = req.params.id; 
+    let sql = `SELECT * FROM blood_sugar WHERE id=?`; 
+    db.query(sql, [id], function (err, result) {
+        if (err) {
+            return res_handler.sendError(err, 500, res, resource); 
+        }
+        else if (! result[0]) {
+            return res_handler.sendSuccess(result, 204, res, resource); 
+        }
+        return res_handler.sendSuccess(result, 200, res, resource); 
+    })
+}
+
+// id를 이용해 데이터 업데이트 
+exports.update_record_id = function (req, res) {
+    let id = req.params.id; 
+    let now = moment(); 
+    let req_data = {
+        des_etc: req.body.des_etc, 
+        _value: req.body.value, 
+        _memo: req.body.memo,
+        edited: now.format("YYYY-MM-DD HH:mm:ss")
+    }
+
+    let sql = `UPDATE blood_sugar SET ? WHERE id=?`; 
+    db.query(sql, [req_data, id], function (err, result) {
+        if (err) {
+            return res_handler.sendError(err, 500, res, resource); 
+        }
+        
+        return res_handler.sendSuccess(result, 204, res, "update"); 
+        
+    })
+}
+// id를 이용해 데이터 삭제 
+exports.delete_record_id = function (req, res) {
+    let id = req.params.id; 
+    let sql = `DELETE FROM blood_sugar WHERE id=?`; 
+    db.query(sql, [id], function (err, result) {
+        if (err) {
+            return res_handler.sendError(err, 500, res, resource); 
+        }
+        
+        return res_handler.sendSuccess(result, 204, res, "delete"); 
+    })
+}
 // date기간을 통해 데이터를 받음
 exports.get_records_date = function (req, res) {
     var queryData = url.parse(req.url, true).query; 
@@ -153,7 +206,10 @@ exports.get_records_date = function (req, res) {
 
     console.log("queryData: ", queryData); 
 
-    let sql = `SELECT * FROM blood_sugar WHERE today >='${startDate}' AND today <= '${endDate}'`; 
+    let sql = `SELECT * FROM blood_sugar `
+            + `WHERE today >='${startDate}' AND today <= '${endDate}' `
+            + `ORDER BY today DESC`; 
+            
     console.log("sql: ", sql); 
 
     db.query(sql, function (err, result) {
