@@ -73,7 +73,7 @@ exports.get_record = function (req, res) {
     let today = queryData.today; 
     let when = queryData.when; 
 
-    console.log(queryData); 
+    console.log("queryData: ", queryData); 
 
     let sql = `SELECT * FROM blood_sugar WHERE today=? AND _when=?`; 
     db.query(sql, [today, when], function (err, result) {
@@ -143,6 +143,28 @@ exports.update_record = function (req, res) {
                 }
         }
     }) 
+}
+
+// date기간을 통해 데이터를 받음
+exports.get_records_date = function (req, res) {
+    var queryData = url.parse(req.url, true).query; 
+    let startDate = queryData.startDate; 
+    let startDate = queryData.endDate; 
+
+    console.log("queryData: ", queryData); 
+    
+    let sql = `SELECT * FROM blood_sugar WHERE today >=${startDate} AND today <= ${endDate}`; 
+    db.query(sql, function (err, result) {
+        if (err) {
+            return res_handler.sendError(err, 500, res, resource); 
+        }
+
+        else if (! result[0]) {
+            return res_handler.sendSuccess(result, 204, res, resource); 
+        }
+
+        return res_handler.sendSuccess(result, 200, res, resource); 
+    })
 }
 
 // today를 통해 데이터를 받음 
