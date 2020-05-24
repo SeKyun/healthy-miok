@@ -170,7 +170,7 @@ exports.update_record_id = function (req, res) {
     let id = req.params.id; 
     let now = moment(); 
     let req_data = {
-        des_etc: req.body.des_etc, 
+        desc_etc: req.body.des_etc, 
         _value: req.body.value, 
         _memo: req.body.memo,
         edited: now.format("YYYY-MM-DD HH:mm:ss")
@@ -209,7 +209,7 @@ exports.get_records_date = function (req, res) {
     let sql = `SELECT * FROM blood_sugar `
             + `WHERE today >='${startDate}' AND today <= '${endDate}' `
             + `ORDER BY today DESC`; 
-            
+
     console.log("sql: ", sql); 
 
     db.query(sql, function (err, result) {
