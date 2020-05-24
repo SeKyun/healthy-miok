@@ -153,7 +153,7 @@ exports.get_records_date = function (req, res) {
 
     console.log("queryData: ", queryData); 
 
-    let sql = `SELECT * FROM blood_sugar WHERE today >=${startDate} AND today <= ${endDate}`; 
+    let sql = `SELECT * FROM blood_sugar WHERE today >='${startDate}' AND today <= '${endDate}'`; 
     console.log("sql: ", sql); 
 
     db.query(sql, function (err, result) {
