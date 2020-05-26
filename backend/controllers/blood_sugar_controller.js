@@ -66,7 +66,7 @@ exports.register = function (req, res) {
     req_data._time = now.format("HH:mm:ss"); 
     req_data._date = now.format('YYYY-MM-DD'); 
 
-    let sql = `INSERT INTO blood_sugar SET ?`; 
+    sql = `INSERT INTO blood_sugar SET ?`; 
     db.query(sql, req_data, function (err, result) {
         if (err) {
             return res_handler.sendError(err, 500, res, "creating " + resource); 
