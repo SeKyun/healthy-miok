@@ -34,6 +34,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           script: |
+            pm2 stop www
             cd healthy-miok
             git pull
             cd frontend
@@ -41,6 +42,5 @@ jobs:
             sudo yarn build
             cd .. 
             cd backend
-            pm2 stop www
             sudo npm install
             sudo npm start
