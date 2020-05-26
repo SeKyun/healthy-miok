@@ -4,6 +4,8 @@ import './history.scss';
 import moment from 'moment';
 import axios from 'axios';
 import { formatDate } from '../../../../../utils/formatDate.js';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const { Column, ColumnGroup } = Table;
 const { RangePicker } = DatePicker;
@@ -59,6 +61,7 @@ const History = () => {
       return 0;
     });
     setdataSource(arr);
+    toast.success('성공적으로 데이터를 가져왔습니다!');
   };
   React.useEffect(() => {
     getData();
@@ -104,6 +107,17 @@ const History = () => {
         <Column title="새벽" dataIndex="새벽" key="새벽" />
         <Column title="기타" dataIndex="기타" key="기타" />
       </Table>
+      <ToastContainer
+        position="bottom-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 };
