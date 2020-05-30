@@ -44,6 +44,7 @@ const History = () => {
         },
       },
     );
+    console.log('데이터 수정됨?');
     let arr = [];
     let last_key = 0;
     response.data.result.map((item) => {

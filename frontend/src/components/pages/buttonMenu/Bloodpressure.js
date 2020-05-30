@@ -1,7 +1,8 @@
 import React from 'react';
+import BloodpressureWrapper from '../../organisms/home/bloodPressure/bloodpressure';
 
 const Bloodpressure = () => {
-  return <div>혈압 페이지입니다.</div>;
+  return <BloodpressureWrapper />;
 };
 
 export default Bloodpressure;

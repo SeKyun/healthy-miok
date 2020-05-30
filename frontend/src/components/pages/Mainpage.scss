@@ -1,8 +1,12 @@
 .ant-layout {
   height: 100%;
-  overflow: scroll;
   & > .ant-layout-footer {
     bottom: 0em;
     background-color: #40a9ff;
+  }
+
+  & > .ant-layout-content {
+    overflow: scroll;
+    overflow-x: hidden;
   }
 }
