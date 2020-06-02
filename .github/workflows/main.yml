@@ -36,7 +36,7 @@ jobs:
           script: |
             pm2 stop www
             cd healthy-miok
-            git pull
+            sudo git pull
             cd frontend
             sudo yarn
             sudo yarn build
