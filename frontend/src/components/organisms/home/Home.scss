@@ -1,18 +1,24 @@
 .Home {
   position: relative;
-  width: 100%;
+  width: 80%;
   height: 100%;
+  text-align: center;
+  margin: 0 10% 0 10%;
   button {
     display: inline-block;
     border-radius: 1em;
     font-size: 2vw;
     align-items: center;
-    width: 27.3333%;
-    height: 26%;
+    width: 24%;
+    height: 27.3333%;
     margin: 1.5% 3%;
     img {
-      width: 4em;
-      height: 4em;
+      width: 10vw;
+      height: 11vw;
+    }
+    .stress {
+      width: 15vw;
+      height: 11vw;
     }
   }
 }
