@@ -3,20 +3,14 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  font-size: 2vw;
+  font-size: 1vw;
   & > .question {
     flex: 1;
   }
-  & > .maker {
-    flex: 2;
-    align-items: center;
-    & > div {
-      float: right;
-      margin: 0 2em;
-    }
-    & > button {
-      float: right;
-      margin: 0.5em 1em;
-    }
+  & > div {
+    margin: 0 2em;
+  }
+  & > button {
+    margin: 1em;
   }
 }

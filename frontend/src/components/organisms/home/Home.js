@@ -62,7 +62,11 @@ const Home = () => {
           history.push('/stressAndHappy');
         }}
       >
-        <img src="/images/menu/stressAndHappiness.png" alt="식단" />
+        <img
+          src="/images/menu/stressAndHappiness.png"
+          alt="스트레스와행복"
+          className={'stress'}
+        />
       </Button>
       <Button
         onClick={() => {

@@ -77,7 +77,7 @@ const Enroll = () => {
         .catch((error) => {
           toast.error('에러가 났어요!');
         });
-      toast.success('등록에 성공하였습니다!');
+      toast.success('수정에 성공하였습니다!');
       console.log(response);
     } else {
       const response = await axios.post(
@@ -85,7 +85,7 @@ const Enroll = () => {
         data,
       );
       removeFormData();
-      toast.success('수정에 성공하였습니다!');
+      toast.success('등록에 성공하였습니다!');
       console.log(response);
     }
   };
