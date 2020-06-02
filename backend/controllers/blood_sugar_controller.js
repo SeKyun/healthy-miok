@@ -53,27 +53,7 @@ exports.register = function (req, res) {
         });     
 
     })
-    // status 설정
-    req_data._status = lib.setBloodSugarStatus(req_data._value, req_data._when); 
-
-    // 기타 설정 
-    if (req_data._when === '기타') {
-        req_data.desc_etc = req.body.desc_etc; 
-    }
-
-    // _time, _date 설정
-    let now = moment(); 
-    req_data._time = now.format("HH:mm:ss"); 
-    req_data._date = now.format('YYYY-MM-DD'); 
-
-    sql = `INSERT INTO blood_sugar SET ?`; 
-    db.query(sql, req_data, function (err, result) {
-        if (err) {
-            return res_handler.sendError(err, 500, res, "creating " + resource); 
-        }
-
-        return res_handler.sendSuccess(result, 201, res, "creating " + resource); 
-    });     
+      
 }
 
 // get all the data in the table 

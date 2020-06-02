@@ -22,8 +22,6 @@ router.delete('/id/:id', controller.delete_record_id);
 
 /* GET the blood sugar data of a specific today and when value */
 router.get('/record', controller.get_record_today_when); 
-/* UPDATE the edited blood sugar data of a specific today and when value */
-// router.put('/record', controller.update_record);
 
 // /* GET blood sugar data between start date and end date*/
 router.get('/date', controller.get_records_date); 
