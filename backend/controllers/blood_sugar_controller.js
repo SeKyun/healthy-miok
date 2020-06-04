@@ -5,9 +5,9 @@ const resource = "blood_sugar";
 const moment = require('moment'); 
 const url = require('url'); 
 
-//===========================================================
+//=================================================================
 // requre URL:  /blood-sugar
-//===========================================================
+//=================================================================
 
 // register new data in the table 
 exports.register = function (req, res) {
@@ -53,27 +53,7 @@ exports.register = function (req, res) {
         });     
 
     })
-    // status 설정
-    req_data._status = lib.setBloodSugarStatus(req_data._value, req_data._when); 
-
-    // 기타 설정 
-    if (req_data._when === '기타') {
-        req_data.desc_etc = req.body.desc_etc; 
-    }
-
-    // _time, _date 설정
-    let now = moment(); 
-    req_data._time = now.format("HH:mm:ss"); 
-    req_data._date = now.format('YYYY-MM-DD'); 
-
-    sql = `INSERT INTO blood_sugar SET ?`; 
-    db.query(sql, req_data, function (err, result) {
-        if (err) {
-            return res_handler.sendError(err, 500, res, "creating " + resource); 
-        }
-
-        return res_handler.sendSuccess(result, 201, res, "creating " + resource); 
-    });     
+      
 }
 
 // get all the data in the table 
@@ -107,9 +87,9 @@ exports.delete_all = function (req, res) {
 
 
 
-//===========================================================
+//=================================================================
 // requre URL:  /blood-sugar/id/:id 
-//===========================================================
+//=================================================================
 
 // get data from the table by using parameter /id/:id
 exports.get_record_id = function (req, res) {
@@ -160,9 +140,9 @@ exports.delete_record_id = function (req, res) {
 }
 
 
-//===========================================================
+//=================================================================
 // requre URL:  /blood-sugar/record?today=?&when=?
-//===========================================================
+//=================================================================
 
 // get data from the table by using today and when
 exports.get_record_today_when = function (req, res) {
@@ -186,9 +166,9 @@ exports.get_record_today_when = function (req, res) {
     })
 }
 
-//===========================================================
+//=================================================================
 // requre URL:  /blood-sugar/date?startDate=?&endDate=?
-//===========================================================
+//=================================================================
 // get data from the table which from startDate to endDate
 exports.get_records_date = function (req, res) {
     var queryData = url.parse(req.url, true).query; 
@@ -218,9 +198,9 @@ exports.get_records_date = function (req, res) {
 
 
 // **graph api **
-//===========================================================
+//=================================================================
 // requre URL:  /blood-sugar/date/:today
-//===========================================================
+//=================================================================
 
 // get data from the table by using today value
 exports.get_records_today = function (req, res) {
@@ -243,9 +223,9 @@ exports.get_records_today = function (req, res) {
 
 
 // **graph api **
-//===========================================================
+//=================================================================
 // requre URL:  /blood-sugar/when/:when
-//===========================================================
+//=================================================================
 //possible error point 
 // get data from the table by using when value
 exports.get_records_when = function (req, res) {
