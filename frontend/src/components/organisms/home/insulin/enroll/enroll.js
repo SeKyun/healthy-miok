@@ -1,9 +1,12 @@
 import React from 'react';
-import { Form, DatePicker, TimePicker, InputNumber, Input, Button } from 'antd';
+import { Form, DatePicker, InputNumber, Input, Button, Select } from 'antd';
 import './enroll.scss';
 import moment from 'moment';
+import { PlusOutlined } from '@ant-design/icons';
 
 const { TextArea } = Input;
+const { Option } = Select;
+
 const enroll = () => {
   const formItemLayout = {
     labelCol: { span: 9 },
@@ -23,24 +26,22 @@ const enroll = () => {
             className="datePic"
           />
         </Form.Item>
+        <Form.Item label="종류">
+          <Button type="primary" shape="circle" icon={<PlusOutlined />} />
+          <Select defaultValue="lucy" style={{ width: 120 }}>
+            <Option value="jack">Jack</Option>
+            <Option value="lucy">Lucy</Option>
+            <Option value="Yiminghe">yiminghe</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item label="단위">
+          <InputNumber size="large" />
+        </Form.Item>
+        <Form.Item label="시기">
+          <InputNumber size="large" />
+        </Form.Item>
         <Form.Item label="시간">
-          <TimePicker
-            size="large"
-            format={'h:mm a'}
-            defaultValue={moment(new Date(), 'HH:MM')}
-          />
-        </Form.Item>
-        <Form.Item label="혈압 수축">
           <InputNumber size="large" />
-          mmHg
-        </Form.Item>
-        <Form.Item label="혈압 이완">
-          <InputNumber size="large" />
-          mmHg
-        </Form.Item>
-        <Form.Item label="심박수">
-          <InputNumber size="large" />
-          bpm
         </Form.Item>
         <Form.Item label="메모" wrapperCol={{ span: 13 }}>
           <TextArea
