@@ -37,7 +37,7 @@ exports.register = function (req, res) {
 
 // get all the data in the table 
 exports.get_all = function (req, res) {
-    let sql = `SELECT * FROM blood_pressure ORDER BY today DESC`; 
+    let sql = `SELECT * FROM ${resource} ORDER BY today DESC`; 
 
     db.query(sql, function (err, result) {
         if (err) {
