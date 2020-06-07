@@ -79,7 +79,7 @@ exports.get_record_id = function (req, res) {
         }
 
         if (! result[0]) {
-            return res_handler.sendSuccess(result, 204, res, resouce); 
+            return res_handler.sendSuccess(result, 204, res, resource); 
         }
 
         return res_handler.sendSuccess(result, 200, res, resource); 

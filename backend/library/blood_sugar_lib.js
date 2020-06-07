@@ -1,4 +1,4 @@
-const db = require('../data/db'); 
+// const db = require('../data/db'); 
 
 exports.setBloodSugarStatus = function(value, when) {
 
