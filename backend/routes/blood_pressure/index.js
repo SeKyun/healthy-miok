@@ -26,7 +26,7 @@ router.get('/date', controller.get_records_date);
 router.get('/date/:today', controller.get_record_today); 
 
 /** GET blood pressure statistics result between start date and end date */
-router.get('/statistics', cotroller.get_statistics_date); 
+router.get('/statistics', controller.get_statistics_date); 
 /** GET  blood pressure statistics result of a specific today date*/
 router.get('/statistics/:today', controller.get_statistics_today);
 
