@@ -19,21 +19,7 @@ const History = () => {
     moment(end_date, dateFormat),
   ]);
 
-  const [dataSource, setdataSource] = React.useState([
-    {
-      key: 1,
-      date: '2020-05-23',
-      '아침 식전': 300,
-      '아침 식후': 200,
-      '점심 식전': 200,
-      '점심 식후': 200,
-      '저녁 식전': 200,
-      '저녁 식후': 200,
-      '취침 전': 300,
-      새벽: 200,
-      기타: 200,
-    },
-  ]);
+  const [dataSource, setdataSource] = React.useState([{}]);
   const getData = async () => {
     const response = await axios.get(
       `http://miok.site:3001/api/blood-sugar/date/`,
