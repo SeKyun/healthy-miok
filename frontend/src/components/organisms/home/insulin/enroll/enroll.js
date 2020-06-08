@@ -1,17 +1,34 @@
-import React from 'react';
-import { Form, DatePicker, InputNumber, Input, Button, Select } from 'antd';
+import React, { useState } from 'react';
+import {
+  Form,
+  DatePicker,
+  InputNumber,
+  Input,
+  Button,
+  Select,
+  Modal,
+  Radio,
+  TimePicker,
+} from 'antd';
 import './enroll.scss';
 import moment from 'moment';
 import { PlusOutlined } from '@ant-design/icons';
 
 const { TextArea } = Input;
-const { Option } = Select;
 
-const enroll = () => {
+const Enroll = () => {
   const formItemLayout = {
     labelCol: { span: 9 },
     wrapperCol: { span: 13 },
   };
+  const [state, setState] = useState(false);
+  const showModal = () => {
+    setState(true);
+  };
+  const handleOk = () => {
+    setState(false);
+  };
+
   return (
     <div className="bloodPressureEnroll">
       <Form {...formItemLayout}>
@@ -19,7 +36,7 @@ const enroll = () => {
           <DatePicker
             size="large"
             style={{
-              margin: '5% 0px 8% 0px',
+              margin: '5% 0px 0px 0px',
               fontSize: '40px',
             }}
             defaultValue={moment(new Date(), 'YYYY-MM-DD')}
@@ -27,21 +44,33 @@ const enroll = () => {
           />
         </Form.Item>
         <Form.Item label="종류">
-          <Button type="primary" shape="circle" icon={<PlusOutlined />} />
+          <Button
+            type="primary"
+            shape="circle"
+            onClick={showModal}
+            style={{ display: 'block' }}
+            icon={<PlusOutlined />}
+          />
           <Select defaultValue="lucy" style={{ width: 120 }}>
-            <Option value="jack">Jack</Option>
+            {/* <Option value="jack">Jack</Option>
             <Option value="lucy">Lucy</Option>
-            <Option value="Yiminghe">yiminghe</Option>
+            <Option value="Yiminghe">yiminghe</Option> */}
           </Select>
         </Form.Item>
         <Form.Item label="단위">
           <InputNumber size="large" />
+          <Button></Button>
         </Form.Item>
         <Form.Item label="시기">
-          <InputNumber size="large" />
+          <Radio.Group defaultValue={'1'}>
+            <Radio value="1">아침식전</Radio>
+            <Radio value="2">점심식전</Radio>
+            <Radio value="3">저녁식전</Radio>
+            <Radio value="4">기타</Radio>
+          </Radio.Group>
         </Form.Item>
         <Form.Item label="시간">
-          <InputNumber size="large" />
+          <TimePicker size="large" format={'h:mm a'} />
         </Form.Item>
         <Form.Item label="메모" wrapperCol={{ span: 13 }}>
           <TextArea
@@ -63,8 +92,25 @@ const enroll = () => {
           </Button>
         </Form.Item>
       </Form>
+      <Modal
+        title="인슐린 등록"
+        visible={state}
+        onCancel={handleOk}
+        centered
+        okText={'확인'}
+        footer={null}
+      >
+        <p>인슐린 이름</p>
+        <Input placeholder="인슐린 이름을 입력하세요."></Input>
+        <p>인슐린 종류</p>
+        <Radio.Group defaultValue={'1'}>
+          <Radio value="1">지속성</Radio>
+          <Radio value="2">속효성</Radio>
+        </Radio.Group>
+        <Button style={{ display: 'flex', float: 'right' }}>등록하기</Button>
+      </Modal>
     </div>
   );
 };
 
-export default enroll;
+export default Enroll;
