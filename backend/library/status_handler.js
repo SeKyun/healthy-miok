@@ -47,7 +47,7 @@
 
             case 409:
                 return res.status(409).send({
-                    msg: "the resouce " + target + " is already ALREADY EXIST !", 
+                    msg: "the resouce data " + target + " is already ALREADY EXIST !", 
                     success: false, 
                     result: err
                 })
