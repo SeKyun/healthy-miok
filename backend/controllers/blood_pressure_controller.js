@@ -79,7 +79,7 @@ exports.get_record_id = function (req, res) {
         }
 
         if (! result[0]) {
-            return res_handler.sendSuccess(result, 204, res, resouce); 
+            return res_handler.sendSuccess(result, 204, res, resource); 
         }
 
         return res_handler.sendSuccess(result, 200, res, resource); 
@@ -137,16 +137,64 @@ exports.get_records_date = function (req, res) {
               `WHERE today >= '${startDate}' AND today <= '${endDate}' ` + 
               `ORDER BY today DESC`; 
     
-    db.query(sql, function (err, result) {
+    db.query(sql, function (err, rows) {
         if (err) {
             return res_handler.sendError(err, 500, res, resource); 
         }
 
-        if (! result[0]) {
-            return res_handler.sendSuccess(result, 204, res, resource); 
+        if (! rows[0]) {
+            return res_handler.sendSuccess(rows, 204, res, resource); 
         }
+        sql = `SELECT * FROM avg_blood_pressure`; 
 
-        return res_handler.sendSuccess(result, 200, res, resource); 
+        db.query(sql, function (err2, avgs) {
+
+            if (err2) {
+                return res_handler.sendError(err2, 500, res, "avg_blood_pressure"); 
+            }
+
+            else if (!avgs[0]) {
+                return res_handler.sendSuccess(avgs, 204, res, "avg_blood_pressure"); 
+            }
+
+            // 데이터 가공하기 ! 
+            let result = []; 
+            let date_idx = 0; 
+            for(let i = 0; i < avgs.length; i++) {
+                let avg = avgs[i]; 
+                let today = avg._date;
+                let res_data = {
+                    today: today, 
+                    record: [], 
+                    average: {
+                        high: avg.avg_high, 
+                        low: avg.avg_low, 
+                        bpm: avg.avg_bpm
+                    }, 
+                    status: lib.setBloodPressureStatus(avg.avg_high, avg.avg_low, avg.avg_bpm)
+                }; 
+                for(let j = date_idx; j < rows.length; j++) {
+                    let row = rows[j]; 
+                    if (row.today === today) {
+                        let data = {
+                            id: row.id, 
+                            value_high: row.value_high, 
+                            value_low: row.value_low, 
+                            value_bpm: row.value_bpm
+                        }; 
+                        res_data.record.push(data); 
+                    }
+
+                    else {
+                        date_idx = j; 
+                    }
+                }
+
+                result.push(res_data); 
+            }
+            
+            return res_handler.sendSuccess(result, 200, res, resource); 
+        })
     })
 }
 
@@ -160,16 +208,44 @@ exports.get_record_today = function (req, res) {
     let today = req.parmas.today; 
     let sql = `SELECT * FROM ${resource} WHERE today=? ORDER BY _time`; 
 
-    db.query(sql, [today], function (err, result) {
+    db.query(sql, [today], function (err, rows) {
         if (err) {
             return res_handler.sendError(err, 500, res, resource); 
         }
-        sql = `SELECT * FROM avg_blood_pressure WHERE _date=?`;
-        
-        if (! result[0]) {
-            return res_handler.sendSuccess(result, 204, res, resource); 
+
+        if (! rows[0]) {
+            return res_handler.sendSuccess(rows, 204, res, resource); 
         }
-        return res_handler.sendSuccess(result, 200, res, resource); 
+        sql = `SELECT * FROM avg_blood_pressure WHERE _date=?`; 
+
+        db.query(sql, [today], function (err2, avgs) {
+
+            if (err2) {
+                return res_handler.sendError(err2, 500, res, "avg_blood_pressure"); 
+            }
+
+            else if (!avgs[0]) {
+                return res_handler.sendSuccess(avgs, 204, res, "avg_blood_pressure"); 
+            }
+            let avg = avgs[0]; 
+            // 데이터 가공하기 ! 
+            let result = {
+                today: today, 
+                record: [],
+                avg: {
+                    high: avg.avg_high, 
+                    low: avg.avg_low, 
+                    bpm: avg.avg_bpm
+                }, 
+                status: lib.setBloodPressureStatus(avg.avg_high, avg.avg_low, avg.avg_bpm) 
+            };  
+            
+            for(let i = 0; i < rows.length; i++) {
+                result.record.push(rows[i]); 
+            }
+            
+            return res_handler.sendSuccess(result, 200, res, resource); 
+        })
     })
 }
 

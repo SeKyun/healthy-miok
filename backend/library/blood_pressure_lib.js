@@ -1,4 +1,4 @@
-const db = require('../data/db'); 
+// const db = require('../data/db'); 
 
 exports.setBloodPressureStatus = function(value_high, value_low) {
     

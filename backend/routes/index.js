@@ -8,7 +8,7 @@ let blood_pressure = require('./blood_pressure');
 
 /* GET home page. */
 // possible error point 
-router.get('/', function(req, res, next) {
+router.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, "../../frontend/public", "index.html")); 
   // res.render('index', { tit le: 'Express' });
 });
