@@ -219,7 +219,6 @@ exports.get_record_today = function (req, res) {
         sql = `SELECT * FROM avg_blood_pressure WHERE _date=?`; 
 
         db.query(sql, [today], function (err2, avgs) {
-
             if (err2) {
                 return res_handler.sendError(err2, 500, res, "avg_blood_pressure"); 
             }
@@ -255,34 +254,34 @@ exports.get_record_today = function (req, res) {
 //================================================================
 // get average and status data derived from the table which from startDate to endDate
 //possible error point 
-exports.get_statistics_date = function (req, res) {
-    let queryData = url.parse(req.url, true).query; 
-    let startDate = queryData.startDate; 
-    let endDate = queryData.endDate; 
+// exports.get_statistics_date = function (req, res) {
+//     let queryData = url.parse(req.url, true).query; 
+//     let startDate = queryData.startDate; 
+//     let endDate = queryData.endDate; 
 
-    console.log("queryData: ", queryData); 
+//     console.log("queryData: ", queryData); 
 
-    let sql = `SELECT * FROM avg_blood_pressure ` +
-              `WHERE _date >= '${startDate}' AND _date <= '${endDate}' ` +
-              `ORDER BY _date DESC`; 
+//     let sql = `SELECT * FROM avg_blood_pressure ` +
+//               `WHERE _date >= '${startDate}' AND _date <= '${endDate}' ` +
+//               `ORDER BY _date DESC`; 
 
-    db.query(sql, function (err, result) {
-        if (err) {
-            return res_handler.sendError(err, 500, res, resource); 
-        }
+//     db.query(sql, function (err, result) {
+//         if (err) {
+//             return res_handler.sendError(err, 500, res, resource); 
+//         }
 
-        if (! result[0]) {
-            return res_handler.sendSuccess(result, 204, res, resource); 
-        }
+//         if (! result[0]) {
+//             return res_handler.sendSuccess(result, 204, res, resource); 
+//         }
 
-        for (let i = 0; i < result.length; i++) {
-            let _status = lib.setBloodPressureStatus(result[i].avg_high, result[i].avg_low);         
-            result[i]._status = _status; 
-        }
+//         for (let i = 0; i < result.length; i++) {
+//             let _status = lib.setBloodPressureStatus(result[i].avg_high, result[i].avg_low);         
+//             result[i]._status = _status; 
+//         }
 
-        return res_handler.sendSuccess(result, 200, res, resource); 
-    })
-}
+//         return res_handler.sendSuccess(result, 200, res, resource); 
+//     })
+// }
 
 // ** record page api **
 //================================================================
@@ -290,26 +289,26 @@ exports.get_statistics_date = function (req, res) {
 //================================================================
 // get average and status data derived from the table by using today value
 //possible error point 
-exports.get_statistics_today = function (req, res) {
-    let today = req.params.today; 
-    let sql = `SELECT * FROM avg_blood_pressure WHERE _date=?`; 
+// exports.get_statistics_today = function (req, res) {
+//     let today = req.params.today; 
+//     let sql = `SELECT * FROM avg_blood_pressure WHERE _date=?`; 
 
-    db.query(sql, [today], function (err, result) {
-        if (err) {
-            return res_handler.sendError(err, 500, res, "getting average of" + resource); 
-        }
+//     db.query(sql, [today], function (err, result) {
+//         if (err) {
+//             return res_handler.sendError(err, 500, res, "getting average of" + resource); 
+//         }
 
-        if (! result[0]) {
-            return res_handler.sendSuccess(result, 204, res, "getting average of" + resource); 
-        }
+//         if (! result[0]) {
+//             return res_handler.sendSuccess(result, 204, res, "getting average of" + resource); 
+//         }
 
-        let _status = lib.setBloodPressureStatus(result[0].avg_high, result[0].avg_low);         
-        result[0]._status = _status; 
+//         let _status = lib.setBloodPressureStatus(result[0].avg_high, result[0].avg_low);         
+//         result[0]._status = _status; 
 
-        return res_handler.sendSuccess(result, 200, res, "getting average of" + resource); 
-    })
+//         return res_handler.sendSuccess(result, 200, res, "getting average of" + resource); 
+//     })
     
-}
+// }
 
 
 // exports.get_status_date = function (req, res) {
