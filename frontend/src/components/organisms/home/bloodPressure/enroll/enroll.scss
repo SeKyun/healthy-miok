@@ -1,0 +1,11 @@
+.bloodPressureEnroll {
+  margin: 16px 0 0 0;
+
+  .ant-picker.datePicker.ant-picker-large {
+    & > .ant-picker-input {
+      & > input {
+        font-weight: bold;
+      }
+    }
+  }
+}

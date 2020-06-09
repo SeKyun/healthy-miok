@@ -3,52 +3,81 @@ import { DatePicker, Table, Button } from 'antd';
 import './history.scss';
 import moment from 'moment';
 import axios from 'axios';
+import { formatDate } from '../../../../../utils/formatDate.js';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const { Column, ColumnGroup } = Table;
 const { RangePicker } = DatePicker;
 
 const History = () => {
   const dateFormat = 'YYYY/MM/DD';
-  const date = new Date();
-  const [dataSource] = React.useState([
-    {
-      key: 1,
-      month: 5,
-      day: 23,
-      '아침 식전': 300,
-      '아침 식후': 200,
-      '점심 식전': 200,
-      '점심 식후': 200,
-      '저녁 식전': 200,
-      '저녁 식후': 200,
-      '취침 전': 300,
-      새벽: 200,
-      기타: 200,
-    },
+  const start_date = new Date(new Date().setMonth(new Date().getMonth() - 3));
+  const end_date = new Date();
+  const [dates, setDates] = React.useState([
+    moment(start_date, dateFormat),
+    moment(end_date, dateFormat),
   ]);
+
+  const [dataSource, setdataSource] = React.useState([{}]);
   const getData = async () => {
-    const response = await axios.get('http://miok.site:3001/api/blood-sugar');
-    console.log(response.data.result);
+    const response = await axios.get(
+      `http://miok.site:3001/api/blood-sugar/date/`,
+      {
+        params: {
+          startDate: formatDate(dates[0]),
+          endDate: formatDate(dates[1]),
+        },
+      },
+    );
+    console.log('데이터 수정됨?');
+    let arr = [];
+    let last_key = 0;
+    response.data.result.map((item) => {
+      const idx = arr.findIndex((i) => i.date === item.today.substring(0, 10));
+      if (idx === -1) {
+        const temp = {
+          key: ++last_key,
+          date: item.today.substring(0, 10),
+          [item._when]: item._value,
+        };
+        arr.push(temp);
+      } else {
+        arr[idx][item._when] = item._value;
+      }
+      return 0;
+    });
+    setdataSource(arr);
+    toast.success('성공적으로 데이터를 가져왔습니다!');
   };
+  React.useEffect(() => {
+    getData();
+    // eslint-disable-next-line
+  }, []);
   return (
     <div>
       <div style={{ textAlign: 'center', margin: '3%' }}>
         <RangePicker
           size="large"
           defaultValue={[
-            moment(new Date(), dateFormat),
-            moment(new Date(date.setMonth(date.getMonth() + 3)), dateFormat),
+            moment(start_date, dateFormat),
+            moment(end_date, dateFormat),
           ]}
+          onCalendarChange={(value) => {
+            setDates(value);
+          }}
         />
         <Button size="large" onClick={getData}>
           조회
         </Button>
       </div>
-      <Table dataSource={dataSource} bordered={true}>
-        <ColumnGroup title="날짜">
-          <Column title="월" dataIndex="month" key="month" />
-          <Column title="일" dataIndex="day" key="day" />
-        </ColumnGroup>
+      <Table
+        dataSource={dataSource}
+        bordered={true}
+        pagination={{ position: 'bottomCenter' }}
+      >
+        <Column title="날짜" dataIndex="date" key="date" />
+        <Column title="기상 직후" dataIndex="기상 직후" key="기상 직후" />
         <ColumnGroup title="아침">
           <Column title="식전" dataIndex="아침 식전" key="아침 식전" />
           <Column title="식후2시간" dataIndex="아침 식후" key="아침 식후" />
@@ -65,6 +94,17 @@ const History = () => {
         <Column title="새벽" dataIndex="새벽" key="새벽" />
         <Column title="기타" dataIndex="기타" key="기타" />
       </Table>
+      <ToastContainer
+        position="bottom-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 };

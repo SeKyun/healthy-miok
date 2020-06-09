@@ -1,7 +1,8 @@
 import React from 'react';
+import InsulinWrapper from '../../organisms/home/insulin/insulin';
 
 const Insulin = () => {
-  return <div>인슐린페이지입니다.</div>;
+  return <InsulinWrapper />;
 };
 
 export default Insulin;

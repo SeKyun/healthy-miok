@@ -1,0 +1,28 @@
+.bloodPressureEnroll {
+  .ant-form-item-control-input-content {
+    padding: 4px;
+  }
+
+  .ant-select.ant-select-single.ant-select-show-arrow {
+    margin: 16px 0 0 0;
+    .ant-select-selector {
+      height: 100%;
+    }
+  }
+  .ant-radio {
+    vertical-align: middle;
+    margin: 0 0 6px 0;
+  }
+}
+
+.ant-modal-root {
+  .ant-radio {
+    margin: 0 0 6px 0;
+  }
+  p {
+    margin-bottom: 0;
+  }
+  input {
+    margin-bottom: 1em;
+  }
+}

@@ -4,6 +4,8 @@ import './enroll.scss';
 import moment from 'moment';
 import axios from 'axios';
 import { formatDate } from '../../../../../utils/formatDate.js';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Enroll = () => {
   const dateFormat = 'YYYY/MM/DD';
@@ -11,8 +13,8 @@ const Enroll = () => {
     labelCol: { span: 6 },
     wrapperCol: { span: 14 },
   };
-
   const [form] = Form.useForm();
+  const [dataID, setDataID] = React.useState();
   const [isDisable, setDisable] = React.useState(true);
   const [isUpdate, setUpdate] = React.useState(false);
   const [today, setToday] = React.useState(
@@ -32,8 +34,6 @@ const Enroll = () => {
     } else {
       setDisable(true);
     }
-    console.log(today);
-    console.log(e.target.value);
     const response = await axios.get(
       `http://miok.site:3001/api/blood-sugar/record/`,
       {
@@ -43,12 +43,10 @@ const Enroll = () => {
         },
       },
     );
-    console.log(response);
-    console.log(response.status);
     if (response.status === 200) {
       setUpdate(true);
+      setDataID(response.data.result[0].id);
       form.setFieldsValue({
-        when: response.data.result[0].when,
         desc_etc: response.data.result[0].desc_etc,
         value: response.data.result[0]._value,
         memo: response.data.result[0].memo,
@@ -74,16 +72,20 @@ const Enroll = () => {
     console.log(data);
     if (isUpdate) {
       // TODO 이쪽 부분 수정해야함
-      const response = await axios.post(
-        'http://miok.site:3001/api/blood-sugar',
-        data,
-      );
+      const response = await axios
+        .put(`http://miok.site:3001/api/blood-sugar/id/${dataID}`, data)
+        .catch((error) => {
+          toast.error('에러가 났어요!');
+        });
+      toast.success('수정에 성공하였습니다!');
       console.log(response);
     } else {
       const response = await axios.post(
         'http://miok.site:3001/api/blood-sugar',
         data,
       );
+      removeFormData();
+      toast.success('등록에 성공하였습니다!');
       console.log(response);
     }
   };
@@ -154,6 +156,17 @@ const Enroll = () => {
           </Button>
         </Form.Item>
       </Form>
+      <ToastContainer
+        position="bottom-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 };
