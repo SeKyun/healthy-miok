@@ -24,6 +24,8 @@ router.get('/record', controller.get_record_today_when);
 /** GET insulin data between start date and end date*/
 router.get('/date', controller.get_records_date);  
 /** GET insulin data of a specific today date */
-router.get('/date/:today', controller.get_record_today); 
+router.get('/date/:today', controller.get_records_today); 
 /** GET the insulin data by when data */
 router.get('/when/:when', controller.get_records_when)
+
+module.exports = router; 

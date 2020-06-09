@@ -12,3 +12,4 @@ router.get('/', controller.get_all);
 /** DELETE all type of insulin data registered */
 router.delete('/', controller.delete_all); 
 
+module.exports = router; 
