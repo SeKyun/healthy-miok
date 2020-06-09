@@ -145,7 +145,8 @@ exports.get_records_date = function (req, res) {
         if (! rows[0]) {
             return res_handler.sendSuccess(rows, 204, res, resource); 
         }
-        sql = `SELECT * FROM avg_blood_pressure`; 
+        sql = `SELECT * FROM avg_blood_pressure WHERE _date >= '${startDate}' AND _date <= '${endDate}' ` +
+              `ORDER BY _date DESC`; 
 
         db.query(sql, function (err2, avgs) {
 
@@ -181,7 +182,7 @@ exports.get_records_date = function (req, res) {
                             value_high: row.value_high, 
                             value_low: row.value_low, 
                             value_bpm: row.value_bpm
-                        }; 
+                        }
                         res_data.record.push(data); 
                     }
 
