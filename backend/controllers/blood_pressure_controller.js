@@ -164,6 +164,7 @@ exports.get_records_date = function (req, res) {
             for(let i = 0; i < avgs.length; i++) {
                 let avg = avgs[i]; 
                 let today = avg._date;
+                console.log("today: ", today); 
                 let res_data = {
                     today: today, 
                     record: [], 
@@ -175,7 +176,9 @@ exports.get_records_date = function (req, res) {
                     status: lib.setBloodPressureStatus(avg.avg_high, avg.avg_low, avg.avg_bpm)
                 }; 
                 for(let j = date_idx; j < rows.length; j++) {
-                    let row = rows[j]; 
+                    let row = rows[j];
+                    console.log("row!!! ", row); 
+
                     if (row.today === today) {
                         let data = {
                             id: row.id, 
@@ -184,10 +187,13 @@ exports.get_records_date = function (req, res) {
                             value_bpm: row.value_bpm
                         }
                         res_data.record.push(data); 
+                        console.log("if row.today=== today: ", res_data.record); 
                     }
 
                     else {
                         date_idx = j; 
+                        console.log("else: ", res_data.record); 
+                        console.log("date_idx: ", date_idx); 
                     }
                 }
 
