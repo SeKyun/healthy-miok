@@ -127,11 +127,12 @@ exports.delete_record_id = function (req, res) {
 //=================================================================
 // get data from the table which from startDate to endDate
 exports.get_records_date = function (req, res) {
-    let queryData = url.parse(req.url, true).query; 
-    let startDate = queryData.startDate; 
-    let endDate = queryData.endDate; 
+    let queryData = req.query; 
+    let startDate = moment(queryData.startDate).format('YYYY-MM-DD'); 
+    let endDate = moment(queryData.endDate).format('YYYY-MM-DD'); 
 
-    console.log("queryData: ", queryData); 
+    // console.log("moment::::::", moment(startDate).format('YYYY-MM-DD')); 
+    // console.log("moment:::::::", moment(endDate).format("YYYY-MM-DD")); 
 
     let sql = `SELECT id, today, value_high, value_low, value_bpm FROM ${resource} ` + 
               `WHERE today >= '${startDate}' AND today <= '${endDate}' ` + 
@@ -148,23 +149,21 @@ exports.get_records_date = function (req, res) {
         sql = `SELECT * FROM avg_blood_pressure WHERE _date >= '${startDate}' AND _date <= '${endDate}' ` +
               `ORDER BY _date DESC`; 
 
-        db.query(sql, function (err2, avgs) {
+        db.query(sql, function (err2, averages) {
 
             if (err2) {
                 return res_handler.sendError(err2, 500, res, "avg_blood_pressure"); 
             }
 
-            else if (!avgs[0]) {
-                return res_handler.sendSuccess(avgs, 204, res, "avg_blood_pressure"); 
+            else if (!averages[0]) {
+                return res_handler.sendSuccess(averages, 204, res, "avg_blood_pressure"); 
             }
 
-            // 데이터 가공하기 ! 
             let result = []; 
             let date_idx = 0; 
-            for(let i = 0; i < avgs.length; i++) {
-                let avg = avgs[i]; 
-                let today = avg._date;
-                console.log("today: ", today); 
+            for(let i = 0; i < averages.length; i++) {
+                let avg = averages[i]; 
+                let today = moment(avg._date).format('YYYY-MM-DD'); 
                 let res_data = {
                     today: today, 
                     record: [], 
@@ -174,35 +173,35 @@ exports.get_records_date = function (req, res) {
                         bpm: avg.avg_bpm
                     }, 
                     status: lib.setBloodPressureStatus(avg.avg_high, avg.avg_low, avg.avg_bpm)
-                }; 
+                }; //res_data
+
+
                 for(let j = date_idx; j < rows.length; j++) {
                     let row = rows[j];
-                    console.log("row!!! ", row); 
+                    let row_date = moment(row.today).format('YYYY-MM-DD'); 
+                    if (today === row_date) {
 
-                    if (row.today === today) {
-                        let data = {
+                        res_data.record.push({
                             id: row.id, 
                             value_high: row.value_high, 
                             value_low: row.value_low, 
                             value_bpm: row.value_bpm
-                        }
-                        res_data.record.push(data); 
-                        console.log("if row.today=== today: ", res_data.record); 
+                        }); 
                     }
 
                     else {
                         date_idx = j; 
-                        console.log("else: ", res_data.record); 
-                        console.log("date_idx: ", date_idx); 
+                        break; 
                     }
-                }
+                }//end j
 
                 result.push(res_data); 
-            }
+
+            } //end i
             
             return res_handler.sendSuccess(result, 200, res, resource); 
-        })
-    })
+        })//end sql2
+    })// end sql1
 }
 
 
@@ -211,10 +210,11 @@ exports.get_records_date = function (req, res) {
 // requre URL:  /blood-pressure/date/:today
 //=================================================================
 // get data from the table by using today value
-exports.get_record_today = function (req, res) {
-    let today = req.parmas.today; 
-    let sql = `SELECT * FROM ${resource} WHERE today=? ORDER BY _time`; 
+exports.get_records_today = function (req, res) {
+    let today = req.params.today;
+    console.log(today); 
 
+    let sql = `SELECT * FROM ${resource} WHERE today=? ORDER BY _time`; 
     db.query(sql, [today], function (err, rows) {
         if (err) {
             return res_handler.sendError(err, 500, res, resource); 

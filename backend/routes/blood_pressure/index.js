@@ -20,10 +20,11 @@ router.put('/id/:id', controller.update_record_id);
 /** DELETE blood pressure data by id*/
 router.delete('/id/:id', controller.delete_record_id); 
 
+/** GET blood pressure data of a specific today date */
+router.get('/date/:today', controller.get_records_today); 
 /** GET blood pressure data between start date and end date*/
 router.get('/date', controller.get_records_date);  
-/** GET blood pressure data of a specific today date */
-router.get('/date/:today', controller.get_record_today); 
+
 
 /** GET blood pressure statistics result between start date and end date */
 // router.get('/statistics', controller.get_statistics_date); 
