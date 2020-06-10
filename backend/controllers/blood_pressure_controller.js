@@ -138,70 +138,81 @@ exports.get_records_date = function (req, res) {
               `WHERE today >= '${startDate}' AND today <= '${endDate}' ` + 
               `ORDER BY today DESC`; 
     
-    db.query(sql, function (err, rows) {
+    db.query(sql, function (err, result) {
         if (err) {
             return res_handler.sendError(err, 500, res, resource); 
         }
 
-        if (! rows[0]) {
-            return res_handler.sendSuccess(rows, 204, res, resource); 
+        if (!result[0]) {
+            return res_handler.sendSuccess(result, 204, res, resource); 
         }
-        sql = `SELECT * FROM avg_blood_pressure WHERE _date >= '${startDate}' AND _date <= '${endDate}' ` +
-              `ORDER BY _date DESC`; 
 
-        db.query(sql, function (err2, averages) {
+        res_handler.sendSuccess(result, 200, res, resource); 
+    })
+    // db.query(sql, function (err, rows) {
+    //     if (err) {
+    //         return res_handler.sendError(err, 500, res, resource); 
+    //     }
 
-            if (err2) {
-                return res_handler.sendError(err2, 500, res, "avg_blood_pressure"); 
-            }
+    //     if (! rows[0]) {
+    //         return res_handler.sendSuccess(rows, 204, res, resource); 
+    //     }
+    //     sql = `SELECT * FROM avg_blood_pressure WHERE _date >= '${startDate}' AND _date <= '${endDate}' ` +
+    //           `ORDER BY _date DESC`; 
 
-            else if (!averages[0]) {
-                return res_handler.sendSuccess(averages, 204, res, "avg_blood_pressure"); 
-            }
+    //     db.query(sql, function (err2, averages) {
 
-            let result = []; 
-            let date_idx = 0; 
-            for(let i = 0; i < averages.length; i++) {
-                let avg = averages[i]; 
-                let today = moment(avg._date).format('YYYY-MM-DD'); 
-                let res_data = {
-                    today: today, 
-                    record: [], 
-                    average: {
-                        high: avg.avg_high, 
-                        low: avg.avg_low, 
-                        bpm: avg.avg_bpm
-                    }, 
-                    status: lib.setBloodPressureStatus(avg.avg_high, avg.avg_low, avg.avg_bpm)
-                }; //res_data
+    //         if (err2) {
+    //             return res_handler.sendError(err2, 500, res, "avg_blood_pressure"); 
+    //         }
+
+    //         else if (!averages[0]) {
+    //             return res_handler.sendSuccess(averages, 204, res, "avg_blood_pressure"); 
+    //         }
+
+    //         let result = []; 
+    //         let date_idx = 0; 
+    //         for(let i = 0; i < averages.length; i++) {
+    //             let avg = averages[i]; 
+    //             let today = moment(avg._date).format('YYYY-MM-DD'); 
+    //             let res_data = {
+    //                 today: today, 
+    //                 record: [], 
+    //                 average: {
+    //                     high: avg.avg_high, 
+    //                     low: avg.avg_low, 
+    //                     bpm: avg.avg_bpm
+    //                 }, 
+    //                 status: lib.setBloodPressureStatus(avg.avg_high, avg.avg_low, avg.avg_bpm)
+    //             }; //res_data
 
 
-                for(let j = date_idx; j < rows.length; j++) {
-                    let row = rows[j];
-                    let row_date = moment(row.today).format('YYYY-MM-DD'); 
-                    if (today === row_date) {
+    //             for(let j = date_idx; j < rows.length; j++) {
+    //                 let row = rows[j];
+    //                 let row_date = moment(row.today).format('YYYY-MM-DD'); 
+    //                 if (today === row_date) {
 
-                        res_data.record.push({
-                            id: row.id, 
-                            value_high: row.value_high, 
-                            value_low: row.value_low, 
-                            value_bpm: row.value_bpm
-                        }); 
-                    }
+    //                     res_data.record.push({
+    //                         id: row.id, 
+    //                         value_high: row.value_high, 
+    //                         value_low: row.value_low, 
+    //                         value_bpm: row.value_bpm
+    //                     }); 
+    //                 }
 
-                    else {
-                        date_idx = j; 
-                        break; 
-                    }
-                }//end j
+    //                 else {
+    //                     date_idx = j; 
+    //                     break; 
+    //                 }
+    //             }//end j
 
-                result.push(res_data); 
+    //             result.push(res_data); 
 
-            } //end i
+    //         } //end i
             
-            return res_handler.sendSuccess(result, 200, res, resource); 
-        })//end sql2
-    })// end sql1
+    //         return res_handler.sendSuccess(result, 200, res, resource); 
+    //     })//end sql2
+    // })// end sql1
 }
 
 
