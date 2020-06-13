@@ -1,37 +1,35 @@
 const db = require("../data/db"); 
-const lib = require('../library/blood_sugar_lib'); 
+// const lib = require('../library/blood_pressure_lib'); 
 const res_handler = require('../library/status_handler'); 
-const resource = "blood_sugar"; 
+const resource = "insulin"; 
 const moment = require('moment'); 
 const url = require('url'); 
 
-//=================================================================
-// requre URL:  /blood-sugar
-//=================================================================
 
-// register new data in the table 
+//=================================================================
+// requre URL:  /insulin
+//=================================================================
+// register new data in the table
+//possible error point 
 exports.register = function (req, res) {
     let req_data = {
         today: req.body.today, 
         _when: req.body.when, 
-        _value: req.body.value,
-        _status: 0,
-        memo: req.body.memo 
+        _time: req.body.time, 
+        _type: req.body.type, 
+        unit: req.body.unit, 
+        memo: req.body.memo
     }; 
-    let sql = `SELECT * FROM blood_sugar WHERE today=? AND _when=?`; 
+    let sql = `SELECT * FROM ${resource} WHERE today=? AND _when=?`; 
 
     db.query(sql, [req_data.today, req_data._when], function (err, result) {
         if (err) {
-            return res_handler.sendError(err, 500, res, "getting " + resource); 
+            return res_handler.sendError(err, 500, res, resource); 
         }
-
+        // 에러 말고 다른 응답..? 고민 
         else if (result[0]) {
-            return res_handler.sendError(err, 409, res, "creating " + resource); 
+            return res_handler.sendError(result[0], 409, res, resource); 
         }
-
-        // if it is not exist
-        // status 설정
-        req_data._status = lib.setBloodSugarStatus(req_data._value, req_data._when); 
 
         // 기타 설정 
         if (req_data._when === '기타') {
@@ -41,9 +39,9 @@ exports.register = function (req, res) {
         // _time, _date 설정
         let now = moment(); 
         req_data._time = now.format("HH:mm:ss"); 
-        req_data._date = now.format('YYYY-MM-DD'); 
+        req_data.edited = now.format('YYYY-MM-DD HH:mm:ss'); 
 
-        sql = `INSERT INTO blood_sugar SET ?`; 
+        sql = `INSERT INTO ${resource} SET ?`; 
         db.query(sql, req_data, function (err, result) {
             if (err) {
                 return res_handler.sendError(err, 500, res, "creating " + resource); 
@@ -52,49 +50,47 @@ exports.register = function (req, res) {
             return res_handler.sendSuccess(result, 201, res, "creating " + resource); 
         });     
 
-    })
-      
+    });
 }
 
 // get all the data in the table 
 exports.get_all = function (req, res) {
-    let sql = `SELECT * FROM blood_sugar ORDER BY today DESC`; 
+    let sql = `SELECT * FROM ${resource} ORDER BY today DESC`; 
 
     db.query(sql, function (err, result) {
         if (err) {
             return res_handler.sendError(err, 500, res, "getting " + resource); 
-          }
-      
-          if (!result[0]) {
-            return res_handler.sendSuccess(result, 204, res, resource); 
-          }
-      
-          return res_handler.sendSuccess(result, 200, res, resource); 
-        });
+        }
+
+        if (! result[0]) {
+            return res_handler.sendSuccess(result, 204, "getting " + res, resource); 
+        }
+
+        return res_handler.sendSuccess(result, 200, res, "getting " + resource); 
+    });  
 }
 
 // delete all the data in the table 
 exports.delete_all = function (req, res) {
-    let sql = `DELETE FROM blood_sugar`; 
+    let sql = `DELETE FROM ${resource}`; 
     db.query(sql, function (err, result) {
-        if (err) { 
+        if (err) {
             return res_handler.sendError(err, 500, res, "deleting " + resource); 
-          }
-      
-          return res_handler.sendSuccess(result, 204, res, "deleting " + resource); 
-        });
+        }
+
+        return res_handler.sendSuccess(result, 204, res, "deleting " + resource); 
+    })
 }
 
 
-
 //=================================================================
-// requre URL:  /blood-sugar/id/:id 
+// requre URL:  /insulin/id/:id 
 //=================================================================
 
 // get data from the table by using parameter /id/:id
 exports.get_record_id = function (req, res) {
     let id = req.params.id; 
-    let sql = `SELECT * FROM blood_sugar WHERE id=?`; 
+    let sql = `SELECT * FROM ${resource} WHERE id=?`; 
     db.query(sql, [id], function (err, result) {
         if (err) {
             return res_handler.sendError(err, 500, res, resource); 
@@ -110,13 +106,14 @@ exports.update_record_id = function (req, res) {
     let id = req.params.id; 
     let now = moment(); 
     let req_data = {
-        desc_etc: req.body.des_etc, 
-        _value: req.body.value, 
+        desc_etc: req.body.des_etc,
+        _type: req.body.type, 
+        unit: req.body.unit, 
         memo: req.body.memo,
         edited: now.format("YYYY-MM-DD HH:mm:ss")
     }
 
-    let sql = `UPDATE blood_sugar SET ? WHERE id=?`; 
+    let sql = `UPDATE ${resource} SET ? WHERE id=?`; 
     db.query(sql, [req_data, id], function (err, result) {
         if (err) {
             return res_handler.sendError(err, 500, res, resource); 
@@ -129,7 +126,7 @@ exports.update_record_id = function (req, res) {
 // delete data in the table by using parameter /id/:id
 exports.delete_record_id = function (req, res) {
     let id = req.params.id; 
-    let sql = `DELETE FROM blood_sugar WHERE id=?`; 
+    let sql = `DELETE FROM ${resource} WHERE id=?`; 
     db.query(sql, [id], function (err, result) {
         if (err) {
             return res_handler.sendError(err, 500, res, resource); 
@@ -141,7 +138,7 @@ exports.delete_record_id = function (req, res) {
 
 
 //=================================================================
-// requre URL:  /blood-sugar/record?today=?&when=?
+// requre URL:  /insulin/record?today=?&when=?
 //=================================================================
 
 // get data from the table by using today and when
@@ -152,7 +149,7 @@ exports.get_record_today_when = function (req, res) {
 
     console.log("queryData: ", queryData); 
 
-    let sql = `SELECT * FROM blood_sugar WHERE today=? AND _when=?`; 
+    let sql = `SELECT * FROM ${resource} WHERE today=? AND _when=?`; 
     db.query(sql, [today, when], function (err, result) {
         if (err) {
             return res_handler.sendError(err, 500, res, "getting " + resource); 
@@ -167,7 +164,7 @@ exports.get_record_today_when = function (req, res) {
 }
 
 //=================================================================
-// requre URL:  /blood-sugar/date?startDate=?&endDate=?
+// requre URL:  /insulin/date?startDate=?&endDate=?
 //=================================================================
 // get data from the table which from startDate to endDate
 exports.get_records_date = function (req, res) {
@@ -177,7 +174,7 @@ exports.get_records_date = function (req, res) {
 
     console.log("queryData: ", queryData); 
 
-    let sql = `SELECT * FROM blood_sugar `
+    let sql = `SELECT id, today, _when, _time, _type, unit FROM ${resource} `
             + `WHERE today >='${startDate}' AND today <= '${endDate}' `
             + `ORDER BY today DESC`; 
 
@@ -199,13 +196,13 @@ exports.get_records_date = function (req, res) {
 
 // **graph api **
 //=================================================================
-// requre URL:  /blood-sugar/date/:today
+// requre URL:  /insulin/date/:today
 //=================================================================
 
 // get data from the table by using today value
 exports.get_records_today = function (req, res) {
     let today = req.params.today; 
-    let sql = `SELECT * FROM blood_sugar WHERE today=? ORDER BY _when`; 
+    let sql = `SELECT * FROM ${resource} WHERE today=? ORDER BY _when`; 
 
     db.query(sql, [today], function (err, result) {
         if (err) {
@@ -224,13 +221,13 @@ exports.get_records_today = function (req, res) {
 
 // **graph api **
 //=================================================================
-// requre URL:  /blood-sugar/when/:when
+// requre URL:  /insulin/when/:when
 //=================================================================
 //possible error point 
 // get data from the table by using when value
 exports.get_records_when = function (req, res) {
     let when = req.params.when; 
-    let sql = `SELECT id, today, _when, _value FROM blood_sugar WHERE _when LIKE '%${when}'`;
+    let sql = `SELECT id, today, _when, _time, _type, unit FROM ${resource} WHERE _when LIKE '%${when}'`;
 
     db.query(sql, function (err, result) {
         if (err) {
@@ -245,4 +242,4 @@ exports.get_records_when = function (req, res) {
     })
 }
 
-//status로 get하는거 고려: graph api
+

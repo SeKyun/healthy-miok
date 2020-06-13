@@ -6,28 +6,33 @@ let controller = require("../../controllers/blood_sugar_controller");
 
 /// BLOOD SUGAR ROUTES ///
 
-/* REGISTER the new blood sugar data */
+/** REGISTER the new blood sugar data */
 router.post('/', controller.register); 
-/* GET blood sugar data */
+/** GET blood sugar data */
 router.get('/', controller.get_all);
-
-// /* DELETE all blood sugar data registered */
+/** DELETE all blood sugar data registered */
 router.delete('/', controller.delete_all); 
 
-/* GET the blood sugar data of a specific today and when value */
-router.get('/record', controller.get_record); 
-/* UPDATE the edited blood sugar data of a specific today and when value */
-router.put('/record', controller.update_record);
+/** GET blood_sugar data by id */
+router.get('/id/:id', controller.get_record_id); 
+/** UPDATE blood_sugar data by id */
+router.put('/id/:id', controller.update_record_id); 
+/** DELETE blood_sugar data by id */
+router.delete('/id/:id', controller.delete_record_id); 
 
-// /* GET blood sugar data of a specific date */
-router.get('/date/:date', controller.get_records_today); 
-// /* DELETE blood sugar data of a specific date */
-// router.delete('/date/:date', controller.delete-records-date); 
+/** GET the blood sugar data of a specific today and when value */
+router.get('/record', controller.get_record_today_when); 
 
-// /* GET blood sugar data of a specific time */
+/** GET blood sugar data between start date and end date*/
+router.get('/date', controller.get_records_date); 
+
+/** GET blood sugar data of a specific today date */
+router.get('/date/:today', controller.get_records_today); 
+
+/** GET blood sugar data of a specific time */
 router.get('/when/:when', controller.get_records_when); 
 
-// /* GET blood sugar data of a specific status */ 
+/** GET blood sugar data of a specific status */ 
 // router.get('/status/:status', controller.get-records-status); 
 
 module.exports = router; 
