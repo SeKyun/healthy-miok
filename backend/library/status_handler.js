@@ -30,6 +30,7 @@
                     success: false, 
                     result: err
                 })
+                break;
 
             case 403:
                 return res.status(403).send({
@@ -37,6 +38,7 @@
                     success: false, 
                     result: err
                 })
+                break; 
 
             case 404:
                 return res.status(404).send({
@@ -44,13 +46,15 @@
                     success: false, 
                     result: err
                 })
+                break; 
 
             case 409:
                 return res.status(409).send({
-                    msg: "the resouce data " + target + " is already ALREADY EXIST !", 
+                    msg: "the resouce " + target + " is already ALREADY EXIST !", 
                     success: false, 
                     result: err
                 })
+                break;
 
             case 500:
                 return res.status(500).send({
@@ -58,6 +62,7 @@
                     success: false, 
                     result: err
                 })
+                break; 
             
             case 503:
                 return res.status(503).send({
@@ -65,6 +70,7 @@
                     success: false, 
                     result: err
                 })
+                break; 
 
             case 504: 
                 return res.status(504).send({
@@ -72,6 +78,7 @@
                     success: false, 
                     result: err
                 })
+                break; 
 
             case 505:
                 return res.status(505).send({
@@ -79,7 +86,7 @@
                     success: false, 
                     result: err
                 })
-
+                break; 
 
             default:
                 return res.send({
@@ -99,7 +106,7 @@
                     success: true, 
                     result: result
                 })
-
+                return; 
 
             case 201:
                 return res.status(201).send({
@@ -107,14 +114,14 @@
                     success: true, 
                     result: result
                 })
-
+                return; 
 
             case 204:
                 return res.status(204).send({
                     msg: "the " + target + " reqest is successfully done and there is no result data", 
                     success: true
                 })
-                
+                return; 
             
         }
 
