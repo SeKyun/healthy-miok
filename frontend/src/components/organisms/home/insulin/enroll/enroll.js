@@ -13,6 +13,7 @@ import {
 import './enroll.scss';
 import moment from 'moment';
 import { PlusOutlined } from '@ant-design/icons';
+import axios from 'axios';
 
 const { TextArea } = Input;
 
@@ -22,13 +23,20 @@ const Enroll = () => {
     wrapperCol: { span: 13 },
   };
   const [state, setState] = useState(false);
+  const [insulinType, setinsulinType] = useState([]);
   const showModal = () => {
     setState(true);
   };
   const handleOk = () => {
     setState(false);
   };
-
+  const getinsulinType = async () => {
+    const response = await axios.get(`http://miok.site:3001/api/type-insulin`);
+    console.log(response);
+  };
+  React.useEffect(() => {
+    getinsulinType();
+  }, []);
   return (
     <div className="bloodPressureEnroll">
       <Form {...formItemLayout}>
