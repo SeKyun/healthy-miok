@@ -11,7 +11,7 @@ let type_insulin = require('./type_insulin');
 /* GET home page. */
 // possible error point 
 router.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname, "../../frontend/public", "index.html")); 
+  res.sendFile(path.join("index.html")); 
   // res.render('index', { tit le: 'Express' });
 });
 

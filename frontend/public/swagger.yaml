@@ -1,0 +1,37 @@
+openapi: 3.0.0
+info:
+  title: Healthy-Miok
+  description: Miok's health care web page
+	version: 1.0.0
+
+servers:
+	- url: http://localhost:3001/
+	description: miok.site main api route
+	
+paths:
+  /greeting:
+    get:
+      summary: Returns a user by ID.
+      parameters:
+      responses:
+        '200':
+          description: A user object.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 2
+                  content:
+                    type: string
+                    example: 행복한 하루가 되시기를 바래요! 
+        '400':
+          description: The specified user ID is invalid (not a number).
+        '404':
+          description: A user with the specified ID was not found.
+        default:
+          description: Unexpected error
+
+									
