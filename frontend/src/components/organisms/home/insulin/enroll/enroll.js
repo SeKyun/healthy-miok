@@ -13,7 +13,9 @@ import {
 import './enroll.scss';
 import moment from 'moment';
 import { PlusOutlined } from '@ant-design/icons';
+import axios from 'axios';
 
+const { Option } = Select;
 const { TextArea } = Input;
 
 const Enroll = () => {
@@ -22,13 +24,21 @@ const Enroll = () => {
     wrapperCol: { span: 13 },
   };
   const [state, setState] = useState(false);
+  const [insulinType, setinsulinType] = useState([]);
   const showModal = () => {
     setState(true);
   };
   const handleOk = () => {
     setState(false);
   };
-
+  const getinsulinType = async () => {
+    const response = await axios.get(`http://miok.site:3001/api/type-insulin`);
+    console.log(response);
+    setinsulinType(response.data.result);
+  };
+  React.useEffect(() => {
+    getinsulinType();
+  }, []);
   return (
     <div className="bloodPressureEnroll">
       <Form {...formItemLayout}>
@@ -51,7 +61,14 @@ const Enroll = () => {
             style={{ display: 'block' }}
             icon={<PlusOutlined />}
           />
-          <Select defaultValue="lucy" style={{ width: 120 }}>
+          <Select style={{ width: '50%' }}>
+            {insulinType.map((it) => {
+              return (
+                <Option value={it._name} key={it._name}>
+                  {it._name}
+                </Option>
+              );
+            })}
             {/* <Option value="jack">Jack</Option>
             <Option value="lucy">Lucy</Option>
             <Option value="Yiminghe">yiminghe</Option> */}
