@@ -57,22 +57,33 @@ const History = () => {
     return obj;
   };
 
+  const [paginationInfo, setPaginationInfo] = React.useState({
+    current: 1,
+    pageSize: 10,
+  });
+
+  const handleChange = (pagination) => {
+    setPaginationInfo(pagination);
+  };
+
   const columns = [
     {
       title: '날짜',
       dataIndex: 'today',
       render: (value, row, index) => {
+        const trueIndex =
+          index + paginationInfo.pageSize * (paginationInfo.current - 1);
         const obj = {
           children: value,
           props: {},
         };
-        if (index >= 1 && value === dataSource[index - 1].today) {
+        if (index >= 1 && value === dataSource[trueIndex - 1].today) {
           obj.props.rowSpan = 0;
         } else {
           for (
             let i = 0;
-            index + i !== dataSource.length &&
-            value === dataSource[index + i].today;
+            trueIndex + i !== dataSource.length &&
+            value === dataSource[trueIndex + i].today;
             i += 1
           ) {
             obj.props.rowSpan = i + 1;
@@ -106,6 +117,8 @@ const History = () => {
       title: '평균',
       dataIndex: 'avg',
       render: (value, row, index) => {
+        const trueIndex =
+          index + paginationInfo.pageSize * (paginationInfo.current - 1);
         const obj = {
           children: value,
           props: {},
@@ -113,18 +126,18 @@ const History = () => {
         let lowAvg = 0,
           highAvg = 0,
           bpmAvg = 0;
-        if (index >= 1 && row.today === dataSource[index - 1].today) {
+        if (index >= 1 && row.today === dataSource[trueIndex - 1].today) {
           obj.props.rowSpan = 0;
         } else {
           for (
             let i = 0;
-            index + i !== dataSource.length &&
-            row.today === dataSource[index + i].today;
+            trueIndex + i !== dataSource.length &&
+            row.today === dataSource[trueIndex + i].today;
             i += 1
           ) {
-            highAvg += dataSource[index + i].value_high;
-            lowAvg += dataSource[index + i].value_low;
-            bpmAvg += dataSource[index + i].value_bpm;
+            highAvg += dataSource[trueIndex + i].value_high;
+            lowAvg += dataSource[trueIndex + i].value_low;
+            bpmAvg += dataSource[trueIndex + i].value_bpm;
             obj.props.rowSpan = i + 1;
           }
         }
@@ -143,23 +156,25 @@ const History = () => {
       title: '진단',
       dataIndex: 'Diagnosis',
       render: (value, row, index) => {
+        const trueIndex =
+          index + paginationInfo.pageSize * (paginationInfo.current - 1);
         const obj = {
           children: value,
           props: {},
         };
         let lowAvg = 0,
           highAvg = 0;
-        if (index >= 1 && row.today === dataSource[index - 1].today) {
+        if (index >= 1 && row.today === dataSource[trueIndex - 1].today) {
           obj.props.rowSpan = 0;
         } else {
           for (
             let i = 0;
-            index + i !== dataSource.length &&
-            row.today === dataSource[index + i].today;
+            trueIndex + i !== dataSource.length &&
+            row.today === dataSource[trueIndex + i].today;
             i += 1
           ) {
-            highAvg += dataSource[index + i].value_high;
-            lowAvg += dataSource[index + i].value_low;
+            highAvg += dataSource[trueIndex + i].value_high;
+            lowAvg += dataSource[trueIndex + i].value_low;
             obj.props.rowSpan = i + 1;
           }
           if (highAvg && obj.props.rowSpan !== 0) {
@@ -213,6 +228,7 @@ const History = () => {
         dataSource={dataSource}
         bordered
         pagination={{ onChange: { pageChange } }}
+        onChange={handleChange}
         rowKey="id"
       ></Table>
       <ToastContainer
