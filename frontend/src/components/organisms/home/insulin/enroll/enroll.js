@@ -15,6 +15,7 @@ import moment from 'moment';
 import { PlusOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { formatDate, formatTime } from '../../../../../utils/formatDate';
+import { ToastContainer, toast } from 'react-toastify';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -34,6 +35,8 @@ const Enroll = () => {
   const [today, setToday] = React.useState(
     formatDate(moment(new Date(), 'YYYY-MM-DD')),
   );
+  const [isUpdate, setUpdate] = React.useState(false);
+  const [dataID, setDataID] = React.useState();
   const showModal = () => {
     setState(true);
   };
@@ -63,29 +66,78 @@ const Enroll = () => {
   const onChangeType = (e) => {
     setinsulinSpecies(e.target.value);
   };
+  const removeFormData = () => {
+    form.setFieldsValue({
+      type: null,
+      unit: null,
+      desc_etc: null,
+      time: null,
+      memo: null,
+    });
+  };
+  const onChangeToday = (date, dateString) => {
+    console.log(dateString);
+    setToday(dateString);
+    removeFormData();
+    setUpdate(false);
+    setDisable(true);
+  };
   const whenChange = async (e) => {
     if (e.target.value === '기타1' || e.target.value === '기타2') {
       setEtcDisable(false);
     } else {
       setEtcDisable(true);
     }
-    const response = await axios.get(`http://miok.site:3001/api/insulin`, {
-      params: {
-        today: today,
-        when: e.target.value,
+    const response = await axios.get(
+      `http://miok.site:3001/api/insulin/record`,
+      {
+        params: {
+          today: today,
+          when: e.target.value,
+        },
       },
-    });
+    );
     console.log(response);
+    if (response.status === 200) {
+      setUpdate(true);
+      setDataID(response.data.result[0].id);
+      const parseTime = response.data.result[0]._time.substring(0, 5);
+      console.log(parseTime);
+      form.setFieldsValue({
+        desc_etc: response.data.result[0].desc_etc,
+        time: moment(parseTime, 'HH:mm'),
+        unit: response.data.result[0].unit,
+        type: response.data.result[0]._type,
+        memo: response.data.result[0].memo,
+      });
+    } else if (response.status === 204) {
+      setUpdate(false);
+      removeFormData();
+    } else {
+      console.log('에러코드 발생');
+    }
   };
   const onFinish = async (data) => {
     data.today = formatDate(data.today);
     data.time = formatTime(data.time);
     console.log(data);
-    const response = await axios.post(
-      `http://miok.site:3001/api/insulin`,
-      data,
-    );
-    console.log(response);
+    if (isUpdate) {
+      const response = await axios
+        .put(`http://miok.site:3001/api/insulin/id/${dataID}`, data)
+        .catch((error) => {
+          toast.error('에러가 났어요!');
+        });
+      toast.success('수정에 성공하였습니다!');
+      console.log(response);
+    } else {
+      const response = await axios.post(
+        'http://miok.site:3001/api/insulin',
+        data,
+      );
+      removeFormData();
+      toast.success('등록에 성공하였습니다!');
+      console.log(response);
+    }
   };
   React.useEffect(() => {
     getinsulinType();
@@ -110,7 +162,7 @@ const Enroll = () => {
           unit: null,
           when: null,
           desc_etc: null,
-          time: moment(new Date(), 'HH:MM'),
+          time: moment(new Date(), 'HH:mm'),
           memo: null,
         }}
       >
@@ -122,6 +174,7 @@ const Enroll = () => {
               fontSize: '40px',
             }}
             className="datePic"
+            onChange={onChangeToday}
           />
         </Form.Item>
         <Form.Item name="when" label="시기">
@@ -182,7 +235,7 @@ const Enroll = () => {
               height: '100%',
             }}
           >
-            등록
+            {isUpdate ? '수정' : '등록'}
           </Button>
         </Form.Item>
       </Form>
@@ -218,6 +271,17 @@ const Enroll = () => {
           등록하기
         </Button>
       </Modal>
+      <ToastContainer
+        position="bottom-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 };
