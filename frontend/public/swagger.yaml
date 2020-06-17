@@ -5,17 +5,20 @@ info:
 	version: 1.0.0
 
 servers:
-	- url: http://miok.site:3001/
-	description: miok.site main api route
-	
+	- url: http://miok.site:3001/api
+	description: miok.site main api route'
+
 paths:
   /greeting:
     get:
-      summary: Returns a user by ID.
+      summary: 인사말 조회
+      tags:
+        - greeting
+      description: 이름을 기입하고 들어간 첫 화면에 인사말(greeting)을 보여주기위해 요청.
       parameters:
       responses:
         '200':
-          description: A user object.
+          description: greeting 객체 
           content:
             application/json:
               schema:
@@ -27,11 +30,202 @@ paths:
                   content:
                     type: string
                     example: 행복한 하루가 되시기를 바래요! 
-        '400':
-          description: The specified user ID is invalid (not a number).
-        '404':
-          description: A user with the specified ID was not found.
+        '500':
+          description: 데이터베이스 오류 - the request for database greeting is REJECTED! 
         default:
-          description: Unexpected error
+          description: 예상치 못한 오류 - Unexpected error. 
 
-									
+  /blood-sugar:
+    post:
+      summary: 혈당 등록
+      tags:
+        - blood-sugar
+      description: 새로운 혈당(blood-sugar) 기록을 등록하기 위해 요청. 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                today:
+                  type: string
+                  format: date
+                  example: '2020-05-01'
+                  description: 오늘 날짜
+                when:
+                  type: string
+                  enum: ['기상 직후', '아침 식전', '아침 식후', '점심 식전', '점심 식후', '저녁 식전', '저녁 식후', '취침 전', '새벽', '기타']
+                  example: 기타
+                  description: Enum에 있는 요소만 선택 가능
+                desc_etc:
+                  type: string
+                  maxLength: 200
+                  example: 새벽 저혈당 확인을 위해 기록했음. 2시
+                  description: when 이 '기타'일 경우만 기재
+                time: 
+                  type: string
+                  format: time
+                  example: '02:10:00'
+                  description: v1.0.0에서는 제외
+                date:
+                  type: string
+                  format: date
+                  default: 기록한 시간
+                  example: '2020-05-01'
+                  description: v1.0.0에서는 제외
+                value:
+                  type: integer
+                  example: 68
+                  description: 혈당
+                memo: 
+                  type: string
+                  maxLength: 200
+                  default: null
+                  example: 혈당 재고나서 바나나, 초콜렛 먹음. 
+                  description: 메모하고 싶은 내용을 자유롭게 기재. 
+      responses:
+        '201':
+          description: 등록완료 - New blood-sugar data is CREATED
+        '409':
+          description: 데이터 이미 존재함 - The blood-sugar data is ALEADY EXIST !
+        '500':
+          description: 데이터베이스 오류 - the request for database blood_sugar is REJECTED!
+        default:
+          description: 예상치 못한 오류 - Unexpected error. 
+
+    get:
+      summary: 모든 혈당 조회
+      tags:
+        - blood-sugar
+      description: 현재까지 기록한 모든 혈당(blood-sugar) 기록을 가져오기
+      responses:
+        '200':
+          description: 데이터 가져오기 완료 - OK. The request for blood_sugar is successfully done. 
+          content:
+            application/json:
+              schema:
+                Blood-Sugar:
+                  $ref: '#/components/schemas/blood-sugar/components/schemas/Blood-Sugar'
+        '204':
+          description: 데이터 없음 - The request for blood_sugar is successfully done, and there is no result data.
+        '500':
+          description: 데이터 베이스 오류 - The request for database blood_sugar is REJECTED!
+        default:
+          description: 예상치 못한 오류 - Unexpected error.  
+
+    delete:
+      summary: 모든 혈당 삭제
+      tags:
+        - blood-sugar
+      description: 현재까지 기록한 모든 혈당(blood-sugar) 기록을 가져오기
+      responses:
+        '200':
+          description: all blood-sugar data is sent. 
+        '500':
+          description: database error. Syntax or Connection error
+  
+  /blood-sugar/id/{id}:
+    get:
+      summary: 해당 id 혈당 조회
+      tags:
+        - blood-sugar
+      description: 해당 id 를 가진 혈당(blood-sugar)기록을 가져옴. 
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          example: 258
+       
+    put:
+      summary:
+      tags:
+        - blood-sugar
+      description:
+    delete:
+      summary:
+      tags:
+        - blood-sugar
+  
+  /blood-sugar/record:
+    get:
+      summary:
+      tags:
+        - blood-sugar
+      description:
+      parameters:
+        - in: query
+          name: today
+          schema:
+            type: date
+          required: true
+          example: '2020-05-01'
+        - in: query
+          name: when
+          schema:
+            type: string
+          required: true
+          example: '아침 식전'
+      responses:
+        '200':
+          description: 성공
+  
+  /blood-sugar/date:
+    get:
+      summary:
+      tags:
+        - blood-sugar
+      description:
+      parameters:
+        - in: query
+          name: startDate
+          schema:
+            type: date
+          required: true
+          example: '2020-05-01'
+        - in: query
+          name: endDate
+          schema:
+            type: date
+          required: true
+          example: '2020-05-31'
+      reponses:
+        '200':
+          description: ok
+  
+  /blood-sugar/date/{today}:
+    get:
+      summary:
+      tags:
+        - blood-sugar
+      description:
+      parameters:
+        - in: path
+          name: today
+          required: true
+          schema:
+            type: date
+          description: 
+      responses:
+        '200': 
+          description: ok
+  
+  /blood-sugar/when/{when}:
+    get: 
+      summary:
+      tags:
+        - blood-sugar
+      description:
+      parameters:
+        - in: path
+          name: when
+          required: true
+          schema:
+            type: string
+          description: '한개'
+      responses:
+        '200':
+          description: ok
+          

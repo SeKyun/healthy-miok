@@ -69,7 +69,23 @@ exports.delete_all = function (req, res) {
     })
 }
 
+//=================================================================
+// requre URL:  /type-insulin/:name
+//=================================================================
+// delete data with its name
+//possible error point 
+exports.delete_type = function (req, res) {
+    const _name = req.body.name; 
+    const sql = `DELETE FROM type_insulin WHERE _name=?`; 
 
+    db.query(sql, [_name], function (err, result) {
+        if (err) {
+            return res_handler.sendError(err, 500, res, "deleting " + resource + " with name"); 
+        }
+
+        return res_handler.sendSuccess(result, 204, res, resource); 
+    })
+}
 
 
 

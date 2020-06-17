@@ -26,7 +26,7 @@ exports.register = function (req, res) {
         }
 
         else if (result[0]) {
-            return res_handler.sendError(err, 409, res, "creating " + resource); 
+            return res_handler.sendError(err, 409, res, resource); 
         }
 
         // if it is not exist
