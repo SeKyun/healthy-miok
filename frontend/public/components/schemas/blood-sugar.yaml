@@ -1,0 +1,41 @@
+components:
+  #----------------------------------
+  # Reusable schemas (data models)
+  #----------------------------------
+  schemas:
+    Blood-Sugar:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 2
+        today:
+          type: string
+          format: date
+          example: '2020-05-01'
+        _when:
+          type: string
+          enum: ['기상 직후', '아침 식전', '아침 식후', '점심 식전', '점심 식후', '저녁 식전', '저녁 식후', '취침 전', '새벽', '기타']
+          example: 기타
+        desc_etc: string
+          type: string
+          example: 새벽 저혈당 체크 
+        _time:
+          type: string
+          format: time
+          example: '02:05:08'
+        _date: 
+          type: string
+          format: date
+          example: '2020-05-02'
+        _value:
+          type: integer
+          example: 65
+        _status: int
+          type: integer
+          enum: [1, 2, 3, 4, 5]
+          description: 1- 저혈당, 2- 초기 저혈당, 3- 정상, 4- 초기 고혈당, 5- 고혈당
+          example: 1
+        memo: 
+          type: string
+          example: 2시에 저혈당이 와서 혈당 잼, 바나나, 초콜렛 먹음.

@@ -32,7 +32,7 @@ exports.register = function (req, res) {
         }
 
         // 기타 설정 
-        if (req_data._when === '기타') {
+        if (req_data._when === '/^(기타)') {
             req_data.desc_etc = req.body.desc_etc; 
         }
 
@@ -40,7 +40,6 @@ exports.register = function (req, res) {
         let now = moment(); 
         req_data._time = now.format("HH:mm:ss"); 
         req_data.edited = now.format('YYYY-MM-DD HH:mm:ss'); 
-
         sql = `INSERT INTO ${resource} SET ?`; 
         db.query(sql, req_data, function (err, result) {
             if (err) {
@@ -154,8 +153,9 @@ exports.get_record_today_when = function (req, res) {
         if (err) {
             return res_handler.sendError(err, 500, res, "getting " + resource); 
         }
-
-        else if (! result[0]) {
+        console.log(result[0]); 
+        
+        if (! result[0]) {
             return res_handler.sendSuccess(result, 204, res, "getting " + resource); 
         }
 
