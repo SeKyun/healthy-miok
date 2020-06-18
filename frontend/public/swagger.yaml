@@ -105,8 +105,7 @@ paths:
           content:
             application/json:
               schema:
-                Blood-Sugar:
-                  $ref: '#/components/schemas/blood-sugar/components/schemas/Blood-Sugar'
+                  $ref: '#/components/schemas/Blood-Sugar'
         '204':
           description: 데이터 없음 - The request for blood_sugar is successfully done, and there is no result data.
         '500':
@@ -229,3 +228,74 @@ paths:
         '200':
           description: ok
           
+
+# define resuable parameters:
+components:
+  #----------------------------------
+  # Reusable schemas (data models)
+  #----------------------------------
+  schemas:
+    Blood-Sugar:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 2
+        today:
+          type: string
+          format: date
+          example: '2020-05-01'
+        _when:
+          type: string
+          enum: ['기상 직후', '아침 식전', '아침 식후', '점심 식전', '점심 식후', '저녁 식전', '저녁 식후', '취침 전', '새벽', '기타']
+          example: 기타
+        desc_etc:
+          type: string
+          example: 새벽 저혈당 체크 
+        _time:
+          type: string
+          format: time
+          example: '02:05:08'
+        _date: 
+          type: string
+          format: date
+          example: '2020-05-02'
+        _value:
+          type: integer
+          example: 65
+        _status:
+          type: integer
+          enum: [1, 2, 3, 4, 5]
+          description: 1- 저혈당, 2- 초기 저혈당, 3- 정상, 4- 초기 고혈당, 5- 고혈당
+          example: 1
+        memo: 
+          type: string
+          example: 2시에 저혈당이 와서 혈당 잼, 바나나, 초콜렛 먹음. 
+    Blood-Pressure:
+      type: object
+      properties:
+        id: 
+          type: integer
+          example: 2
+        today:
+          type: string
+          format: date
+          example: '2020-05-01'
+        _time:
+          type: string
+          format: time
+          example: '21:40:00'
+        value_high: 
+          type: integer
+          example: 121
+        value_low:
+          type: integer
+          example: 85
+        value_bpm: 
+          type: integer
+          example: 78
+        _status:
+          type: integer
+          enum: [0, 1, 2, 3, 4, 5]
+          description: 0- 즉시 치료 저혈압, 1- 저혈압, 2- 정상, 3- 고혈압 경증, 4- 고혈압 중증, 5- 즉시 치료 고혈압
+          example:  
