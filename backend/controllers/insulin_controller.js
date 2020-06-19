@@ -105,7 +105,7 @@ exports.update_record_id = function (req, res) {
     let id = req.params.id; 
     let now = moment(); 
     let req_data = {
-        desc_etc: req.body.des_etc,
+        desc_etc: req.body.desc_etc,
         _type: req.body.type, 
         unit: req.body.unit, 
         memo: req.body.memo,
