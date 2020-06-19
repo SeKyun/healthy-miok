@@ -32,7 +32,7 @@ exports.register = function (req, res) {
         }
 
         // 기타 설정 
-        if (req_data._when === '/^기(?=타)') {
+        if (req_data._when === '기타1' || req_data._when === '기타2') {
             req_data.desc_etc = req.body.desc_etc; 
         }
 
