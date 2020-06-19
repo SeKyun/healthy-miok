@@ -38,7 +38,6 @@ exports.register = function (req, res) {
 
         // _time, _date 설정
         let now = moment(); 
-        req_data._time = now.format("HH:mm:ss"); 
         req_data.edited = now.format('YYYY-MM-DD HH:mm:ss'); 
         sql = `INSERT INTO ${resource} SET ?`; 
         db.query(sql, req_data, function (err, result) {
@@ -105,6 +104,7 @@ exports.update_record_id = function (req, res) {
     let id = req.params.id; 
     let now = moment(); 
     let req_data = {
+        _time: req.body.time, 
         desc_etc: req.body.desc_etc,
         _type: req.body.type, 
         unit: req.body.unit, 
