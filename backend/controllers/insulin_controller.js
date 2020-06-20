@@ -148,9 +148,10 @@ exports.get_record_short = function (req, res) {
     let when = queryData.when; 
 
     console.log("queryData: ", queryData); 
-    console.log(sql); 
 
     let sql = `SELECT * FROM ${resource} WHERE today=? AND _type='속효성' AND _when=?`; 
+    console.log(sql); 
+
     db.query(sql, [today, when], function (err, result) {
         if (err) {
             return res_handler.sendError(err, 500, res, "getting " + resource); 
