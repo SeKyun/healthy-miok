@@ -101,10 +101,12 @@ paths:
       description: 현재까지 기록한 모든 혈당(blood-sugar) 기록을 가져오기
       responses:
         '200':
-          description: 데이터 가져오기 완료 - OK. The request for blood_sugar is successfully done. 
+          description: 성공 - OK. The requrest for the data is successfully done 
           content:
             application/json:
               schema:
+                type: array
+                items:
                   $ref: '#/components/schemas/Blood-Sugar'
         '204':
           description: 데이터 없음 - The request for blood_sugar is successfully done, and there is no result data.
@@ -119,10 +121,10 @@ paths:
         - blood-sugar
       description: 현재까지 기록한 모든 혈당(blood-sugar) 기록을 가져오기
       responses:
-        '200':
-          description: all blood-sugar data is sent. 
+        '204':
+          description: 성공, 데이터 없음 - The request for the data is successfully done and there is no result data
         '500':
-          description: database error. Syntax or Connection error
+          description: 데이터 베이스 오류 - The request for database blood_sugar is REJECTED!
   
   /blood-sugar/id/{id}:
     get:
@@ -139,10 +141,54 @@ paths:
           example: 258
        
     put:
-      summary:
+      summary: 해당 id 혈당 수정
       tags:
         - blood-sugar
-      description:
+      description: 해당 id를 가진 혈당(blood-sugar)기록을 수정함. 
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                today:
+                  type: string
+                  format: date
+                  example: '2020-05-01'
+                  description: 오늘 날짜
+                when:
+                  type: string
+                  enum: ['기상 직후', '아침 식전', '아침 식후', '점심 식전', '점심 식후', '저녁 식전', '저녁 식후', '취침 전', '새벽', '기타']
+                  example: 기타
+                  description: Enum에 있는 요소만 선택 가능
+                desc_etc:
+                  type: string
+                  maxLength: 200
+                  example: 새벽 저혈당 확인을 위해 기록했음. 2시
+                  description: when 이 '기타'일 경우만 기재
+                time: 
+                  type: string
+                  format: time
+                  example: '02:10:00'
+                  description: v1.0.0에서는 제외
+                date:
+                  type: string
+                  format: date
+                  default: 기록한 시간
+                  example: '2020-05-01'
+                  description: v1.0.0에서는 제외
+                value:
+                  type: integer
+                  example: 68
+                  description: 혈당
+                memo: 
+                  type: string
+                  maxLength: 200
+                  default: null
+                  example: 혈당 재고나서 바나나, 초콜렛 먹음. 
+                  description: 메모하고 싶은 내용을 자유롭게 기재. 
+      
     delete:
       summary:
       tags:
@@ -271,6 +317,7 @@ components:
         memo: 
           type: string
           example: 2시에 저혈당이 와서 혈당 잼, 바나나, 초콜렛 먹음. 
+    
     Blood-Pressure:
       type: object
       properties:
@@ -298,4 +345,53 @@ components:
           type: integer
           enum: [0, 1, 2, 3, 4, 5]
           description: 0- 즉시 치료 저혈압, 1- 저혈압, 2- 정상, 3- 고혈압 경증, 4- 고혈압 중증, 5- 즉시 치료 고혈압
-          example:  
+          example:  2
+          memo:
+            type: string
+            example: 운동 후 2시간 정도 뒤에 쟀음. 
+    
+    Insulin:
+      type: object
+      properties:
+        id: 
+          type: integer
+          example: 2
+        today:
+          type: string
+          format: date
+          example: '2020-05-01'
+        _when:
+          type: string
+          enum: ['아침 식전', '점심 식전', '저녁 식전', '기타1', '기타2', '기타3']
+          example: 기타1
+        desc_etc:
+          type: string
+          example: 취침 전
+        _time:
+          type: string
+          format: time
+          example: '15:11:33'
+        _type: 
+          type: string
+          enum: ['트레시바(지속성)', '노보래피드(속효성)']
+          example: 노보래피드
+        unit:
+          type: integer
+          example: 4
+        memo: 
+          type: string
+          example: 간식으로 아이스크림 먹어서 맞음. 
+  
+  responses:
+    200:
+      description: 성공 - OK. The requrest for the data is successfully done
+    201:
+      description: 등록 완료 - New data is created
+    204:
+      description: 성공, 데이터 없음 - The request for the data is successfully done and there is no result data
+    409:
+      description: 데이터 이미 존재 - The data is ALREADY EXIST!
+    500:
+      description: 데이터 베이스 오류 - The request for database is REJECTED !
+    default:
+      description: 예상치 못한 오류 - Unexpected error.

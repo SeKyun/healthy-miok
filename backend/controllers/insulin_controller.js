@@ -16,6 +16,7 @@ exports.register = function (req, res) {
         today: req.body.today, 
         _when: req.body.when, 
         _time: req.body.time, 
+        _name: req.body.name, 
         _type: req.body.type, 
         unit: req.body.unit, 
         memo: req.body.memo
@@ -106,7 +107,7 @@ exports.update_record_id = function (req, res) {
     let req_data = {
         _time: req.body.time, 
         desc_etc: req.body.desc_etc,
-        _type: req.body.type, 
+        _name: req.body.name,
         unit: req.body.unit, 
         memo: req.body.memo,
         edited: now.format("YYYY-MM-DD HH:mm:ss")
@@ -137,18 +138,19 @@ exports.delete_record_id = function (req, res) {
 
 
 //=================================================================
-// requre URL:  /insulin/record?today=?&when=?
+// requre URL:  /insulin/record/short?today=?&when=?
 //=================================================================
 
 // get data from the table by using today and when
-exports.get_record_today_when = function (req, res) {
-    var queryData = url.parse(req.url, true).query; 
+exports.get_record_short = function (req, res) {
+    let queryData = url.parse(req.url, true).query; 
     let today = queryData.today; 
     let when = queryData.when; 
 
     console.log("queryData: ", queryData); 
+    console.log(sql); 
 
-    let sql = `SELECT * FROM ${resource} WHERE today=? AND _when=?`; 
+    let sql = `SELECT * FROM ${resource} WHERE today=? AND _type='속효성' AND _when=?`; 
     db.query(sql, [today, when], function (err, result) {
         if (err) {
             return res_handler.sendError(err, 500, res, "getting " + resource); 
@@ -164,6 +166,31 @@ exports.get_record_today_when = function (req, res) {
 }
 
 //=================================================================
+// requre URL:  /insulin/record/long?today=?
+//=================================================================
+exports.get_record_long = function (req, res) {
+    let queryData = url.parse(req.url, true).query; 
+    let today = queryData.today; 
+    
+    let sql = `SELECT * FROM ${resource} WHERE today=? AND _type='지속성'`; 
+    console.log(sql); 
+    
+    db.query(sql, [today], function (err, result) {
+        if (err) {
+            return res_handler.sendError(err, 500, res, "getting " + resource); 
+        }
+
+        if (! result[0]) {
+            return res_handler.sendSuccess(result, 204, res, "getting " + resource); 
+        }
+
+        return res_handler.sendSuccess(result, 200, res, "getting " + resource); 
+    })
+
+}
+
+
+//=================================================================
 // requre URL:  /insulin/date?startDate=?&endDate=?
 //=================================================================
 // get data from the table which from startDate to endDate
@@ -174,7 +201,7 @@ exports.get_records_date = function (req, res) {
 
     console.log("queryData: ", queryData); 
 
-    let sql = `SELECT id, today, _when, _time, _type, unit FROM ${resource} `
+    let sql = `SELECT id, today, _when, _time, _name, _type, unit FROM ${resource} `
             + `WHERE today >='${startDate}' AND today <= '${endDate}' `
             + `ORDER BY today DESC`; 
 
@@ -227,7 +254,7 @@ exports.get_records_today = function (req, res) {
 // get data from the table by using when value
 exports.get_records_when = function (req, res) {
     let when = req.params.when; 
-    let sql = `SELECT id, today, _when, _time, _type, unit FROM ${resource} WHERE _when LIKE '%${when}'`;
+    let sql = `SELECT id, today, _when, _time, _name, _type, unit FROM ${resource} WHERE _when LIKE '%${when}'`;
 
     db.query(sql, function (err, result) {
         if (err) {

@@ -95,7 +95,7 @@
         switch (status) {
             case 200:
                 return res.status(200).send({
-                    msg: "OK. the request for " + target + " is successfully done", 
+                    msg: "OK. The request for " + target + " is successfully done", 
                     success: true, 
                     result: result
                 })
