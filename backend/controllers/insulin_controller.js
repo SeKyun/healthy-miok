@@ -11,6 +11,7 @@ const url = require('url');
 //=================================================================
 // register new data in the table
 //possible error point 
+// 이거 지속성이랑 .. 바꿔야함.; 하하 
 exports.register = function (req, res) {
     let req_data = {
         today: req.body.today, 
@@ -21,35 +22,72 @@ exports.register = function (req, res) {
         unit: req.body.unit, 
         memo: req.body.memo
     }; 
-    let sql = `SELECT * FROM ${resource} WHERE today=? AND _type=? AND _when=?`; 
 
-    db.query(sql, [req_data.today, req_data._type, req_data._when], function (err, result) {
-        if (err) {
-            return res_handler.sendError(err, 500, res, resource); 
-        }
-        // 에러 말고 다른 응답..? 고민 
-        else if (result[0]) {
-            return res_handler.sendError(result[0], 409, res, resource); 
-        }
+    let sql = ""; 
+    if (req_data._type === '지속성') {
+        sql = `SELECT * FROM ${resource} WHERE today=? AND _type='지속성'`;
 
-        // 기타 설정 
-        if (req_data._when === '기타1' || req_data._when === '기타2') {
-            req_data.desc_etc = req.body.desc_etc; 
-        }
-
-        // _time, _date 설정
-        let now = moment(); 
-        req_data.edited = now.format('YYYY-MM-DD HH:mm:ss'); 
-        sql = `INSERT INTO ${resource} SET ?`; 
-        db.query(sql, req_data, function (err, result) {
+        db.query(sql, [req_data.today], function (err, result) {
             if (err) {
-                return res_handler.sendError(err, 500, res, "creating " + resource); 
+                return res_handler.sendError(err, 500, res, resource); 
             }
+            // 에러 말고 다른 응답..? 고민 
+            else if (result[0]) {
+                return res_handler.sendError(result[0], 409, res, resource); 
+            }
+    
+            // 기타 설정 
+            if (req_data._when === '기타1' || req_data._when === '기타2') {
+                req_data.desc_etc = req.body.desc_etc; 
+            }
+    
+            // _time, _date 설정
+            let now = moment(); 
+            req_data.edited = now.format('YYYY-MM-DD HH:mm:ss'); 
+            sql = `INSERT INTO ${resource} SET ?`; 
+            db.query(sql, req_data, function (err, result) {
+                if (err) {
+                    return res_handler.sendError(err, 500, res, "creating " + resource); 
+                }
+    
+                return res_handler.sendSuccess(result, 201, res, "creating " + resource); 
+            });     
+    
+        });
+    }
+    else {
+        sql = `SELECT * FROM ${resource} WHERE today=? AND _type='속효성' AND _when=?`; 
+        db.query(sql, [req_data.today, req_data._when], function (err, result) {
+            if (err) {
+                return res_handler.sendError(err, 500, res, resource); 
+            }
+            // 에러 말고 다른 응답..? 고민 
+            else if (result[0]) {
+                return res_handler.sendError(result[0], 409, res, resource); 
+            }
+    
+            // 기타 설정 
+            if (req_data._when === '기타1' || req_data._when === '기타2') {
+                req_data.desc_etc = req.body.desc_etc; 
+            }
+    
+            // _time, _date 설정
+            let now = moment(); 
+            req_data.edited = now.format('YYYY-MM-DD HH:mm:ss'); 
+            sql = `INSERT INTO ${resource} SET ?`; 
+            db.query(sql, req_data, function (err, result) {
+                if (err) {
+                    return res_handler.sendError(err, 500, res, "creating " + resource); 
+                }
+    
+                return res_handler.sendSuccess(result, 201, res, "creating " + resource); 
+            });     
+    
+        });
+    }
+    
 
-            return res_handler.sendSuccess(result, 201, res, "creating " + resource); 
-        });     
-
-    });
+    
 }
 
 // get all the data in the table 
@@ -197,8 +235,8 @@ exports.get_record_long = function (req, res) {
 // get data from the table which from startDate to endDate
 exports.get_records_date = function (req, res) {
     var queryData = url.parse(req.url, true).query; 
-    let startDate = queryData.startDate; 
-    let endDate = queryData.endDate; 
+    let startDate = moment(queryData.startDate).format('YYYY-MM-DD'); 
+    let endDate = moment(queryData.endDate).format('YYYY-MM-DD'); 
 
     console.log("queryData: ", queryData); 
 
@@ -215,6 +253,13 @@ exports.get_records_date = function (req, res) {
 
         else if (! result[0]) {
             return res_handler.sendSuccess(result, 204, res, resource); 
+        }
+        
+        // 시간 변형해서 넣어주기 
+        for(let i = 0; i < result.length; i++) {
+            let today = result[i].today; 
+            today = moment(today).format('YYYY-MM-DD'); 
+            result[i].today = today; 
         }
 
         return res_handler.sendSuccess(result, 200, res, resource); 
