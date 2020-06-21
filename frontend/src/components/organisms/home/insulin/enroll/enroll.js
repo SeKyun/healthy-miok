@@ -37,17 +37,32 @@ const Enroll = () => {
   );
   const [isUpdate, setUpdate] = React.useState(false);
   const [dataID, setDataID] = React.useState();
+  const [iswhenDisable, setwhenDisable] = React.useState(true);
+
   const showModal = () => {
     setState(true);
   };
+
   const handleOk = () => {
     setState(false);
   };
-  const getinsulinType = async () => {
-    const response = await axios.get(`http://miok.site:3001/api/type-insulin`);
-    console.log(response);
-    setinsulinType(response.data.result);
+
+  const getinsulinType = async (data) => {
+    if (data === '지속성') {
+      const response = await axios.get(
+        `http://miok.site:3001/api/type-insulin/long`,
+      );
+      console.log(response);
+      setinsulinType(response.data.result);
+    } else {
+      const response = await axios.get(
+        `http://miok.site:3001/api/type-insulin/short`,
+      );
+      console.log(response);
+      setinsulinType(response.data.result);
+    }
   };
+
   const enrollinsulinType = async () => {
     console.log(insulinName);
     console.log(insulinSpecies);
@@ -60,21 +75,27 @@ const Enroll = () => {
       `http://miok.site:3001/api/type-insulin`,
       data,
     );
-    getinsulinType();
     console.log(response);
   };
+
   const onChangeType = (e) => {
     setinsulinSpecies(e.target.value);
   };
-  const removeFormData = () => {
-    form.setFieldsValue({
-      type: null,
-      unit: null,
-      desc_etc: null,
-      time: null,
-      memo: null,
-    });
-  };
+
+  const removeFormData = React.useCallback(
+    (data) => {
+      form.setFieldsValue({
+        name: null,
+        unit: null,
+        desc_etc: null,
+        time: null,
+        when: data ?? null,
+        memo: null,
+      });
+    },
+    [form],
+  );
+
   const onChangeToday = (date, dateString) => {
     console.log(dateString);
     setToday(dateString);
@@ -82,41 +103,51 @@ const Enroll = () => {
     setUpdate(false);
     setDisable(true);
   };
+
+  const onChangeSelectFunc = (e) => {
+    setwhenDisable(false);
+  };
+
   const whenChange = async (e) => {
     if (e.target.value === '기타1' || e.target.value === '기타2') {
       setEtcDisable(false);
     } else {
       setEtcDisable(true);
     }
-    const response = await axios.get(
-      `http://miok.site:3001/api/insulin/record`,
-      {
-        params: {
-          today: today,
-          when: e.target.value,
+    if (form.getFieldValue('type') === '속효성') {
+      const response = await axios.get(
+        `http://miok.site:3001/api/insulin/record/short`,
+        {
+          params: {
+            today: today,
+            when: e.target.value,
+          },
         },
-      },
-    );
-    console.log(response);
-    if (response.status === 200) {
-      setUpdate(true);
-      setDataID(response.data.result[0].id);
-      const parseTime = response.data.result[0]._time.substring(0, 5);
-      console.log(parseTime);
-      form.setFieldsValue({
-        desc_etc: response.data.result[0].desc_etc,
-        time: moment(parseTime, 'HH:mm'),
-        unit: response.data.result[0].unit,
-        type: response.data.result[0]._type,
-        memo: response.data.result[0].memo,
-      });
-    } else if (response.status === 204) {
-      setUpdate(false);
-      removeFormData();
+      );
+      console.log(response);
+      if (response.status === 200) {
+        setUpdate(true);
+        setDataID(response.data.result[0].id);
+        const parseTime = response.data.result[0]._time.substring(0, 5);
+        console.log(parseTime);
+        form.setFieldsValue({
+          desc_etc: response.data.result[0].desc_etc,
+          time: moment(parseTime, 'HH:mm'),
+          unit: response.data.result[0].unit,
+          name: response.data.result[0]._name,
+          memo: response.data.result[0].memo,
+        });
+      } else if (response.status === 204) {
+        setUpdate(false);
+        removeFormData(e.target.value);
+      } else {
+        console.log('에러코드 발생');
+      }
     } else {
-      console.log('에러코드 발생');
+      console.log('지속성입니다.');
     }
   };
+
   const onFinish = async (data) => {
     data.today = formatDate(data.today);
     data.time = formatTime(data.time);
@@ -139,9 +170,49 @@ const Enroll = () => {
       console.log(response);
     }
   };
-  React.useEffect(() => {
-    getinsulinType();
-  }, []);
+
+  const getlongTypeData = React.useCallback(async () => {
+    const response = await axios.get(
+      `http://miok.site:3001/api/insulin/record/long`,
+      {
+        params: {
+          today: today,
+        },
+      },
+    );
+    console.log(response);
+    if (response.status === 200) {
+      setUpdate(true);
+      setDataID(response.data.result[0].id);
+      setwhenDisable(false);
+      const parseTime = response.data.result[0]._time.substring(0, 5);
+      console.log(parseTime);
+      form.setFieldsValue({
+        desc_etc: response.data.result[0].desc_etc,
+        time: moment(parseTime, 'HH:mm'),
+        unit: response.data.result[0].unit,
+        name: response.data.result[0]._name,
+        memo: response.data.result[0].memo,
+        when: response.data.result[0]._when,
+      });
+    } else if (response.status === 204) {
+      setUpdate(false);
+      removeFormData();
+    } else {
+      console.log('에러코드 발생');
+    }
+  }, [form, removeFormData, today]);
+
+  const onChangeSelectType = () => {
+    removeFormData();
+    getinsulinType(form.getFieldValue('type'));
+    if (form.getFieldValue('type') === '지속성') {
+      getlongTypeData();
+    } else {
+      setUpdate(false);
+    }
+  };
+
   React.useEffect(() => {
     if (!isDisable && insulinName === '') {
       setDisable(true);
@@ -159,6 +230,7 @@ const Enroll = () => {
         initialValues={{
           today: moment(new Date(), 'YYYY-MM-DD'),
           type: null,
+          name: null,
           unit: null,
           when: null,
           desc_etc: null,
@@ -177,40 +249,56 @@ const Enroll = () => {
             onChange={onChangeToday}
           />
         </Form.Item>
+        <Form.Item name="type" label="타입">
+          <Select
+            style={{ width: '50%', margin: '0px' }}
+            onChange={onChangeSelectType}
+          >
+            <Option value="지속성" key="지속성">
+              지속성
+            </Option>
+            <Option value="속효성" key="속효성">
+              속효성
+            </Option>
+          </Select>
+        </Form.Item>
+        <Form.Item label="종류">
+          <div style={{ display: 'flex', alignItems: 'flex-end' }}>
+            <Form.Item name="name" noStyle>
+              <Select
+                style={{ width: '50%', margin: '0px' }}
+                onChange={onChangeSelectFunc}
+              >
+                {insulinType.map((it) => {
+                  return (
+                    <Option value={it._name} key={it._name}>
+                      {it._name}
+                    </Option>
+                  );
+                })}
+              </Select>
+            </Form.Item>
+            <Button
+              type="primary"
+              shape="circle"
+              onClick={showModal}
+              style={{
+                display: 'block',
+                margin: '0 0 0 8px',
+                alignSelf: 'center',
+              }}
+              icon={<PlusOutlined />}
+            />
+          </div>
+        </Form.Item>
         <Form.Item name="when" label="시기">
-          <Radio.Group onChange={whenChange}>
+          <Radio.Group onChange={whenChange} disabled={iswhenDisable}>
             <Radio value="아침 식전">아침식전</Radio>
             <Radio value="점심 식전">점심식전</Radio>
             <Radio value="저녁 식전">저녁식전</Radio>
             <Radio value="기타1">기타1</Radio>
             <Radio value="기타2">기타2</Radio>
           </Radio.Group>
-        </Form.Item>
-        <Form.Item name="time" label="시간">
-          <TimePicker size="large" format={'h:mm a'} />
-        </Form.Item>
-        <Form.Item label="종류">
-          <Button
-            type="primary"
-            shape="circle"
-            onClick={showModal}
-            style={{ display: 'block' }}
-            icon={<PlusOutlined />}
-          />
-          <Form.Item name="type" noStyle>
-            <Select style={{ width: '50%' }}>
-              {insulinType.map((it) => {
-                return (
-                  <Option value={it._name} key={it._name}>
-                    {it._name}
-                  </Option>
-                );
-              })}
-            </Select>
-          </Form.Item>
-        </Form.Item>
-        <Form.Item name="unit" label="단위">
-          <InputNumber size="large" />
         </Form.Item>
         <Form.Item name="desc_etc" label="기타 내용">
           <Input
@@ -219,6 +307,14 @@ const Enroll = () => {
             disabled={etcDisable}
           />
         </Form.Item>
+        <Form.Item name="time" label="시간">
+          <TimePicker size="large" format={'h:mm a'} />
+        </Form.Item>
+
+        <Form.Item name="unit" label="단위">
+          <InputNumber size="large" />
+        </Form.Item>
+
         <Form.Item name="memo" label="메모" wrapperCol={{ span: 13 }}>
           <TextArea
             placeholder="쓰고싶은 말을 써주세요."
