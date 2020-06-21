@@ -2,7 +2,7 @@ const mysql = require("mysql");
 const config = require('../config/key'); 
 
 let pool = mysql.createPool({
-    connectionLimit: 50, 
+    connectionLimit: 10, 
     host: config.mysqlHOST,
     port: config.mysqlPORT, 
     user: config.mysqlUSER, 
