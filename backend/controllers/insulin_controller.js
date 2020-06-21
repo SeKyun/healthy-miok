@@ -21,9 +21,9 @@ exports.register = function (req, res) {
         unit: req.body.unit, 
         memo: req.body.memo
     }; 
-    let sql = `SELECT * FROM ${resource} WHERE today=? AND _when=?`; 
+    let sql = `SELECT * FROM ${resource} WHERE today=? AND _type=? AND _when=?`; 
 
-    db.query(sql, [req_data.today, req_data._when], function (err, result) {
+    db.query(sql, [req_data.today, req_data._type, req_data._when], function (err, result) {
         if (err) {
             return res_handler.sendError(err, 500, res, resource); 
         }

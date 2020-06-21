@@ -8,9 +8,9 @@ let blood_pressure = require('./blood_pressure');
 let insulin = require('./insulin'); 
 let type_insulin = require('./type_insulin'); 
 
-/* GET home page. */
+// /* GET home page. */
 // possible error point 
-router.get('/', function(req, res) {
+router.get('/', function(req, res, next) {
   res.sendFile(path.join(__dirname, "../../frontend/public", "index.html")); 
   // res.render('index', { tit le: 'Express' });
 });
