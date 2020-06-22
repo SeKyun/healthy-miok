@@ -1,6 +1,6 @@
-import './Firstpage.scss';
 import React from 'react';
-import Whoareyou from '../organisms/Whoareyou';
+import './Firstpage.scss';
+import Whoareyou from '../../organisms/whoareyou/Whoareyou';
 
 const Firstpage = () => {
   return (

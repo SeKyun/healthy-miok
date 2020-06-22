@@ -1,10 +1,10 @@
 import React from 'react';
 import { Router, Switch, Route } from 'react-router-dom';
-import Firstpage from './Firstpage';
-import Secondpage from './Secondpage';
+import Firstpage from './firstpage/Firstpage';
+import Secondpage from './secondpage/Secondpage';
 import history from './history';
-import NotWelcome from '../organisms/NotWelcome';
-import Mainpage from './Mainpage';
+import NotWelcome from '../organisms/notwelcome/NotWelcome';
+import Mainpage from './mainpage/Mainpage';
 import {
   Bloodsugar,
   Bloodpressure,

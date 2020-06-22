@@ -17,6 +17,7 @@
     "less-loader": "5.0.0",
     "moment": "^2.25.3",
     "node-sass": "^4.13.1",
+    "prop-types": "^15.7.2",
     "querystring": "^0.2.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
