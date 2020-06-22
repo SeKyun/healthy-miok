@@ -1,6 +1,7 @@
 import React from 'react';
-import Welcome from '../organisms/Welcome';
 import './Secondpage.scss';
+import Welcome from '../../organisms/welcome/Welcome';
+
 const Secondpage = () => {
   return (
     <div className="SecondPage">

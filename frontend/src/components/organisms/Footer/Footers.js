@@ -1,6 +1,7 @@
 import React from 'react';
 import './Footers.scss';
 import { Modal, Button } from 'antd';
+
 const Footers = () => {
   const [state, setState] = React.useState(false);
   const showModal = () => {
@@ -18,7 +19,7 @@ const Footers = () => {
         visible={state}
         onCancel={handleOk}
         centered
-        okText={'확인'}
+        okText="확인"
         footer={null}
       >
         주세인 :{' '}
@@ -44,7 +45,9 @@ const Footers = () => {
       </Modal>
       <div>Backend : Sein Joo</div>
       <div>Frontend : Kyun Heo</div>
-      <Button onClick={showModal}>정보</Button>
+      <Button onClick={showModal} size="small">
+        정보
+      </Button>
     </div>
   );
 };

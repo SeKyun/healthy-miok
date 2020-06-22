@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from 'antd';
 import './Home.scss';
 import history from '../../pages/history';
+
 const Home = () => {
   return (
     <div className="Home">
@@ -65,7 +66,7 @@ const Home = () => {
         <img
           src="/images/menu/stressAndHappiness.png"
           alt="스트레스와행복"
-          className={'stress'}
+          className="stress"
         />
       </Button>
       <Button

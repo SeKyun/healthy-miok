@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import './Mainpage.scss';
 import { Layout } from 'antd';
-import Antmenu from '../organisms/header/Antmenu.js';
-import SelectMenu from './SelectMenu';
-import Footers from '../organisms/Footer/Footers';
+import Antmenu from '../../organisms/header/Antmenu';
+import SelectMenu from '../SelectMenu';
+import Footers from '../../organisms/Footer/Footers';
+
 const { Header, Footer, Content } = Layout;
 const Mainpage = () => {
   const [menuIdx, setMenuIdx] = useState(0);
@@ -12,11 +13,9 @@ const Mainpage = () => {
       <Header>
         <Antmenu func={setMenuIdx} />
       </Header>
-      <Layout>
-        <Content>
-          <SelectMenu menuIdx={menuIdx} />
-        </Content>
-      </Layout>
+      <Content>
+        <SelectMenu menuIdx={menuIdx} />
+      </Content>
       <Footer>
         <Footers />
       </Footer>

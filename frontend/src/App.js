@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.less';
-import Routes from '../src/components/pages/Route';
+import Routes from './components/pages/Route';
 
 function App() {
   return (
