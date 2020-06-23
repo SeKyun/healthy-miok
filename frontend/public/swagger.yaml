@@ -9,6 +9,9 @@ servers:
 	description: miok.site main api route'
 
 paths:
+
+# =========== 인사말 api ===========
+
   /greeting:
     get:
       summary: 인사말 조회
@@ -34,6 +37,9 @@ paths:
           description: 데이터베이스 오류 - the request for database greeting is REJECTED! 
         default:
           description: 예상치 못한 오류 - Unexpected error. 
+
+
+# =========== 혈당 api ===========
 
   /blood-sugar:
     post:
@@ -88,7 +94,7 @@ paths:
         '201':
           description: 등록완료 - New blood-sugar data is CREATED
         '409':
-          description: 데이터 이미 존재함 - The blood-sugar data is ALEADY EXIST !
+          description: 데이터 이미 존재함 - The blood-sugar data is ALREADY EXIST !
         '500':
           description: 데이터베이스 오류 - the request for database blood_sugar is REJECTED!
         default:
@@ -139,6 +145,17 @@ paths:
           schema:
             type: integer
           example: 258
+      responses:
+        '200':
+          description: 성공 - OK. The requrest for the data is successfully done 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Blood-Sugar'        
+        '204':
+          description: 성공, 데이터 없음 - The request for the data is successfully done and there is no result data
+        '500':
+          description: 데이터 베이스 오류 - The request for database blood_sugar is REJECTED!
        
     put:
       summary: 해당 id 혈당 수정
@@ -188,13 +205,18 @@ paths:
                   default: null
                   example: 혈당 재고나서 바나나, 초콜렛 먹음. 
                   description: 메모하고 싶은 내용을 자유롭게 기재. 
+      responses:
+        '204':
+          description: 성공, 데이터 없음 - The request for the data is successfully done and there is no result data
+        '500':
+          description: 데이터 베이스 오류 - The request for database blood_sugar is REJECTED!  
       
     delete:
       summary:
       tags:
         - blood-sugar
   
-  /blood-sugar/record:
+  /blood-sugar/record?today=?&when=?:
     get:
       summary:
       tags:
@@ -211,11 +233,23 @@ paths:
           name: when
           schema:
             type: string
+            enum: ['기상 직후', '아침 식전', '아침 식후', '점심 식전', '점심 식후', '저녁 식전', '저녁 식후', '취침 전', '새벽', '기타']
+            description: Enum에 있는 요소만 선택 가능
           required: true
-          example: '아침 식전'
+          example: 아침 식전
       responses:
         '200':
-          description: 성공
+          description: 성공 - OK. The requrest for the data is successfully done 
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Blood-Sugar'
+        '204':
+          description: 성공, 데이터 없음 - The request for the data is successfully done and there is no result data
+        '500':
+          description: 데이터 베이스 오류 - The request for database blood_sugar is REJECTED!
   
   /blood-sugar/date:
     get:
@@ -238,14 +272,24 @@ paths:
           example: '2020-05-31'
       reponses:
         '200':
-          description: ok
+          description: 성공 - OK. The requrest for the data is successfully done 
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Blood-Sugar'
+        '204':
+          description: 성공, 데이터 없음 - The request for the data is successfully done and there is no result data
+        '500':
+          description: 데이터 베이스 오류 - The request for database blood_sugar is REJECTED!
   
   /blood-sugar/date/{today}:
     get:
-      summary:
+      summary: 해당 날짜 모든 혈당 조회
       tags:
         - blood-sugar
-      description:
+      description: 해당 날짜(today)에 기록된 모든 혈당 가져오기 
       parameters:
         - in: path
           name: today
@@ -254,8 +298,18 @@ paths:
             type: date
           description: 
       responses:
-        '200': 
-          description: ok
+        '200':
+          description: 성공 - OK. The requrest for the data is successfully done 
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Blood-Sugar'
+        '204':
+          description: 성공, 데이터 없음 - The request for the data is successfully done and there is no result data
+        '500':
+          description: 데이터 베이스 오류 - The request for database blood_sugar is REJECTED!
   
   /blood-sugar/when/{when}:
     get: 
@@ -269,12 +323,543 @@ paths:
           required: true
           schema:
             type: string
-          description: '한개'
+            enum: ['기상 직후', '식전', '식후', '취침 전', '새벽']
+            example: 식전
+            description: Enum에 있는 요소만 선택 가능
       responses:
         '200':
-          description: ok
-          
+          description: 성공 - OK. The requrest for the data is successfully done 
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Blood-Sugar'
+        '204':
+          description: 성공, 데이터 없음 - The request for the data is successfully done and there is no result data
+        '500':
+          description: 데이터 베이스 오류 - The request for database blood_sugar is REJECTED!
 
+          
+      
+# =========== 혈압 api ===========
+
+  /blood-pressure:
+    post:
+      summary: 혈압 등록
+      tags:
+        - blood-pressure
+      description: 새로운 혈압(blood-pressure) 기록을 등록하기 위해 요청. 
+      requestBody:
+        description: id, _status는 자동으로 계산되어 들어감. 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Blood-Pressure'
+      responses:
+        '201':
+          description: 등록완료 - New blood-pressure data is CREATED
+        '409':
+          description: 데이터 이미 존재함 - The blood-pressure data is ALREADY EXIST !
+        '500':
+          description: 데이터 베이스 오류 - The request for database blood-pressure is REJECTED!
+        default:
+          description: 예상치 못한 오류 - Unexpected error. 
+    get:
+      summary: 모든 혈압 조회
+      tags:
+        - blood-pressure
+      description: 현재까지 기록한 모든 혈압(blood-pressure) 기록을 가져오기
+      responses:
+        '200':
+          description: 성공 - OK. The requrest for the data is successfully done 
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Blood-Pressure'
+        '204':
+          description: 데이터 없음 - The request for the data is successfully done, and there is no result data.
+        '500':
+          description: 데이터 베이스 오류 - The request for database blood_pressure is REJECTED!
+        default:
+          description: 예상치 못한 오류 - Unexpected error.
+    delete: 
+      summary: 모든 혈압 삭제
+      tags:
+        - blood-sugar
+      description: 현재까지 기록한 모든 혈압(blood-pressure) 기록을 가져오기
+      responses:
+        '204':
+          description: 성공, 데이터 없음 - The request for the data is successfully done and there is no result data
+        '500':
+          description: 데이터 베이스 오류 - The request for database blood_pressure is REJECTED!
+
+  /blood-pressure/id/{id}:
+    get:
+      summary: 해당 id 혈압 조회
+      tags:
+        - blood-pressure
+      description: 해당 id를 가지는 혈압(blood-pressure) 기록을 가져오기
+      parameters:
+        $ref: '#components/parameters/Id'
+      responses:
+        '200':
+          description: 성공 - OK. The requrest for the data is successfully done 
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Blood-Pressure'
+        '204':
+          description: 데이터 없음 - The request for the data is successfully done, and there is no result data.
+        '500':
+          description: 데이터 베이스 오류 - The request for database blood_pressure is REJECTED!
+        default:
+          description: 예상치 못한 오류 - Unexpected error.
+    put:
+      summary: 해당 id 혈압 수정
+      tags:
+        - blood-pressure
+      description: 해당 id를 가지는 혈압(blood-pressure)의 기록을 수정한다. 
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                time:
+                  type: string
+                  format: time
+                  example: '20:46:00'
+                value_high:
+                  type: integer
+                  example: 120
+                  description: 수축기 혈압
+                value_low:
+                  type: integer
+                  example: 90
+                  description: 이완기 혈압
+                value_bpm: 
+                  type: integer
+                  example: 70
+                  description: 심박수
+                memo:
+                  type: string
+                  maxLength: 200
+                  default: null
+                  example: 아침에 일어나서 바로 혈압 재봤음.
+                  description: 메모하고 싶은 내용을 자유롭게 기재. 
+              
+    delete:
+
+
+# =========== 인슐린 api ===========
+
+  /insulin:
+    post:
+      summary: 인슐린 등록
+      tags:
+        - insulin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                today:
+                  type: string
+                  format: date
+                  example: '2020-05-01'
+                  description: 오늘 날짜 
+                when:
+                  type: string
+                  enum: ['아침 식전', '점심 식전', '저녁 식전', '기타1', '기타2', '기타3']
+                  example: 기타
+                  description: Enum에 있는 요소만 선택 가능
+                desc_etc:
+                  type: string
+                  maxLength: 200
+                  example: 취침 전
+                  description: when 이 '기타1, 2, 3'일 경우만 기재
+                time: 
+                  type: string
+                  format: time
+                  example: '02:10:00'
+                unit:
+                  type: integer
+                  example: 6
+                  description: 맞은 인슐린 단위
+                memo: 
+                  type: string
+                  maxLength: 200
+                  default: null
+                  example: 취침전에 혈당재고 높아서 인슐린 맞음. 
+                  description: 메모하고 싶은 내용을 자유롭게 기재. 
+      responses:
+        '201':
+          description: 등록완료 - New insulin data is CREATED
+        '409':
+          description: 데이터 이미 존재함 - The insulin data is ALREADY EXIST !
+        '500':
+          description: 데이터베이스 오류 - the request for database insulin is REJECTED!
+        default:
+          description: 예상치 못한 오류 - Unexpected error. 
+    get:
+      summary: 모든 인슐린 기록 조회
+      tags:
+        - insulin
+      responses:
+        '200':
+          description: 성공 - OK. The requrest for the data is successfully done 
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Insulin'
+        '204':
+          description: 데이터 없음 - The request for insulin is successfully done, and there is no result data.
+        '500':
+          description: 데이터 베이스 오류 - The request for database insulin is REJECTED!
+        default:
+          description: 예상치 못한 오류 - Unexpected error.  
+    delete:
+      summary: 모든 인슐린 기록 삭제
+      tags:
+        - insulin
+      responses:
+        '204':
+          description: 데이터 없음 - The request for insulin is successfully done, and there is no result data.
+        '500':
+          description: 데이터 베이스 오류 - The request for database insulin is REJECTED!
+        default:
+          description: 예상치 못한 오류 - Unexpected error.  
+    
+  /insulin/id/{id}:
+    get:
+      summary: 해당 id 인슐린 기록 조회
+      tags:
+        - insulin
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          example: 258
+      responses:
+        '200':
+          description: 성공 - OK. The requrest for the data is successfully done 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Insulin'        
+        '204':
+          description: 성공, 데이터 없음 - The request for the data is successfully done and there is no result data
+        '500':
+          description: 데이터 베이스 오류 - The request for database insulin is REJECTED!
+    put:
+      summary: 해당 id 인슐린 기록 수정
+      tags:
+        - insulin
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          example: 258
+      requestBody:
+        required: true
+        description: today와 id빼고 고칠 수 있음 (*****"속효성" 은 when 고칠 수 없음!!!!!!!!!!!)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Insulin'
+    delete:
+      summary: 모든 인슐린 기록 삭제
+      tags:
+        - insulin
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          example: 258
+      responses:
+        '204':
+          description: 데이터 없음 - The request for insulin is successfully done, and there is no result data.
+        '500':
+          description: 데이터 베이스 오류 - The request for database insulin is REJECTED!
+        default:
+          description: 예상치 못한 오류 - Unexpected error.
+  
+  /insulin/record/short?today=?&when=?:
+    get:
+      summary: 속효성 타입, 해당 날짜, 시기 인슐린 기록 조회
+      tags:
+        - insulin
+      parameters:
+        - in: query
+          name: today
+          required: true
+          schema:
+            type: integer
+            example: '2020-05-01'
+        - in: query
+          name: when
+          required: true
+          schema:
+            type: string
+            enum: ['아침 식전', '점심 식전', '저녁 식전', '기타1', '기타2', '기타3']
+            example: 아침 식전
+            descripion:  Enum에 있는 요소만 선택 가능
+      responses:
+        '200':
+          description: 성공 - OK. The requrest for the data is successfully done 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Insulin'        
+        '204':
+          description: 성공, 데이터 없음 - The request for the data is successfully done and there is no result data
+        '500':
+          description: 데이터 베이스 오류 - The request for database insulin is REJECTED!
+          
+  /insulin/record/long?today=?:
+    get: 
+      summary: 지속성 타입, 해당 날짜 인슐린 기록 조회
+      tags:
+        - insulin
+      parameters:
+        - in: query
+          name: today
+          required: true
+          schema:
+            type: integer
+            example: '2020-05-01'
+      responses:
+        '200':
+          description: 성공 - OK. The requrest for the data is successfully done 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Insulin'        
+        '204':
+          description: 성공, 데이터 없음 - The request for the data is successfully done and there is no result data
+        '500':
+          description: 데이터 베이스 오류 - The request for database insulin is REJECTED!
+
+  /insulin/date?startDate=?&endDate=?:
+    get:
+      summary: 해당 기간 인슐린 기록 조회
+      tags:
+        - insulin
+      parameters:
+        - in: query
+          name: startDate
+          required: true
+          schema:
+            type: string
+            format: date
+            example: '2020-04-01'
+        - in: query
+          name: endDate
+          required: true
+          schema:
+            type: string
+            format: date
+            example: '2020-05-01'
+      responses:
+        '200':
+          description: 성공 - OK. The requrest for the data is successfully done 
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Insulin'
+        '204':
+          description: 데이터 없음 - The request for insulin is successfully done, and there is no result data.
+        '500':
+          description: 데이터 베이스 오류 - The request for database insulin is REJECTED!
+        default:
+          description: 예상치 못한 오류 - Unexpected error.  
+
+  /insulin/date/{today}:
+    get:
+      summary: 해당 날짜 모든 인슐린 기록 조회
+      tags:
+        - insulin
+      parameters:
+        - in: path
+          name: today
+          required: true
+          schema: 
+            type: string
+            format: date
+            exmample: '2020-05-01'
+      responses:
+        '200':
+          description: 성공 - OK. The requrest for the data is successfully done 
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Insulin'
+        '204':
+          description: 데이터 없음 - The request for insulin is successfully done, and there is no result data.
+        '500':
+          description: 데이터 베이스 오류 - The request for database insulin is REJECTED!
+        default:
+          description: 예상치 못한 오류 - Unexpected error. 
+
+  /insulin/when/{when}:
+    get:
+      summary: 해당 시점 인슐린 기록 조회
+      tags:
+        - insulin
+      parameters:
+        - in: path
+          name: when
+          required: true
+          schema: 
+            type: string
+            enum: ['아침 식전', '점심 식전', '저녁 식전', '기타1', '기타2', '기타3']
+            example: 아침 식전
+            descripion:  Enum에 있는 요소만 선택 가능
+      responses:
+        '200':
+          description: 성공 - OK. The requrest for the data is successfully done 
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Insulin'
+        '204':
+          description: 데이터 없음 - The request for insulin is successfully done, and there is no result data.
+        '500':
+          description: 데이터 베이스 오류 - The request for database insulin is REJECTED!
+        default:
+          description: 예상치 못한 오류 - Unexpected error.
+
+  /type-insulin:
+    post: 
+      summary: 인슐린 타입 등록
+      tags:
+        - type-insulin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name: 
+                  type: string
+                  example: 트레시바
+                  description: 인슐린 이름
+                type:
+                  type: string
+                  enum: ['지속성', '속효성']
+                  example: 지속성
+                  description: 인슐린 타입 
+      responses:
+        '201':
+          description: 등록완료 - New type-insulin data is CREATED
+        '409':
+          description: 데이터 이미 존재함 - The type-insulin data is ALREADY EXIST !
+        '500':
+          description: 데이터베이스 오류 - the request for database type-insulin is REJECTED!
+        default:
+          description: 예상치 못한 오류 - Unexpected error. 
+    get: 
+      summary: 모든 인슐린 타입 조회
+      tags:
+        - type-insulin
+      responses:
+        '200':
+          description: 성공 - OK. The requrest for the data is successfully done 
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Type-Insulin'
+        '204':
+          description: 데이터 없음 - The request for type-insulin is successfully done, and there is no result data.
+        '500':
+          description: 데이터 베이스 오류 - The request for database type-insulin is REJECTED!
+        default:
+          description: 예상치 못한 오류 - Unexpected error.  
+    delete: 
+      summary: 모든 인슐린 타입 삭제
+      tags:
+        - type-insulin
+      responses:
+        '204':
+          description: 데이터 없음 - The request for type-insulin is successfully done, and there is no result data.
+        '500':
+          description: 데이터 베이스 오류 - The request for database type-insulin is REJECTED!
+        default:
+          description: 예상치 못한 오류 - Unexpected error. 
+
+  /type-insulin/{type}:
+    get:
+      summary: 해당 타입의 인슐린 모두 조회 
+      tags:
+        - type-insulin
+      parameters:
+        - in: path
+          name: type
+          required: true
+          schema: 
+            type: string
+            enum: ['지속성', '속효성']
+            exmample: 지속성
+      responses:
+        '200':
+          description: 성공 - OK. The requrest for the data is successfully done 
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Type-Insulin'
+        '204':
+          description: 데이터 없음 - The request for type-insulin is successfully done, and there is no result data.
+        '500':
+          description: 데이터 베이스 오류 - The request for database type-insulin is REJECTED!
+        default:
+          description: 예상치 못한 오류 - Unexpected error.
+
+  /type-insulin/{name}:
+    delete:
+      summary: 해당 이름의 인슐린 삭제
+      tags:
+        - type-insulin
+      parameters:
+        - in: path
+          name: name
+          required: true
+          schema: 
+            type: string
+            exmample: 란투스
+      responses:
+        '204':
+          description: 데이터 없음 - The request for type-insulin is successfully done, and there is no result data.
+        '500':
+          description: 데이터 베이스 오류 - The request for database type-insulin is REJECTED!
+        default:
+          description: 예상치 못한 오류 - Unexpected error.
+  
 # define resuable parameters:
 components:
   #----------------------------------
@@ -346,9 +931,9 @@ components:
           enum: [0, 1, 2, 3, 4, 5]
           description: 0- 즉시 치료 저혈압, 1- 저혈압, 2- 정상, 3- 고혈압 경증, 4- 고혈압 중증, 5- 즉시 치료 고혈압
           example:  2
-          memo:
-            type: string
-            example: 운동 후 2시간 정도 뒤에 쟀음. 
+        memo:
+          type: string
+          example: 운동 후 2시간 정도 뒤에 쟀음. 
     
     Insulin:
       type: object
@@ -371,17 +956,40 @@ components:
           type: string
           format: time
           example: '15:11:33'
-        _type: 
+        _name:
           type: string
           enum: ['트레시바(지속성)', '노보래피드(속효성)']
           example: 노보래피드
+        _type: 
+          type: string
+          enum: ['지속성', '속효성']
+          example: 속효성
         unit:
           type: integer
           example: 4
         memo: 
           type: string
           example: 간식으로 아이스크림 먹어서 맞음. 
-  
+    
+    Type-Insulin:
+      type: object
+      properties:
+        _name:
+          type: string
+          example: 트레시바
+        _type:
+          type: string
+          example: 지속성
+    
+  parameters:
+    Id:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        example: 258
+
   responses:
     200:
       description: 성공 - OK. The requrest for the data is successfully done

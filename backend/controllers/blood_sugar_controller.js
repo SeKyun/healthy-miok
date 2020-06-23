@@ -150,8 +150,6 @@ exports.get_record_today_when = function (req, res) {
     let today = queryData.today; 
     let when = queryData.when; 
 
-    console.log("queryData: ", queryData); 
-
     let sql = `SELECT * FROM blood_sugar WHERE today=? AND _when=?`; 
     db.query(sql, [today, when], function (err, result) {
         if (err) {
@@ -175,13 +173,9 @@ exports.get_records_date = function (req, res) {
     let startDate = queryData.startDate; 
     let endDate = queryData.endDate; 
 
-    console.log("queryData: ", queryData); 
-
     let sql = `SELECT * FROM blood_sugar `
             + `WHERE today >='${startDate}' AND today <= '${endDate}' `
             + `ORDER BY today DESC`; 
-
-    console.log("sql: ", sql); 
 
     db.query(sql, function (err, result) {
         if (err) {
@@ -226,7 +220,6 @@ exports.get_records_today = function (req, res) {
 //=================================================================
 // requre URL:  /blood-sugar/when/:when
 //=================================================================
-//possible error point 
 // get data from the table by using when value
 exports.get_records_when = function (req, res) {
     let when = req.params.when; 
