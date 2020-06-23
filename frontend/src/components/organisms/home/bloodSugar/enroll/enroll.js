@@ -3,8 +3,8 @@ import { Button, DatePicker, Form, Radio, InputNumber, Input } from 'antd';
 import './enroll.scss';
 import moment from 'moment';
 import axios from 'axios';
-import { formatDate } from '../../../../../utils/formatDate.js';
 import { ToastContainer, toast } from 'react-toastify';
+import { formatDate } from '../../../../../utils/formatDate';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Enroll = () => {
@@ -38,7 +38,7 @@ const Enroll = () => {
       `http://miok.site:3001/api/blood-sugar/record/`,
       {
         params: {
-          today: today,
+          today,
           when: e.target.value,
         },
       },
@@ -71,10 +71,9 @@ const Enroll = () => {
     data.today = formatDate(data.today);
     console.log(data);
     if (isUpdate) {
-      // TODO 이쪽 부분 수정해야함
       const response = await axios
         .put(`http://miok.site:3001/api/blood-sugar/id/${dataID}`, data)
-        .catch((error) => {
+        .catch(() => {
           toast.error('에러가 났어요!');
         });
       toast.success('수정에 성공하였습니다!');
@@ -139,7 +138,11 @@ const Enroll = () => {
           />
         </Form.Item>
 
-        <Form.Item name="value" label="수치">
+        <Form.Item
+          name="value"
+          label="수치"
+          rules={[{ required: true, message: '수치를 선택해주세요' }]}
+        >
           <InputNumber min={0} max={800} />
         </Form.Item>
 

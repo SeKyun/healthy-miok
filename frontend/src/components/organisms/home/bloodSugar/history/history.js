@@ -1,10 +1,11 @@
+/* eslint-disable no-underscore-dangle */
 import React from 'react';
 import { DatePicker, Table, Button } from 'antd';
 import './history.scss';
 import moment from 'moment';
 import axios from 'axios';
-import { formatDate } from '../../../../../utils/formatDate.js';
 import { ToastContainer, toast } from 'react-toastify';
+import { formatDate } from '../../../../../utils/formatDate';
 import 'react-toastify/dist/ReactToastify.css';
 
 const { Column, ColumnGroup } = Table;
@@ -12,11 +13,11 @@ const { RangePicker } = DatePicker;
 
 const History = () => {
   const dateFormat = 'YYYY/MM/DD';
-  const start_date = new Date(new Date().setMonth(new Date().getMonth() - 3));
-  const end_date = new Date();
+  const startDate = new Date(new Date().setMonth(new Date().getMonth() - 3));
+  const endDate = new Date();
   const [dates, setDates] = React.useState([
-    moment(start_date, dateFormat),
-    moment(end_date, dateFormat),
+    moment(startDate, dateFormat),
+    moment(endDate, dateFormat),
   ]);
 
   const [dataSource, setdataSource] = React.useState([{}]);
@@ -30,14 +31,12 @@ const History = () => {
         },
       },
     );
-    console.log('데이터 수정됨?');
-    let arr = [];
-    let last_key = 0;
+    const arr = [];
     response.data.result.map((item) => {
       const idx = arr.findIndex((i) => i.date === item.today.substring(0, 10));
       if (idx === -1) {
         const temp = {
-          key: ++last_key,
+          key: item.today.substring(0, 10),
           date: item.today.substring(0, 10),
           [item._when]: item._value,
         };
@@ -60,8 +59,8 @@ const History = () => {
         <RangePicker
           size="large"
           defaultValue={[
-            moment(start_date, dateFormat),
-            moment(end_date, dateFormat),
+            moment(startDate, dateFormat),
+            moment(endDate, dateFormat),
           ]}
           onCalendarChange={(value) => {
             setDates(value);
@@ -73,7 +72,7 @@ const History = () => {
       </div>
       <Table
         dataSource={dataSource}
-        bordered={true}
+        bordered
         pagination={{ position: 'bottomCenter' }}
       >
         <Column title="날짜" dataIndex="date" key="date" />
