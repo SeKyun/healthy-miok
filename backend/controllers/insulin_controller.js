@@ -10,9 +10,8 @@ const url = require('url');
 // requre URL:  /insulin
 //=================================================================
 // register new data in the table
-//possible error point 
-// 이거 지속성이랑 .. 바꿔야함.; 하하 
 exports.register = function (req, res) {
+    let now = moment().format("YYYY-MM-DD HH:mm:ss"); 
     let req_data = {
         today: req.body.today, 
         _when: req.body.when, 
@@ -27,41 +26,40 @@ exports.register = function (req, res) {
     if (req_data._type === '지속성') {
         sql = `SELECT * FROM ${resource} WHERE today=? AND _type='지속성'`;
 
-        db.query(sql, [req_data.today], function (err, result) {
-            if (err) {
-                return res_handler.sendError(err, 500, res, resource); 
+        db.query(sql, [req_data.today], function (error, row) {
+            if (error) {
+                return res_handler.sendError(error, 500, res, "getting " + resource); 
             }
-            // 에러 말고 다른 응답..? 고민 
-            else if (result[0]) {
-                return res_handler.sendError(result[0], 409, res, resource); 
+
+            else if (row[0]) {
+                return res_handler.sendError(row[0], 409, res, resource); 
             }
-    
+
             // 기타 설정 
             if (req_data._when === '기타1' || req_data._when === '기타2') {
                 req_data.desc_etc = req.body.desc_etc; 
             }
     
-            // _time, _date 설정
-            let now = moment(); 
-            req_data.edited = now.format('YYYY-MM-DD HH:mm:ss'); 
+            // _date 설정
+            req_data.edited = now; 
             sql = `INSERT INTO ${resource} SET ?`; 
             db.query(sql, req_data, function (err, result) {
                 if (err) {
                     return res_handler.sendError(err, 500, res, "creating " + resource); 
                 }
     
-                return res_handler.sendSuccess(result, 201, res, "creating " + resource); 
+                return res_handler.sendSuccess(result, 201, res, resource); 
             });     
     
         });
-    }
+    } // 지속성 등록 끝
     else {
         sql = `SELECT * FROM ${resource} WHERE today=? AND _type='속효성' AND _when=?`; 
         db.query(sql, [req_data.today, req_data._when], function (err, result) {
             if (err) {
-                return res_handler.sendError(err, 500, res, resource); 
+                return res_handler.sendError(err, 500, res, "getting " + resource); 
             }
-            // 에러 말고 다른 응답..? 고민 
+
             else if (result[0]) {
                 return res_handler.sendError(result[0], 409, res, resource); 
             }
@@ -71,23 +69,19 @@ exports.register = function (req, res) {
                 req_data.desc_etc = req.body.desc_etc; 
             }
     
-            // _time, _date 설정
-            let now = moment(); 
-            req_data.edited = now.format('YYYY-MM-DD HH:mm:ss'); 
+            //_date 설정
+            req_data.edited = now; 
             sql = `INSERT INTO ${resource} SET ?`; 
             db.query(sql, req_data, function (err, result) {
                 if (err) {
                     return res_handler.sendError(err, 500, res, "creating " + resource); 
                 }
     
-                return res_handler.sendSuccess(result, 201, res, "creating " + resource); 
+                return res_handler.sendSuccess(result, 201, res, resource); 
             });     
     
         });
-    }
-    
-
-    
+    } // 속효성 등록 끝
 }
 
 // get all the data in the table 
@@ -100,10 +94,10 @@ exports.get_all = function (req, res) {
         }
 
         if (! result[0]) {
-            return res_handler.sendSuccess(result, 204, "getting " + res, resource); 
+            return res_handler.sendSuccess(result, 204, res, resource); 
         }
 
-        return res_handler.sendSuccess(result, 200, res, "getting " + resource); 
+        return res_handler.sendSuccess(result, 200, res, resource); 
     });  
 }
 
@@ -115,7 +109,7 @@ exports.delete_all = function (req, res) {
             return res_handler.sendError(err, 500, res, "deleting " + resource); 
         }
 
-        return res_handler.sendSuccess(result, 204, res, "deleting " + resource); 
+        return res_handler.sendSuccess(result, 204, res, resource); 
     })
 }
 
@@ -130,7 +124,7 @@ exports.get_record_id = function (req, res) {
     let sql = `SELECT * FROM ${resource} WHERE id=?`; 
     db.query(sql, [id], function (err, result) {
         if (err) {
-            return res_handler.sendError(err, 500, res, resource); 
+            return res_handler.sendError(err, 500, res, "getting " + resource); 
         }
         else if (! result[0]) {
             return res_handler.sendSuccess(result, 204, res, resource); 
@@ -141,24 +135,26 @@ exports.get_record_id = function (req, res) {
 // update data in the table by using parameter /id/:id 
 exports.update_record_id = function (req, res) {
     let id = req.params.id; 
-    let now = moment(); 
+    let now = moment().format("YYYY-MM-DD HH:mm:ss"); 
+    let type = req.body.type; 
+
     let req_data = {
-        _time: req.body.time, 
-        desc_etc: req.body.desc_etc,
-        _name: req.body.name,
+        desc_etc: req.body.desc_etc, 
+        _time: req.body.time,
+        _name: req.body.name, 
         unit: req.body.unit, 
         memo: req.body.memo,
-        edited: now.format("YYYY-MM-DD HH:mm:ss")
+        edited: now
     }
-
     let sql = `UPDATE ${resource} SET ? WHERE id=?`; 
+    if (type === '지속성') {
+        req_data._when = req.body.when;
+    }
     db.query(sql, [req_data, id], function (err, result) {
         if (err) {
-            return res_handler.sendError(err, 500, res, resource); 
+            return res_handler.sendError(err, 500, res, "updating " + resource); 
         }
-        
-        return res_handler.sendSuccess(result, 204, res, "update"); 
-        
+        return res_handler.sendSuccess(result, 204, res, resource); 
     })
 }
 // delete data in the table by using parameter /id/:id
@@ -185,10 +181,7 @@ exports.get_record_short = function (req, res) {
     let today = queryData.today; 
     let when = queryData.when; 
 
-    console.log("queryData: ", queryData); 
-
     let sql = `SELECT * FROM ${resource} WHERE today=? AND _type='속효성' AND _when=?`; 
-    console.log(sql); 
 
     db.query(sql, [today, when], function (err, result) {
         if (err) {
@@ -197,10 +190,10 @@ exports.get_record_short = function (req, res) {
         console.log(result[0]); 
         
         if (! result[0]) {
-            return res_handler.sendSuccess(result, 204, res, "getting " + resource); 
+            return res_handler.sendSuccess(result, 204, res, resource); 
         }
 
-        return res_handler.sendSuccess(result, 200, res, "getting " + resource); 
+        return res_handler.sendSuccess(result, 200, res, resource); 
     })
 }
 
@@ -212,18 +205,17 @@ exports.get_record_long = function (req, res) {
     let today = queryData.today; 
     
     let sql = `SELECT * FROM ${resource} WHERE today=? AND _type='지속성'`; 
-    console.log(sql); 
-    
+
     db.query(sql, [today], function (err, result) {
         if (err) {
             return res_handler.sendError(err, 500, res, "getting " + resource); 
         }
 
         if (! result[0]) {
-            return res_handler.sendSuccess(result, 204, res, "getting " + resource); 
+            return res_handler.sendSuccess(result, 204, res, resource); 
         }
 
-        return res_handler.sendSuccess(result, 200, res, "getting " + resource); 
+        return res_handler.sendSuccess(result, 200, res, resource); 
     })
 
 }
@@ -244,22 +236,13 @@ exports.get_records_date = function (req, res) {
             + `WHERE today >='${startDate}' AND today <= '${endDate}' `
             + `ORDER BY today DESC`; 
 
-    console.log("sql: ", sql); 
-
     db.query(sql, function (err, result) {
         if (err) {
-            return res_handler.sendError(err, 500, res, resource); 
+            return res_handler.sendError(err, 500, res, "getting " + resource); 
         }
 
         else if (! result[0]) {
             return res_handler.sendSuccess(result, 204, res, resource); 
-        }
-        
-        // 시간 변형해서 넣어주기 
-        for(let i = 0; i < result.length; i++) {
-            let today = result[i].today; 
-            today = moment(today).format('YYYY-MM-DD'); 
-            result[i].today = today; 
         }
 
         return res_handler.sendSuccess(result, 200, res, resource); 
@@ -279,7 +262,7 @@ exports.get_records_today = function (req, res) {
 
     db.query(sql, [today], function (err, result) {
         if (err) {
-            return res_handler.sendError(err, 500, res, resource); 
+            return res_handler.sendError(err, 500, res, "getting " + resource); 
         }
         
         else if (! result[0]) {
@@ -296,7 +279,6 @@ exports.get_records_today = function (req, res) {
 //=================================================================
 // requre URL:  /insulin/when/:when
 //=================================================================
-//possible error point 
 // get data from the table by using when value
 exports.get_records_when = function (req, res) {
     let when = req.params.when; 
@@ -308,10 +290,10 @@ exports.get_records_when = function (req, res) {
         }
 
         else if(! result[0]) {
-            return res_handler.sendSuccess(result, 204, res, "getting " + resource);  
+            return res_handler.sendSuccess(result, 204, res, resource);  
         }
 
-        return res_handler.sendSuccess(result, 200, res, "getting " + resource); 
+        return res_handler.sendSuccess(result, 200, res, resource); 
     })
 }
 
