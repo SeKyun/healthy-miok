@@ -238,7 +238,11 @@ const Enroll = () => {
           memo: null,
         }}
       >
-        <Form.Item name="today" wrapperCol={{ offset: 11 }}>
+        <Form.Item
+          name="today"
+          wrapperCol={{ offset: 11 }}
+          rules={[{ required: true, message: '날짜를 선택해주세요' }]}
+        >
           <DatePicker
             size="large"
             style={{
@@ -249,7 +253,11 @@ const Enroll = () => {
             onChange={onChangeToday}
           />
         </Form.Item>
-        <Form.Item name="type" label="타입">
+        <Form.Item
+          name="type"
+          label="타입"
+          rules={[{ required: true, message: '타입을 선택해주세요' }]}
+        >
           <Select
             style={{ width: '50%', margin: '0px' }}
             onChange={onChangeSelectType}
@@ -262,7 +270,10 @@ const Enroll = () => {
             </Option>
           </Select>
         </Form.Item>
-        <Form.Item label="종류">
+        <Form.Item
+          label="종류"
+          rules={[{ required: true, message: '종류를 선택해주세요' }]}
+        >
           <div style={{ display: 'flex', alignItems: 'flex-end' }}>
             <Form.Item name="name" noStyle>
               <Select
@@ -291,7 +302,11 @@ const Enroll = () => {
             />
           </div>
         </Form.Item>
-        <Form.Item name="when" label="시기">
+        <Form.Item
+          name="when"
+          label="시기"
+          rules={[{ required: true, message: '시기를 선택해주세요' }]}
+        >
           <Radio.Group onChange={whenChange} disabled={iswhenDisable}>
             <Radio value="아침 식전">아침식전</Radio>
             <Radio value="점심 식전">점심식전</Radio>
@@ -307,11 +322,19 @@ const Enroll = () => {
             disabled={etcDisable}
           />
         </Form.Item>
-        <Form.Item name="time" label="시간">
+        <Form.Item
+          name="time"
+          label="시간"
+          rules={[{ required: true, message: '시간을 선택해주세요' }]}
+        >
           <TimePicker size="large" format={'h:mm a'} />
         </Form.Item>
 
-        <Form.Item name="unit" label="단위">
+        <Form.Item
+          name="unit"
+          label="단위"
+          rules={[{ required: true, message: '단위를 선택해주세요' }]}
+        >
           <InputNumber size="large" />
         </Form.Item>
 
