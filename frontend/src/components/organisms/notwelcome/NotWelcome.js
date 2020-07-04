@@ -1,7 +1,8 @@
 import React from 'react';
 import './NotWelcome.scss';
 import { Button } from 'antd';
-import history from '../pages/history';
+import history from '../../pages/history';
+
 const NotWelcome = () => {
   return (
     <div className="NotWelcome">

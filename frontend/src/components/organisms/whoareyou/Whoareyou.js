@@ -1,9 +1,17 @@
 import React from 'react';
 import 'antd/dist/antd.css';
 import { Input } from 'antd';
-import history from '../pages/history';
 import './Whoareyou.scss';
+import history from '../../pages/history';
+
 const Whoareyou = () => {
+  const searchFunc = (value) => {
+    if (value === '박미옥') {
+      history.push('/secondpage');
+    } else {
+      history.push('/Error');
+    }
+  };
   const { Search } = Input;
   return (
     <div className="Whoareyou">
@@ -15,11 +23,7 @@ const Whoareyou = () => {
             placeholder="이름을 입력하세요"
             enterButton="확인"
             size="middle"
-            onSearch={(value) => {
-              value === '박미옥'
-                ? history.push('/secondpage')
-                : history.push('/Error');
-            }}
+            onSearch={searchFunc}
           />
         </div>
       </div>

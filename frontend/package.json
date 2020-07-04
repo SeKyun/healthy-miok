@@ -17,6 +17,7 @@
     "less-loader": "5.0.0",
     "moment": "^2.25.3",
     "node-sass": "^4.13.1",
+    "prop-types": "^15.7.2",
     "querystring": "^0.2.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -35,13 +36,15 @@
   },
   "eslintConfig": {
     "extends": [
-      "airbnb",
+      "react-app",
+      "eslint:recommended",
       "prettier"
     ],
     "rules": {
       "react/prefer-stateless-function": 0,
       "react/jsx-filename-extension": 0,
-      "react/jsx-one-expression-per-line": 0
+      "react/jsx-one-expression-per-line": 0,
+      "no-console": 0
     },
     "env": {
       "browser": true
