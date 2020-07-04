@@ -218,12 +218,17 @@ exports.get_records_today = function (req, res) {
 
 // **graph api **
 //=================================================================
-// requre URL:  /blood-sugar/when/:when
+// requre URL:  /blood-sugar/when/:when?startDate=?&endDate=?
 //=================================================================
 // get data from the table by using when value
 exports.get_records_when = function (req, res) {
     let when = req.params.when; 
-    let sql = `SELECT id, today, _when, _value FROM blood_sugar WHERE _when LIKE '%${when}'`;
+    var queryData = url.parse(req.url, true).query; 
+    let startDate = queryData.startDate; 
+    let endDate = queryData.endDate; 
+    let sql = `SELECT id, today, _when, _value FROM blood_sugar `
+            + `WHERE _when LIKE '%${when}' AND today >= ${startDate} AND today <= ${endDate} `
+            + `ORDER BY today`;
 
     db.query(sql, function (err, result) {
         if (err) {
@@ -231,10 +236,10 @@ exports.get_records_when = function (req, res) {
         }
 
         else if(! result[0]) {
-            return res_handler.sendSuccess(result, 204, res, "getting " + resource);  
+            return res_handler.sendSuccess(result, 204, res, resource);  
         }
 
-        return res_handler.sendSuccess(result, 200, res, "getting " + resource); 
+        return res_handler.sendSuccess(result, 200, res, resource); 
     })
 }
 
