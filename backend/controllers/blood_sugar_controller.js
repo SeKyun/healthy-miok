@@ -223,11 +223,11 @@ exports.get_records_today = function (req, res) {
 // get data from the table by using when value
 exports.get_records_when = function (req, res) {
     let when = req.params.when; 
-    var queryData = url.parse(req.url, true).query; 
+    let queryData = url.parse(req.url, true).query; 
     let startDate = queryData.startDate; 
     let endDate = queryData.endDate; 
     let sql = `SELECT id, today, _when, _value FROM blood_sugar `
-            + `WHERE _when LIKE '%${when}' AND today >= ${startDate} AND today <= ${endDate} `
+            + `WHERE _when LIKE '%${when}' AND today >='${startDate}' AND today <= '${endDate}' `
             + `ORDER BY today`;
 
     db.query(sql, function (err, result) {
