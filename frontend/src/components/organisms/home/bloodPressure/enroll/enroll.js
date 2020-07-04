@@ -34,33 +34,53 @@ const enroll = () => {
           time: moment(new Date(), 'HH:MM'),
         }}
       >
-        <Form.Item wrapperCol={{ offset: 11 }} name="today">
+        <Form.Item
+          wrapperCol={{ offset: 11 }}
+          name="today"
+          rules={[{ required: true, message: '날짜를 선택해주세요' }]}
+        >
           <DatePicker
             size="large"
             style={{
-              margin: '5% 0px 8% 0px',
+              margin: '5% 0px 0px 0px',
               fontSize: '40px',
             }}
             className="datePic"
           />
         </Form.Item>
-        <Form.Item label="시간" name="time">
+        <Form.Item
+          label="시간"
+          name="time"
+          rules={[{ required: true, message: '시간을 선택해주세요' }]}
+        >
           <TimePicker size="large" format={'h:mm a'} />
         </Form.Item>
         <Form.Item label="혈압 수축">
-          <Form.Item name="value_high" noStyle>
+          <Form.Item
+            name="value_high"
+            noStyle
+            rules={[{ required: true, message: '혈압 수축을 선택해주세요' }]}
+          >
             <InputNumber size="large" />
           </Form.Item>
           <span className="ant-form-text"> mmHg</span>
         </Form.Item>
         <Form.Item label="혈압 이완">
-          <Form.Item name="value_low" noStyle>
+          <Form.Item
+            name="value_low"
+            noStyle
+            rules={[{ required: true, message: '혈압 이완을 선택해주세요' }]}
+          >
             <InputNumber size="large" />
           </Form.Item>
           <span className="ant-form-text"> mmHg</span>
         </Form.Item>
         <Form.Item label="심박수">
-          <Form.Item name="value_bpm" noStyle>
+          <Form.Item
+            name="value_bpm"
+            noStyle
+            rules={[{ required: true, message: '심박수를 선택해주세요' }]}
+          >
             <InputNumber size="large" />
           </Form.Item>
           <span className="ant-form-text"> bpm</span>

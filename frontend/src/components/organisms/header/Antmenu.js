@@ -1,8 +1,9 @@
 import React from 'react';
 import { Menu } from 'antd';
+import PropTypes from 'prop-types';
 import './Antmenu.scss';
-const Antmenu = (props) => {
-  const { func } = props;
+
+const Antmenu = ({ func }) => {
   return (
     <div>
       <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['0']}>
@@ -41,6 +42,10 @@ const Antmenu = (props) => {
       </Menu>
     </div>
   );
+};
+
+Antmenu.propTypes = {
+  func: PropTypes.func.isRequired,
 };
 
 export default Antmenu;
