@@ -168,3 +168,55 @@ exports.get_records_today = function (req, res) {
             return res_handler.sendSuccess(result, 200, res, resource); 
         })
 }
+
+// ** graph page api **
+//=================================================================
+// requre URL:  /blood-pressure/graph?startDate=?&endDate=?
+//=================================================================
+// get data from the table by using today value
+exports.get_records_graph = function (req, res) {
+    let queryData = req.query; 
+    let startDate = queryData.startDate; 
+    let endDate = queryData.endDate; 
+
+    console.log("body: ", req.body); 
+    let req_data = {
+        high: req.body.high, 
+        low: req.body.low, 
+        bpm: req.body.bpm
+    }
+
+    let sql = `SELECT today, value_high, value_low, value_bpm `
+            + `FROM ${resource} ` 
+            + `WHERE today >= '${startDate}' AND today <= '${endDate}' `
+            + `ORDER BY today`; 
+
+    db.query(sql, function(err, rows) {
+        if (err) {
+            return res_handler.sendError(err, 500, res, "getting " + resource); 
+        }
+
+        if (! rows[0]) {
+            return res_handler.sendSuccess(rows, 204, res, resource); 
+        }
+        
+        //데이터 가공
+        let result = []; 
+        for(let i = 0; i < rows.length; i++) {
+            let row = rows[i]; 
+            let data = { id: i, today: row.today }; 
+            if (req_data.high === true) {
+                data['high'] = row.value_high; 
+            }
+            if (req_data.low === true) {
+                data['low'] = row.value_low; 
+            }
+            if (req_data.bpm === true) {
+                data['bpm'] = row.value_bpm; 
+            }
+            result.push(data); 
+        }
+            return res_handler.sendSuccess(result, 200, res, resource); 
+        })
+
+}
