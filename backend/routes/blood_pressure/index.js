@@ -24,7 +24,8 @@ router.delete('/id/:id', controller.delete_record_id);
 router.get('/date/:today', controller.get_records_today); 
 /** GET blood pressure data between start date and end date*/
 router.get('/date', controller.get_records_date);  
-
+/** GET blood pressure graph data between start date and end date */
+router.get('/graph', controller.get_records_graph); 
 
 /** GET blood pressure statistics result between start date and end date */
 // router.get('/statistics', controller.get_statistics_date); 
