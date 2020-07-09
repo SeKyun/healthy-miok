@@ -1,73 +1,42 @@
 import React, { useState } from 'react';
 import { Radio, DatePicker, Button } from 'antd';
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from 'recharts';
 import axios from 'axios';
 import './graph.scss';
-
+import CustomChart from './CustomChart';
+import CustomChart2 from './CustomChart2';
+import CustomChart3 from './CustomChart3';
 const { RangePicker } = DatePicker;
-const data = [
-  {
-    name: 'Page A',
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
-  },
-  {
-    name: 'Page B',
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
-  },
-  {
-    name: 'Page C',
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
-  },
-  {
-    name: 'Page D',
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
-  },
-  {
-    name: 'Page E',
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
-  },
-  {
-    name: 'Page F',
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
-  },
-  {
-    name: 'Page G',
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
-  },
-];
+
 const Graph = () => {
   const [whenData, setWhenData] = useState('');
   const [stTime, setstTime] = useState('');
   const [edTime, setedTime] = useState('');
+  const [data, setData] = useState([]);
   const onChangeFunc = (e) => {
     setWhenData(e.target.value);
   };
   const onChange = (value, dateString) => {
     setstTime(dateString[0]);
     setedTime(dateString[1]);
+  };
+  const project = () => {
+    switch (whenData) {
+      case '기상 직후':
+      case '취침 전':
+      case '새벽':
+        return <CustomChart data={data} idx={whenData} />;
+      case '식전':
+      case '식후':
+        return <CustomChart2 data={data} idx={whenData} />;
+      case '전체':
+        return <CustomChart3 data={data} idx={whenData} />;
+      default:
+        return (
+          <div style={{ textAlign: 'center', margin: '0 auto' }}>
+            데이터를 선택해주세요
+          </div>
+        );
+    }
   };
   const getData = async () => {
     console.log(whenData);
@@ -83,6 +52,7 @@ const Graph = () => {
       },
     );
     console.log(response);
+    setData(response.data.result);
   };
   return (
     <div className="sugar-graph">
@@ -104,30 +74,7 @@ const Graph = () => {
         </div>
         <Button onClick={getData}>확인</Button>
       </div>
-      <ResponsiveContainer width={1200} height={600}>
-        <LineChart
-          data={data}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Line
-            type="monotone"
-            dataKey="pv"
-            stroke="#8884d8"
-            activeDot={{ r: 8 }}
-          />
-          <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
-        </LineChart>
-      </ResponsiveContainer>
+      {project()}
     </div>
   );
 };

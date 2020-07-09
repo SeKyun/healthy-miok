@@ -117,17 +117,18 @@ const Enroll = () => {
           label="시기"
           rules={[{ required: true, message: '측정 시기를 선택해주세요' }]}
         >
-          <Radio.Group onChange={onChange}>
+          <Radio.Group onChange={onChange} buttonStyle="solid">
             <Radio.Button value="기상 직후">기상 직후</Radio.Button>
             <Radio.Button value="아침 식전">아침 식전</Radio.Button>
             <Radio.Button value="점심 식전">점심 식전</Radio.Button>
             <Radio.Button value="저녁 식전">저녁 식전</Radio.Button>
-            <Radio.Button value="취침 전">취침 전</Radio.Button>
-            <Radio.Button value="새벽">새벽</Radio.Button>
+            <Radio.Button value="기타">기타</Radio.Button>
+            <br />
             <Radio.Button value="아침 식후">아침 식후</Radio.Button>
             <Radio.Button value="점심 식후">점심 식후</Radio.Button>
             <Radio.Button value="저녁 식후">저녁 식후</Radio.Button>
-            <Radio.Button value="기타">기타</Radio.Button>
+            <Radio.Button value="취침 전">취침 전</Radio.Button>
+            <Radio.Button value="새벽">새벽</Radio.Button>
           </Radio.Group>
         </Form.Item>
 
