@@ -9,35 +9,43 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
-const CustomChart3 = ({ data, idx }) => {
+const CustomChart = ({ data, idx }) => {
   return (
     <>
-      <ResponsiveContainer width="80%" height={600}>
+      <ResponsiveContainer width="50%" height={600}>
         <LineChart
           data={data}
           margin={{
             top: 5,
-            right: 30,
+            right: 20,
             left: 20,
             bottom: 5,
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="today" name="날짜" />
+          <XAxis dataKey="today" name="날짜"></XAxis>
           <YAxis />
           <Tooltip />
-          <Legend iconSize={50} />
+
           <Line
             type="monotone"
-            dataKey="_value"
-            stroke="#000000"
+            dataKey="수치"
+            stroke="#FF4500"
             activeDot={{ r: 8 }}
-            name="수치"
+            name="혈당"
           />
+          <Line
+            type="monotone"
+            dataKey="수치"
+            stroke="#0000FF"
+            activeDot={{ r: 8 }}
+            name="인슐린"
+          />
+          <Legend iconSize={50} />
         </LineChart>
       </ResponsiveContainer>
     </>
   );
 };
 
-export default CustomChart3;
+export default CustomChart;

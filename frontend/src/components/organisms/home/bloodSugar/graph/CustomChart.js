@@ -26,7 +26,7 @@ const CustomChart = ({ data, idx }) => {
           <XAxis dataKey="today" name="날짜" />
           <YAxis />
           <Tooltip />
-          <Legend />
+          <Legend iconSize={50} />
           <Line
             type="monotone"
             dataKey={idx}
