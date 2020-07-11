@@ -277,24 +277,142 @@ exports.get_records_today = function (req, res) {
 
 // **graph api **
 //=================================================================
-// requre URL:  /insulin/when/:when
+// requre URL:  /insulin/graph
 //=================================================================
 // get data from the table by using when value
-exports.get_records_when = function (req, res) {
-    let when = req.params.when; 
-    let sql = `SELECT id, today, _when, _time, _name, _type, unit FROM ${resource} WHERE _when LIKE '%${when}'`;
+exports.get_records_graph = function (req, res) {
+    let dates = req.body.dates; // 배열
+    let graph_cnt = req.body.cnt; // 몇개의 그래프 인지 
+    let arr = []; 
+    let sql1; 
+    let sql2; 
 
-    db.query(sql, function (err, result) {
-        if (err) {
-            return res_handler.sendError(err, 500, res, "getting " + resource); 
+    switch(graph_cnt) {
+        case 1:
+            sql1 = `SELECT today, _when, _value FROM blood_sugar WHERE today='${dates[0]}' ORDER BY today DESC`;
+            sql2 = `SELECT today, _when, _type, unit, _time, desc_etc FROM ${resource} WHERE today='${dates[0]}' ORDER BY today DESC`;
+            arr.push(dates[0]); 
+            break; 
+        case 2:
+            sql1 = `SELECT today, _when, _value FROM blood_sugar WHERE today='${dates[0]}' OR today='${dates[1]}' ORDER BY today DESC`;
+            sql2 = `SELECT today, _when, _type, unit, _time, desc_etc FROM ${resource} WHERE today='${dates[0]}' OR today='${dates[1]}' ORDER BY today DESC`;
+            arr.push(dates[0]); 
+            arr.push(dates[1]); 
+            break; 
+        case 3:
+            sql1 = `SELECT today, _when, _value FROM blood_sugar WHERE today='${dates[0]}' OR today='${dates[1]}' OR today='${dates[2]}' ORDER BY today DESC`; 
+            sql2 = `SELECT today, _when, _type, unit, _time, desc_etc FROM ${resource} WHERE today='${dates[0]}' OR today='${dates[1]}' OR today='${dates[2]}' ORDER BY today DESC`;
+            arr.push(dates[0]); 
+            arr.push(dates[1]); 
+            arr.push(dates[2]); 
+            break; 
+        case 4:
+            sql1 = `SELECT today, _when, _value FROM blood_sugar WHERE today='${dates[0]}' OR today='${dates[1]}' OR today='${dates[2]}' OR today='${dates[3]}' ORDER BY today DESC`;  
+            sql2 = `SELECT today, _when, _type, unit, _time, desc_etc FROM ${resource} WHERE today='${dates[0]}' OR today='${dates[1]}' OR today='${dates[2]}' OR today='${dates[3]}' ORDER BY today DESC`;
+            arr.push(dates[0]); 
+            arr.push(dates[1]); 
+            arr.push(dates[2]); 
+            arr.push(dates[3]); 
+            break; 
+    }
+    arr.sort(); 
+    arr.reverse(); 
+
+    let result = []; 
+    for(let i = 0; i < arr.length; i++) {
+        result.push({id: i, today: arr[i], blood_sugar: {}, long: {}, short: {}}); 
+    }
+
+    // 혈당
+    db.query(sql1, function(err1, rows1) {
+        if (err1) {
+            return res_handler.sendError(err1, 500, res, "blood_sugar"); 
         }
+        // console.log("rows1 today: ", rows1[0].today); 
+        // console.log("len****:", Object.keys(rows1).length); 
+        // 인슐린
+        db.query(sql2, function(err2, rows2) {
+            if (err2) {
+                return res_handler.sendError(err2, 500, res, "insulin"); 
+            }
 
-        else if(! result[0]) {
-            return res_handler.sendSuccess(result, 204, res, resource);  
-        }
+            // console.log("rows2:", rows2[0]); 
+            let cnt1 = 0; 
+            let cnt2 = 0; 
+            for(let i = 0; i < result.length; i++) {
+                let date = result[i].today; 
+                while( cnt1 < Object.keys(rows1).length && rows1[cnt1].today === date) {
+                    let row = rows1[cnt1]; 
+                    result[i]['blood_sugar'][row._when] = row._value; 
+                    // console.log("*****cnt1:", cnt1); 
+                    cnt1 ++; 
+                    
+                }
+                while(cnt2 < Object.keys(rows2).length && rows2[cnt2].today === date) {
+                    let row = rows2[cnt2]; 
+                    if (row._type === '지속성')
+                        result[i]['long']['아침 식전'] = row.unit; 
+                    else {
+                        result[i]['short'][row._when] = row.unit; 
+                    }
+                    cnt2 ++; 
+                }
+            }
 
-        return res_handler.sendSuccess(result, 200, res, resource); 
+            // console.log("result: ", result); 
+            return res_handler.sendSuccess(result, 200, res, "blood_sugar & insulin"); 
+        })
     })
+
+    // let result = []; 
+    // let id = 0; 
+    // for(let idx in dates) {
+    //     let sql1 = `SELECT _when, _value FROM blood_sugar WHERE today='${dates[idx]}'`; 
+    //     let sql2 = `SELECT _when, _type, unit, _time, desc_etc FROM ${resource} WHERE today='${dates[idx]}'`; 
+
+    //     let inner_result = { id: id++, today: dates[idx], blood_sugar: {}, insulin: {}}; 
+    //     //혈당 
+    //     db.query(sql1, function (err, rows) {
+            
+    //         if (err) {
+    //             return res_handler.sendError(err, 500, res, "blood_sugar"); 
+    //         }
+
+    //         for(let i = 0; i < rows.length; i++) {
+    //             inner_result['blood_sugar'][rows[i]._when] = rows[i]._value; 
+    //         }
+    //         // 인슐린
+    //     db.query(sql2, function (err, rows) {
+    //         if (err) {
+    //             return res_handler.sendError(err, 500, res, resource); 
+    //         }
+            
+    //         for(let i = 0; i < rows.length; i++) {
+                
+    //             let row = rows[i]; 
+    //             console.log(row); 
+    //             if (row._type === '지속성') {
+    //                 inner_result['insulin']['지속성'] = row.unit; 
+    //             }
+    //             else {
+    //                 inner_result['insulin'][row._when] = row.unit; 
+    //             }
+    //         }
+    //         console.log("inner_result: ", inner_result); 
+
+    //     })
+
+        
+    //     console.log(result); 
+    //     })
+        
+    //     result.push(inner_result);
+        
+    //     // console.log("inner_result:", inner_result); 
+         
+    // } 
+
+    // return res_handler.sendSuccess(result, 200, res, resource); 
 }
 
 
