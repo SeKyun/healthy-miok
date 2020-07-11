@@ -2,27 +2,39 @@ import React, { useState } from 'react';
 import { DatePicker, Button } from 'antd';
 import CustomChart from './CustomChart';
 import axios from 'axios';
+import { countDate, newArray } from '../../../../../utils/countDate';
 
 const Graph = () => {
-  const [data1, setData1] = useState();
-  const [data2, setData2] = useState();
-  const [data3, setData3] = useState();
-  const [data4, setData4] = useState();
+  const [date1, setDate1] = useState('');
+  const [date2, setDate2] = useState('');
+  const [date3, setDate3] = useState('');
+  const [date4, setDate4] = useState('');
+  const [arrData, setArrData] = useState();
+
   const onChange1 = (date, dateString) => {
-    setData1(dateString);
+    setDate1(dateString);
   };
   const onChange2 = (date, dateString) => {
-    setData2(dateString);
+    setDate2(dateString);
   };
   const onChange3 = (date, dateString) => {
-    setData3(dateString);
+    setDate3(dateString);
   };
   const onChange4 = (date, dateString) => {
-    setData4(dateString);
+    setDate4(dateString);
   };
   const getData = async () => {
-    const response = await axios.post();
+    const cnt = countDate(date1, date2, date3, date4);
+    const data = {
+      dates: newArray(date1, date2, date3, date4),
+      cnt: cnt,
+    };
+    const response = await axios.post(
+      'http://miok.site:3001/api/insulin/graph',
+      data,
+    );
     console.log(response);
+    setArrData(response.data.result);
   };
   return (
     <div>
@@ -42,12 +54,28 @@ const Graph = () => {
         </Button>
       </div>
       <div style={{ display: 'flex' }}>
-        <CustomChart data={data1} idx={1} />
-        <CustomChart data={data2} idx={2} />
+        <CustomChart
+          data={arrData?.[0].data}
+          idx={1}
+          long={arrData?.[0].long}
+        />
+        <CustomChart
+          data={arrData?.[1].data}
+          idx={2}
+          long={arrData?.[1].long}
+        />
       </div>
       <div style={{ display: 'flex' }}>
-        <CustomChart data={data3} idx={3} />
-        <CustomChart data={data4} idx={4} />
+        <CustomChart
+          data={arrData?.[2].data}
+          idx={3}
+          long={arrData?.[2].long}
+        />
+        <CustomChart
+          data={arrData?.[3].data}
+          idx={4}
+          long={arrData?.[3].long}
+        />
       </div>
     </div>
   );
