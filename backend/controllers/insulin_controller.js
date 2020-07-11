@@ -378,7 +378,7 @@ exports.get_records_graph = function (req, res) {
                 while(cnt2 < Object.keys(rows2).length && rows2[cnt2].today === date) {
                     let row = rows2[cnt2]; 
                     if (row._type === '지속성')
-                        result[i]['data'][when_dic['아침 식전']]['long'] = row.unit; 
+                        result[i]['long'] = row.unit; 
                     else {
                         result[i]['data'][when_dic[row._when]]['short'] = row.unit; 
                     }
