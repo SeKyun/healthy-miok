@@ -28,7 +28,7 @@ router.get('/record/long', controller.get_record_long);
 router.get('/date', controller.get_records_date);  
 /** GET insulin data of a specific today date */
 router.get('/date/:today', controller.get_records_today); 
-/** GET the insulin data by when data */
-router.get('/when/:when', controller.get_records_when)
+/** GET the insulin data for the graph (POST) */
+router.post('/graph', controller.get_records_graph);
 
 module.exports = router; 
