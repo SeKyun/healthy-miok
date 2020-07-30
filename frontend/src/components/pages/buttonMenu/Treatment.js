@@ -1,7 +1,8 @@
 import React from 'react';
+import TreatmentWrapper from '../../organisms/home/treatment/Treatment';
 
 const Treatment = () => {
-  return <div>치료페이지입니다.</div>;
+  return <TreatmentWrapper />;
 };
 
 export default Treatment;
