@@ -35,6 +35,14 @@ const TreatmentMenu = (props) => {
             func(3);
           }}
         >
+          처방전 등록
+        </Menu.Item>
+        <Menu.Item
+          key="4"
+          onClick={() => {
+            func(4);
+          }}
+        >
           약 정보
         </Menu.Item>
       </Menu>

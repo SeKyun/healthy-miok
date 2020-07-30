@@ -3,6 +3,7 @@ import MedicineEnroll from './medicineEnroll/MedicineEnroll';
 import TreatmentEnroll from './treatmentEnroll/TreatmentEnroll';
 import History from './history/History';
 import Info from './info/Info';
+import Chubang from './chubangEnroll/Chubang';
 
 const TreatmentSelectMenu = (props) => {
   const { menuIdx } = props;
@@ -13,6 +14,8 @@ const TreatmentSelectMenu = (props) => {
     return <TreatmentEnroll />;
   } else if (menuIdx === 2) {
     return <History />;
+  } else if (menuIdx === 3) {
+    return <Chubang />;
   } else {
     return <Info />;
   }
