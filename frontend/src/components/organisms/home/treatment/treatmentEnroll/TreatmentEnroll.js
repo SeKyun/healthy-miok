@@ -10,6 +10,7 @@ import {
   Modal,
 } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import './TreatmentEnroll.scss';
 
 const { RangePicker } = DatePicker;
 const TreatmentEnroll = () => {
@@ -28,7 +29,7 @@ const TreatmentEnroll = () => {
 
   const [state, setState] = React.useState(false);
   return (
-    <div>
+    <div className="TreatmentEnroll">
       <Form
         {...layout}
         name="basic"
@@ -36,11 +37,7 @@ const TreatmentEnroll = () => {
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
       >
-        <Form.Item
-          label="날짜"
-          name="날짜"
-          rules={[{ required: true, message: '날짜를 입력해주세요!' }]}
-        >
+        <Form.Item label="날짜" name="날짜">
           <DatePicker />
         </Form.Item>
         <Form.Item label="시간">
@@ -50,15 +47,16 @@ const TreatmentEnroll = () => {
           <Button
             type="primary"
             shape="circle"
+            style={{ margin: '0 2rem 0 0' }}
             icon={<PlusOutlined />}
             onClick={() => {
               setState(true);
             }}
           />
-          <Select />
+          <Select style={{ width: '50%' }} />
         </Form.Item>
         <Form.Item label="메모">
-          <Input.TextArea />
+          <Input.TextArea style={{ width: '50%' }} />
         </Form.Item>
       </Form>
       <Modal
@@ -71,25 +69,8 @@ const TreatmentEnroll = () => {
         okText={'확인'}
         footer={null}
       >
-        <p>이름</p>
-        <Input placeholder="새로운 처치 이름을 입력하세요."></Input>
-        <p>기간</p>
-        <RangePicker />
-        <p>주기</p>
-        <Radio.Group defaultValue={'1'}>
-          <Radio value="매일">매일</Radio>
-          <Radio value="특정요일">특정요일</Radio>
-          <Radio value="특정날짜">특정날짜</Radio>
-          <Radio value="매일">월</Radio>
-          <Radio value="매일">화</Radio>
-          <Radio value="매일">수</Radio>
-          <Radio value="매일">목</Radio>
-          <Radio value="매일">금</Radio>
-          <Radio value="매일">토</Radio>
-          <Radio value="매일">일</Radio>
-        </Radio.Group>
-        <p>메모</p>
-        <Input.TextArea />
+        <p>명칭</p>
+        <Input placeholder="명칭을 입력하세요" />
         <Button style={{ display: 'flex', float: 'right' }}>등록하기</Button>
       </Modal>
     </div>
