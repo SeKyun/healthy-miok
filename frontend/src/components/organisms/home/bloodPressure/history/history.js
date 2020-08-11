@@ -3,11 +3,11 @@ import { Table, Button, Popconfirm, DatePicker } from 'antd';
 import moment from 'moment';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
-import { formatDate } from '../../../../../utils/formatDate';
+import { formatDate } from '../../../../../utils/calculate/formatDate';
 import {
   setBloodPressureStatus,
   StatusLight,
-} from '../../../../../utils/setBloodPressureStatus';
+} from '../../../../../utils/calculate/setBloodPressureStatus';
 
 const { RangePicker } = DatePicker;
 

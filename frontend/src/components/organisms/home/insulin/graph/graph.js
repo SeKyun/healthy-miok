@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { DatePicker, Button } from 'antd';
 import CustomChart from './CustomChart';
 import axios from 'axios';
-import { countDate, newArray } from '../../../../../utils/countDate';
+import { countDate, newArray } from '../../../../../utils/calculate/countDate';
 
 const Graph = () => {
   const [date1, setDate1] = useState('');

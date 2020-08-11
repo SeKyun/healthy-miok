@@ -5,7 +5,7 @@ import './history.scss';
 import moment from 'moment';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
-import { formatDate } from '../../../../../utils/formatDate';
+import { formatDate } from '../../../../../utils/calculate/formatDate';
 import 'react-toastify/dist/ReactToastify.css';
 
 const { Column, ColumnGroup } = Table;

@@ -2,7 +2,10 @@ import React from 'react';
 import { Form, DatePicker, TimePicker, InputNumber, Input, Button } from 'antd';
 import './enroll.scss';
 import moment from 'moment';
-import { formatDate, formatTime } from '../../../../../utils/formatDate';
+import {
+  formatDate,
+  formatTime,
+} from '../../../../../utils/calculate/formatDate';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 

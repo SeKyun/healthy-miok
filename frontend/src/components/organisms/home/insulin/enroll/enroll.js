@@ -14,7 +14,10 @@ import './enroll.scss';
 import moment from 'moment';
 import { PlusOutlined } from '@ant-design/icons';
 import axios from 'axios';
-import { formatDate, formatTime } from '../../../../../utils/formatDate';
+import {
+  formatDate,
+  formatTime,
+} from '../../../../../utils/calculate/formatDate';
 import { ToastContainer, toast } from 'react-toastify';
 
 const { Option } = Select;

@@ -2,7 +2,7 @@ import React from 'react';
 import { Table, Button, DatePicker } from 'antd';
 import moment from 'moment';
 import axios from 'axios';
-import { formatDate } from '../../../../../utils/formatDate.js';
+import { formatDate } from '../../../../../utils/calculate/formatDate.js';
 import { ToastContainer, toast } from 'react-toastify';
 
 const { RangePicker } = DatePicker;
