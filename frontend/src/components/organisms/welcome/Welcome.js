@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import history from '../../pages/history';
+import { greeting } from '../../../utils/api/greeting';
 
 const Welcome = () => {
   const [message, setMessage] = useState('');
   useEffect(() => {
     try {
-      axios.get('http://miok.site:3001/api/greeting').then((response) => {
+      greeting().then((response) => {
         setMessage(response.data.result[0].content);
       });
     } catch (error) {
