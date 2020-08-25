@@ -47,7 +47,7 @@
 
             case 409:
                 return res.status(409).send({
-                    msg: "the resouce data " + target + " is already ALREADY EXIST !", 
+                    msg: "the " + target + "data is ALREADY EXIST !", 
                     success: false, 
                     result: err
                 })
@@ -95,7 +95,7 @@
         switch (status) {
             case 200:
                 return res.status(200).send({
-                    msg: "OK the request for " + target + " is successfully done", 
+                    msg: "OK. The request for " + target + " is successfully done", 
                     success: true, 
                     result: result
                 })
@@ -103,7 +103,7 @@
 
             case 201:
                 return res.status(201).send({
-                    msg: "the new " + target + " data is created", 
+                    msg: "New " + target + " data is created", 
                     success: true, 
                     result: result
                 })
@@ -111,7 +111,7 @@
 
             case 204:
                 return res.status(204).send({
-                    msg: "the " + target + " reqest is successfully done and there is no result data", 
+                    msg: "the request for " + target + " is successfully done and there is no result data", 
                     success: true
                 })
                 

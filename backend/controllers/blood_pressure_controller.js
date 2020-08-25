@@ -1,16 +1,13 @@
 const db = require("../data/db"); 
-const lib = require('../library/blood_pressure_lib'); 
 const res_handler = require('../library/status_handler'); 
 const resource = "blood_pressure"; 
 const moment = require('moment'); 
-// const url = require('url'); 
 
 
 //=================================================================
 // requre URL:  /blood-pressure
 //=================================================================
 // register new data in the table
-//possible error point 
 exports.register = function (req, res) {
     let req_data = {
         today: req.body.today, 
@@ -31,7 +28,7 @@ exports.register = function (req, res) {
             return res_handler.sendError(err, 500, res, "creating " + resource); 
         }
 
-        return res_handler.sendSuccess(result, 201, res, "creating " + resource); 
+        return res_handler.sendSuccess(result, 201, res, resource); 
     })
 }
 
@@ -45,10 +42,10 @@ exports.get_all = function (req, res) {
         }
 
         if (! result[0]) {
-            return res_handler.sendSuccess(result, 204, "getting " + res, resource); 
+            return res_handler.sendSuccess(result, 204, res, resource); 
         }
 
-        return res_handler.sendSuccess(result, 200, res, "getting " + resource); 
+        return res_handler.sendSuccess(result, 200, res, resource); 
     });  
 }
 
@@ -60,7 +57,7 @@ exports.delete_all = function (req, res) {
             return res_handler.sendError(err, 500, res, "deleting " + resource); 
         }
 
-        return res_handler.sendSuccess(result, 204, res, "deleting " + resource); 
+        return res_handler.sendSuccess(result, 204, res, resource); 
     })
 }
 
@@ -69,13 +66,13 @@ exports.delete_all = function (req, res) {
 // requre URL:  /blood-pressure/id/:id 
 //=================================================================
 // get data from the table by using parameter /id/:id
-//possible error point 
+
 exports.get_record_id = function (req, res) {
     let id = req.parmas.id; 
     let sql = `SELECT * FROM ${resource} WHERE id=?`; 
     db.query(sql, [id], function (err, result) {
         if (err) {
-            return res_handler.sendError(err, 500, res, resource); 
+            return res_handler.sendError(err, 500, res,  "getting" + resource); 
         }
 
         if (! result[0]) {
@@ -115,10 +112,10 @@ exports.delete_record_id = function (req, res) {
     let sql = `DELETE FROM ${resource} WHERE id=?`; 
     db.query(sql, [id], function (err, result) {
         if (err) {
-            return res_handler.sendError(err, 500, res, resource); 
+            return res_handler.sendError(err, 500, res, "deleting " + resource); 
         }
 
-        return res_handler.sendSuccess(result, 204, res, "delete "); 
+        return res_handler.sendSuccess(result, 204, res, resource); 
     })
 }
 
@@ -128,11 +125,8 @@ exports.delete_record_id = function (req, res) {
 // get data from the table which from startDate to endDate
 exports.get_records_date = function (req, res) {
     let queryData = req.query; 
-    let startDate = moment(queryData.startDate).format('YYYY-MM-DD'); 
-    let endDate = moment(queryData.endDate).format('YYYY-MM-DD'); 
-
-    // console.log("moment::::::", moment(startDate).format('YYYY-MM-DD')); 
-    // console.log("moment:::::::", moment(endDate).format("YYYY-MM-DD")); 
+    let startDate = queryData.startDate; 
+    let endDate = queryData.endDate
 
     let sql = `SELECT id, today, value_high, value_low, value_bpm FROM ${resource} ` + 
               `WHERE today >= '${startDate}' AND today <= '${endDate}' ` + 
@@ -149,70 +143,6 @@ exports.get_records_date = function (req, res) {
 
         res_handler.sendSuccess(result, 200, res, resource); 
     })
-    // db.query(sql, function (err, rows) {
-    //     if (err) {
-    //         return res_handler.sendError(err, 500, res, resource); 
-    //     }
-
-    //     if (! rows[0]) {
-    //         return res_handler.sendSuccess(rows, 204, res, resource); 
-    //     }
-    //     sql = `SELECT * FROM avg_blood_pressure WHERE _date >= '${startDate}' AND _date <= '${endDate}' ` +
-    //           `ORDER BY _date DESC`; 
-
-    //     db.query(sql, function (err2, averages) {
-
-    //         if (err2) {
-    //             return res_handler.sendError(err2, 500, res, "avg_blood_pressure"); 
-    //         }
-
-    //         else if (!averages[0]) {
-    //             return res_handler.sendSuccess(averages, 204, res, "avg_blood_pressure"); 
-    //         }
-
-    //         let result = []; 
-    //         let date_idx = 0; 
-    //         for(let i = 0; i < averages.length; i++) {
-    //             let avg = averages[i]; 
-    //             let today = moment(avg._date).format('YYYY-MM-DD'); 
-    //             let res_data = {
-    //                 today: today, 
-    //                 record: [], 
-    //                 average: {
-    //                     high: avg.avg_high, 
-    //                     low: avg.avg_low, 
-    //                     bpm: avg.avg_bpm
-    //                 }, 
-    //                 status: lib.setBloodPressureStatus(avg.avg_high, avg.avg_low, avg.avg_bpm)
-    //             }; //res_data
-
-
-    //             for(let j = date_idx; j < rows.length; j++) {
-    //                 let row = rows[j];
-    //                 let row_date = moment(row.today).format('YYYY-MM-DD'); 
-    //                 if (today === row_date) {
-
-    //                     res_data.record.push({
-    //                         id: row.id, 
-    //                         value_high: row.value_high, 
-    //                         value_low: row.value_low, 
-    //                         value_bpm: row.value_bpm
-    //                     }); 
-    //                 }
-
-    //                 else {
-    //                     date_idx = j; 
-    //                     break; 
-    //                 }
-    //             }//end j
-
-    //             result.push(res_data); 
-
-    //         } //end i
-            
-    //         return res_handler.sendSuccess(result, 200, res, resource); 
-    //     })//end sql2
-    // })// end sql1
 }
 
 
@@ -226,137 +156,67 @@ exports.get_records_today = function (req, res) {
     console.log(today); 
 
     let sql = `SELECT * FROM ${resource} WHERE today=? ORDER BY _time`; 
-    db.query(sql, [today], function (err, rows) {
+    db.query(sql, [today], function (err, result) {
         if (err) {
             return res_handler.sendError(err, 500, res, resource); 
+        }
+
+        if (! result[0]) {
+            return res_handler.sendSuccess(result, 204, res, resource); 
+        }
+       
+            return res_handler.sendSuccess(result, 200, res, resource); 
+        })
+}
+
+// ** graph page api **
+//=================================================================
+// requre URL:  /blood-pressure/graph?startDate=?&endDate=?
+//=================================================================
+// get data from the table by using today value
+exports.get_records_graph = function (req, res) {
+    let queryData = req.query; 
+    let startDate = queryData.startDate; 
+    let endDate = queryData.endDate; 
+
+    console.log("body: ", req.body); 
+    let req_data = {
+        high: req.body.high, 
+        low: req.body.low, 
+        bpm: req.body.bpm
+    }
+
+    let sql = `SELECT today, value_high, value_low, value_bpm `
+            + `FROM ${resource} ` 
+            + `WHERE today >= '${startDate}' AND today <= '${endDate}' `
+            + `ORDER BY today`; 
+
+    db.query(sql, function(err, rows) {
+        if (err) {
+            return res_handler.sendError(err, 500, res, "getting " + resource); 
         }
 
         if (! rows[0]) {
             return res_handler.sendSuccess(rows, 204, res, resource); 
         }
-        sql = `SELECT * FROM avg_blood_pressure WHERE _date=?`; 
-
-        db.query(sql, [today], function (err2, avgs) {
-            if (err2) {
-                return res_handler.sendError(err2, 500, res, "avg_blood_pressure"); 
+        
+        //데이터 가공
+        let result = []; 
+        for(let i = 0; i < rows.length; i++) {
+            let row = rows[i]; 
+            let data = { id: i, today: row.today }; 
+            if (req_data.high === true) {
+                data['high'] = row.value_high; 
             }
-
-            else if (!avgs[0]) {
-                return res_handler.sendSuccess(avgs, 204, res, "avg_blood_pressure"); 
+            if (req_data.low === true) {
+                data['low'] = row.value_low; 
             }
-            let avg = avgs[0]; 
-            // 데이터 가공하기 ! 
-            let result = {
-                today: today, 
-                record: [],
-                avg: {
-                    high: avg.avg_high, 
-                    low: avg.avg_low, 
-                    bpm: avg.avg_bpm
-                }, 
-                status: lib.setBloodPressureStatus(avg.avg_high, avg.avg_low, avg.avg_bpm) 
-            };  
-            
-            for(let i = 0; i < rows.length; i++) {
-                result.record.push(rows[i]); 
+            if (req_data.bpm === true) {
+                data['bpm'] = row.value_bpm; 
             }
-            
+            result.push(data); 
+        }
             return res_handler.sendSuccess(result, 200, res, resource); 
         })
-    })
+
 }
-
-// ** record page & graph api **
-//================================================================
-// requre URL:  /blood-pressure/statistics?startDate=?&endDate=?
-//================================================================
-// get average and status data derived from the table which from startDate to endDate
-//possible error point 
-// exports.get_statistics_date = function (req, res) {
-//     let queryData = url.parse(req.url, true).query; 
-//     let startDate = queryData.startDate; 
-//     let endDate = queryData.endDate; 
-
-//     console.log("queryData: ", queryData); 
-
-//     let sql = `SELECT * FROM avg_blood_pressure ` +
-//               `WHERE _date >= '${startDate}' AND _date <= '${endDate}' ` +
-//               `ORDER BY _date DESC`; 
-
-//     db.query(sql, function (err, result) {
-//         if (err) {
-//             return res_handler.sendError(err, 500, res, resource); 
-//         }
-
-//         if (! result[0]) {
-//             return res_handler.sendSuccess(result, 204, res, resource); 
-//         }
-
-//         for (let i = 0; i < result.length; i++) {
-//             let _status = lib.setBloodPressureStatus(result[i].avg_high, result[i].avg_low);         
-//             result[i]._status = _status; 
-//         }
-
-//         return res_handler.sendSuccess(result, 200, res, resource); 
-//     })
-// }
-
-// ** record page api **
-//================================================================
-// requre URL:  /blood-pressure/statistics/:today
-//================================================================
-// get average and status data derived from the table by using today value
-//possible error point 
-// exports.get_statistics_today = function (req, res) {
-//     let today = req.params.today; 
-//     let sql = `SELECT * FROM avg_blood_pressure WHERE _date=?`; 
-
-//     db.query(sql, [today], function (err, result) {
-//         if (err) {
-//             return res_handler.sendError(err, 500, res, "getting average of" + resource); 
-//         }
-
-//         if (! result[0]) {
-//             return res_handler.sendSuccess(result, 204, res, "getting average of" + resource); 
-//         }
-
-//         let _status = lib.setBloodPressureStatus(result[0].avg_high, result[0].avg_low);         
-//         result[0]._status = _status; 
-
-//         return res_handler.sendSuccess(result, 200, res, "getting average of" + resource); 
-//     })
-    
-// }
-
-
-// exports.get_status_date = function (req, res) {
-//     let queryData = url.parse(req.url, true).query; 
-//     let startDate = queryData.startDate; 
-//     let endDate = queryData.endDate; 
-
-//     let sql = `SELECT * FROM avg_blood_pressure ` +
-//               `WHERE _date >= '${startDate}' AND _date <= '${endDate}' ` +
-//               `ORDER BY _date DESC`; 
-    
-    
-//     db.query(sql, function (err, rows) {
-//         if (err) {
-//             return res_handler.sendError(err, 500, res, resource); 
-//         }
-
-//         if (! rows[0]) {
-//             return res_handler.sendSuccess(rows, 204, res, resource); 
-//         }
-
-//         let result = []; 
-//         for (row in rows) {
-//             let avg_high = row.avg_high; 
-//             let avg_low = row.avg_low;  
-//             let _status = lib.setBloodPressureStatus(avg_high, avg_low); 
-
-//             result.push({_date: row._date, _status: _status }); 
-//         }
-
-//         return res_handler.sendSuccess(result, 200, res, resource); 
-//     }); 
-// }

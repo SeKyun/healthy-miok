@@ -19,13 +19,16 @@ router.put('/id/:id', controller.update_record_id);
 /** DELETE insulin data by id*/
 router.delete('/id/:id', controller.delete_record_id); 
 
-/** GET the insulin data by today and when data*/
-router.get('/record', controller.get_record_today_when); 
+/** GET the short type insulin data by today and when data*/
+router.get('/record/short', controller.get_record_short);
+/** GET the long type insulin data by today */
+router.get('/record/long', controller.get_record_long);  
+
 /** GET insulin data between start date and end date*/
 router.get('/date', controller.get_records_date);  
 /** GET insulin data of a specific today date */
 router.get('/date/:today', controller.get_records_today); 
-/** GET the insulin data by when data */
-router.get('/when/:when', controller.get_records_when)
+/** GET the insulin data for the graph (POST) */
+router.post('/graph', controller.get_records_graph);
 
 module.exports = router; 

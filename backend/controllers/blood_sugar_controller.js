@@ -26,7 +26,7 @@ exports.register = function (req, res) {
         }
 
         else if (result[0]) {
-            return res_handler.sendError(err, 409, res, "creating " + resource); 
+            return res_handler.sendError(err, 409, res, resource); 
         }
 
         // if it is not exist
@@ -150,8 +150,6 @@ exports.get_record_today_when = function (req, res) {
     let today = queryData.today; 
     let when = queryData.when; 
 
-    console.log("queryData: ", queryData); 
-
     let sql = `SELECT * FROM blood_sugar WHERE today=? AND _when=?`; 
     db.query(sql, [today, when], function (err, result) {
         if (err) {
@@ -175,13 +173,9 @@ exports.get_records_date = function (req, res) {
     let startDate = queryData.startDate; 
     let endDate = queryData.endDate; 
 
-    console.log("queryData: ", queryData); 
-
     let sql = `SELECT * FROM blood_sugar `
             + `WHERE today >='${startDate}' AND today <= '${endDate}' `
             + `ORDER BY today DESC`; 
-
-    console.log("sql: ", sql); 
 
     db.query(sql, function (err, result) {
         if (err) {
@@ -224,25 +218,141 @@ exports.get_records_today = function (req, res) {
 
 // **graph api **
 //=================================================================
-// requre URL:  /blood-sugar/when/:when
+// requre URL:  /blood-sugar/when/:when?startDate=?&endDate=?
 //=================================================================
-//possible error point 
 // get data from the table by using when value
 exports.get_records_when = function (req, res) {
     let when = req.params.when; 
-    let sql = `SELECT id, today, _when, _value FROM blood_sugar WHERE _when LIKE '%${when}'`;
+    let queryData = url.parse(req.url, true).query; 
+    let startDate = queryData.startDate; 
+    let endDate = queryData.endDate; 
 
-    db.query(sql, function (err, result) {
+    if (when === '전체') when = '식전'; 
+
+    let sql = `SELECT id, today, _when, _value FROM blood_sugar `
+            + `WHERE _when LIKE '%${when}' AND today >='${startDate}' AND today <='${endDate}' `
+            + `ORDER BY today`;
+
+    db.query(sql, function (err, rows) {
         if (err) {
             return res_handler.sendError(err, 500, res, "getting " + resource); 
         }
 
-        else if(! result[0]) {
-            return res_handler.sendSuccess(result, 204, res, "getting " + resource);  
+        else if(! rows[0]) {
+            return res_handler.sendSuccess(rows, 204, res, resource);  
         }
 
-        return res_handler.sendSuccess(result, 200, res, "getting " + resource); 
+        //데이터 가공하기
+        let result = []; 
+        if (when === '식전' || when === '식후') {
+            let id = 0; 
+            for(let i = 0; i < rows.length; i++) {
+                let date = rows[i].today;
+                let data = { id: id++, today: date};
+                for(let j = i; j < rows.length; j++) {
+                    let row = rows[j]; 
+                    if (date === row.today) {
+                        data[row._when] = row._value; 
+                    }
+                    else {
+                        i = j-1; 
+                        break; 
+                    }
+                }
+                result.push(data); 
+            }
+
+        }
+
+        else {
+            for(let i = 0; i < rows.length; i++) {
+                let row = rows[i]; 
+                let data = { id: i, today: row.today }; 
+                data[row._when] = row._value; 
+                result.push(data); 
+            }
+        }
+
+        return res_handler.sendSuccess(result, 200, res, resource); 
     })
 }
 
-//status로 get하는거 고려: graph api
+// grapht api 영어 test
+// exports.get_records_when = function (req, res) {
+//     let when = req.params.when; 
+//     let queryData = url.parse(req.url, true).query; 
+//     let startDate = queryData.startDate; 
+//     let endDate = queryData.endDate; 
+
+//     switch (when) {
+//         case 'all':
+//             when = '식전'
+//             break; 
+//         case 'before':
+//             when = '식전'
+//             break;
+//         case 'after':
+//             when = '식후'
+//             break; 
+//         case 'etc':
+//             when = '기타'
+//             break; 
+//         case 'morning':
+//             when = '기상 직후'
+//             break; 
+//         case 'night':
+//             when = '취침 전'
+//             break; 
+//         case 'dawn':
+//             when = '새벽'
+//             break; 
+//     }
+
+//     let sql = `SELECT id, today, _when, _value FROM blood_sugar `
+//             + `WHERE _when LIKE '%${when}' AND today >='${startDate}' AND today <='${endDate}' `
+//             + `ORDER BY today`;
+
+//     db.query(sql, function (err, rows) {
+//         if (err) {
+//             return res_handler.sendError(err, 500, res, "getting " + resource); 
+//         }
+
+//         else if(! rows[0]) {
+//             return res_handler.sendSuccess(rows, 204, res, resource);  
+//         }
+
+//         //데이터 가공하기
+//         let result = []; 
+//         if (when === '식전' || when === '식후') {
+//             let id = 0; 
+//             for(let i = 0; i < rows.length; i++) {
+//                 let date = rows[i].today;
+//                 let data = { id: id++, today: date};
+//                 for(let j = i; j < rows.length; j++) {
+//                     let row = rows[j]; 
+//                     if (date === row.today) {
+//                         data[row._when] = row._value; 
+//                     }
+//                     else {
+//                         i = j-1; 
+//                         break; 
+//                     }
+//                 }
+//                 result.push(data); 
+//             }
+
+//         }
+
+//         else {
+//             for(let i = 0; i < rows.length; i++) {
+//                 let row = rows[i]; 
+//                 let data = { id: i, today: row.today }; 
+//                 data[row._when] = row._value; 
+//                 result.push(data); 
+//             }
+//         }
+
+//         return res_handler.sendSuccess(result, 200, res, resource); 
+//     })
+// }
+            
