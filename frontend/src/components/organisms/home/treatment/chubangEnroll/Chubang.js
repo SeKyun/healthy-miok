@@ -1,15 +1,5 @@
 import React from 'react';
-import {
-  Form,
-  Radio,
-  Button,
-  Input,
-  DatePicker,
-  TimePicker,
-  Select,
-  Modal,
-} from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { Form, Radio, Button, Input, DatePicker } from 'antd';
 
 const { RangePicker } = DatePicker;
 const Chubang = () => {
@@ -26,7 +16,7 @@ const Chubang = () => {
     console.log('Failed:', errorInfo);
   };
 
-  const [state, setState] = React.useState(false);
+  const [, setState] = React.useState(false);
   return (
     <div className="TreatmentEnroll">
       <Form

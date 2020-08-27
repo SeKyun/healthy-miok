@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { DatePicker, Table } from 'antd';
 
 const { RangePicker } = DatePicker;
@@ -27,7 +27,6 @@ const columns = [
 ];
 
 const History = () => {
-  const [data, setData] = useState(0);
   return (
     <div
       className="treatmentHistory"

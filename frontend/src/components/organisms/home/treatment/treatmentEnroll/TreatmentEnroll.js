@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Form,
-  Radio,
   Button,
   Input,
   DatePicker,
@@ -12,7 +11,6 @@ import {
 import { PlusOutlined } from '@ant-design/icons';
 import './TreatmentEnroll.scss';
 
-const { RangePicker } = DatePicker;
 const TreatmentEnroll = () => {
   const layout = {
     labelCol: { span: 8 },
