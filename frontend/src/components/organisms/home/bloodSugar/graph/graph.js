@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Radio, DatePicker, Button } from 'antd';
-import axios from 'axios';
 import './graph.scss';
 import CustomChart from './CustomChart';
 import CustomChart2 from './CustomChart2';
 import CustomChart3 from './CustomChart3';
+import { getBloodSugarGraph } from '../../../../../utils/api/bloodSugar';
 const { RangePicker } = DatePicker;
 
 const Graph = () => {
@@ -39,19 +39,7 @@ const Graph = () => {
     }
   };
   const getData = async () => {
-    console.log(whenData);
-    console.log(stTime);
-    console.log(edTime);
-    const response = await axios.get(
-      `http://miok.site:3001/api/blood-sugar/when/${whenData}`,
-      {
-        params: {
-          startDate: stTime,
-          endDate: edTime,
-        },
-      },
-    );
-    console.log(response);
+    const response = await getBloodSugarGraph(whenData, stTime, edTime);
     setData(response.data.result);
   };
   return (
