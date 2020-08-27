@@ -3,10 +3,10 @@ import React from 'react';
 import { DatePicker, Table, Button } from 'antd';
 import './history.scss';
 import moment from 'moment';
-import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import { formatDate } from '../../../../../utils/calculate/formatDate';
 import 'react-toastify/dist/ReactToastify.css';
+import { getBloodSugarHistory } from '../../../../../utils/api/bloodSugar';
 
 const { Column, ColumnGroup } = Table;
 const { RangePicker } = DatePicker;
@@ -22,14 +22,9 @@ const History = () => {
 
   const [dataSource, setdataSource] = React.useState([{}]);
   const getData = async () => {
-    const response = await axios.get(
-      `http://miok.site:3001/api/blood-sugar/date/`,
-      {
-        params: {
-          startDate: formatDate(dates[0]),
-          endDate: formatDate(dates[1]),
-        },
-      },
+    const response = await getBloodSugarHistory(
+      formatDate(dates[0]),
+      formatDate(dates[1]),
     );
     const arr = [];
     response.data.result.map((item) => {
