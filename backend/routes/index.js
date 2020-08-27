@@ -7,6 +7,7 @@ let blood_sugar = require("./blood_sugar");
 let blood_pressure = require('./blood_pressure'); 
 let insulin = require('./insulin'); 
 let type_insulin = require('./type_insulin'); 
+let medicine = require('./medicine'); 
 
 // /* GET home page. */
 // possible error point 
@@ -20,5 +21,6 @@ router.use("/blood-sugar", blood_sugar);
 router.use("/blood-pressure", blood_pressure); 
 router.use("/insulin", insulin); 
 router.use("/type-insulin", type_insulin); 
+router.use("/medicine", medicine); 
 
 module.exports = router;

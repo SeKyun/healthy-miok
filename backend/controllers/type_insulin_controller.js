@@ -6,7 +6,7 @@ const moment = require('moment');
 
 
 //=================================================================
-// requre URL:  /type-insulin
+// request URL:  /type-insulin
 //=================================================================
 // register new data in the table
 //possible error point 
@@ -71,7 +71,7 @@ exports.delete_all = function (req, res) {
 
 
 //=================================================================
-// requre URL:  /type-insulin/:type
+// request URL:  /type-insulin/:type
 //=================================================================
 // get all the data in the table 
 exports.get_bytype = function (req, res) {
@@ -98,7 +98,7 @@ exports.get_bytype = function (req, res) {
 }
 
 //=================================================================
-// requre URL:  /type-insulin/:name
+// request URL:  /type-insulin/:name
 //=================================================================
 // delete data with its name
 //possible error point 

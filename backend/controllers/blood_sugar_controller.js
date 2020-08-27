@@ -6,7 +6,7 @@ const moment = require('moment');
 const url = require('url'); 
 
 //=================================================================
-// requre URL:  /blood-sugar
+// require URL:  /blood-sugar
 //=================================================================
 
 // register new data in the table 
@@ -88,7 +88,7 @@ exports.delete_all = function (req, res) {
 
 
 //=================================================================
-// requre URL:  /blood-sugar/id/:id 
+// require URL:  /blood-sugar/id/:id 
 //=================================================================
 
 // get data from the table by using parameter /id/:id
@@ -141,7 +141,7 @@ exports.delete_record_id = function (req, res) {
 
 
 //=================================================================
-// requre URL:  /blood-sugar/record?today=?&when=?
+// request URL:  /blood-sugar/record?today=?&when=?
 //=================================================================
 
 // get data from the table by using today and when
@@ -165,7 +165,7 @@ exports.get_record_today_when = function (req, res) {
 }
 
 //=================================================================
-// requre URL:  /blood-sugar/date?startDate=?&endDate=?
+// request URL:  /blood-sugar/date?startDate=?&endDate=?
 //=================================================================
 // get data from the table which from startDate to endDate
 exports.get_records_date = function (req, res) {
@@ -193,7 +193,7 @@ exports.get_records_date = function (req, res) {
 
 // **graph api **
 //=================================================================
-// requre URL:  /blood-sugar/date/:today
+// request URL:  /blood-sugar/date/:today
 //=================================================================
 
 // get data from the table by using today value
@@ -218,7 +218,7 @@ exports.get_records_today = function (req, res) {
 
 // **graph api **
 //=================================================================
-// requre URL:  /blood-sugar/when/:when?startDate=?&endDate=?
+// request URL:  /blood-sugar/when/:when?startDate=?&endDate=?
 //=================================================================
 // get data from the table by using when value
 exports.get_records_when = function (req, res) {

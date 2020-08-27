@@ -1,46 +1,23 @@
 name: React build
 on:
-  push: # master Branch에서 push 이벤트가 일어났을 때만 실행
-    branches:
-      - master
+    push: # master Branch에서 push 이벤트가 일어났을 때만 실행
+        branches:
+            - Kyun
+            - dodie
 
 jobs:
-  build:
-    runs-on: ubuntu-18.04
-    steps:
-      - name: Checkout source code. # 레포지토리 체크아웃
-        uses: actions/checkout@master
-
-      - name: Install Dependencies # 의존 파일 설치
-        working-directory: ./frontend
-        run: yarn
-
-      - name: Install Backend Dependencies # backend 의존 파일 설치
-        working-directory: ./backend
-        run: npm install
-
-      - name: Build # React Build
-        working-directory: ./frontend
-        run: yarn build
-
-      - name: Backend Check # node server check
-        working-directory: ./backend
-        run: npm start
-
-      - name: executing remote ssh commands using password
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST }} #ssh 이용 배포
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
-          script: |
-            pm2 stop www
-            cd healthy-miok
-            sudo git pull
-            cd frontend
-            sudo yarn
-            sudo yarn build
-            cd .. 
-            cd backend
-            sudo npm install
-            sudo npm start
+    build:
+        runs-on: ubuntu-18.04
+        steps:
+            - names: executing remote ssh commands using password
+              uses: appleboy/ssh-action@master
+              with:
+                  host: ${{ secrets.BACK_HOST }}
+                  username: ${{ secrets.BACK_USERNAME }}
+                  password: ${{ secrets.BACK_PASSWORD }}
+                  script: |
+                      pm2 stop www
+                      cd healthy-miok
+                      cd backend 
+                      sudo npm install
+                      sudo npm start

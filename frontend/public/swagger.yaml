@@ -107,7 +107,7 @@ paths:
       description: 현재까지 기록한 모든 혈당(blood-sugar) 기록을 가져오기
       responses:
         '200':
-          description: 성공 - OK. The requrest for the data is successfully done 
+          description: 성공 - OK. The request for the data is successfully done 
           content:
             application/json:
               schema:
@@ -147,7 +147,7 @@ paths:
           example: 258
       responses:
         '200':
-          description: 성공 - OK. The requrest for the data is successfully done 
+          description: 성공 - OK. The request for the data is successfully done 
           content:
             application/json:
               schema:
@@ -239,7 +239,7 @@ paths:
           example: 아침 식전
       responses:
         '200':
-          description: 성공 - OK. The requrest for the data is successfully done 
+          description: 성공 - OK. The request for the data is successfully done 
           content:
             application/json:
               schema:
@@ -272,7 +272,7 @@ paths:
           example: '2020-05-31'
       reponses:
         '200':
-          description: 성공 - OK. The requrest for the data is successfully done 
+          description: 성공 - OK. The request for the data is successfully done 
           content:
             application/json:
               schema:
@@ -299,7 +299,7 @@ paths:
           description: 
       responses:
         '200':
-          description: 성공 - OK. The requrest for the data is successfully done 
+          description: 성공 - OK. The request for the data is successfully done 
           content:
             application/json:
               schema:
@@ -328,7 +328,7 @@ paths:
             description: Enum에 있는 요소만 선택 가능
       responses:
         '200':
-          description: 성공 - OK. The requrest for the data is successfully done 
+          description: 성공 - OK. The request for the data is successfully done 
           content:
             application/json:
               schema:
@@ -373,7 +373,7 @@ paths:
       description: 현재까지 기록한 모든 혈압(blood-pressure) 기록을 가져오기
       responses:
         '200':
-          description: 성공 - OK. The requrest for the data is successfully done 
+          description: 성공 - OK. The request for the data is successfully done 
           content:
             application/json:
               schema:
@@ -407,7 +407,7 @@ paths:
         $ref: '#components/parameters/Id'
       responses:
         '200':
-          description: 성공 - OK. The requrest for the data is successfully done 
+          description: 성공 - OK. The request for the data is successfully done 
           content:
             application/json:
               schema:
@@ -514,7 +514,7 @@ paths:
         - insulin
       responses:
         '200':
-          description: 성공 - OK. The requrest for the data is successfully done 
+          description: 성공 - OK. The request for the data is successfully done 
           content:
             application/json:
               schema:
@@ -553,7 +553,7 @@ paths:
           example: 258
       responses:
         '200':
-          description: 성공 - OK. The requrest for the data is successfully done 
+          description: 성공 - OK. The request for the data is successfully done 
           content:
             application/json:
               schema:
@@ -621,7 +621,7 @@ paths:
             descripion:  Enum에 있는 요소만 선택 가능
       responses:
         '200':
-          description: 성공 - OK. The requrest for the data is successfully done 
+          description: 성공 - OK. The request for the data is successfully done 
           content:
             application/json:
               schema:
@@ -645,7 +645,7 @@ paths:
             example: '2020-05-01'
       responses:
         '200':
-          description: 성공 - OK. The requrest for the data is successfully done 
+          description: 성공 - OK. The request for the data is successfully done 
           content:
             application/json:
               schema:
@@ -677,7 +677,7 @@ paths:
             example: '2020-05-01'
       responses:
         '200':
-          description: 성공 - OK. The requrest for the data is successfully done 
+          description: 성공 - OK. The request for the data is successfully done 
           content:
             application/json:
               schema:
@@ -706,7 +706,7 @@ paths:
             exmample: '2020-05-01'
       responses:
         '200':
-          description: 성공 - OK. The requrest for the data is successfully done 
+          description: 성공 - OK. The request for the data is successfully done 
           content:
             application/json:
               schema:
@@ -736,7 +736,7 @@ paths:
             descripion:  Enum에 있는 요소만 선택 가능
       responses:
         '200':
-          description: 성공 - OK. The requrest for the data is successfully done 
+          description: 성공 - OK. The request for the data is successfully done 
           content:
             application/json:
               schema:
@@ -786,7 +786,7 @@ paths:
         - type-insulin
       responses:
         '200':
-          description: 성공 - OK. The requrest for the data is successfully done 
+          description: 성공 - OK. The request for the data is successfully done 
           content:
             application/json:
               schema:
@@ -826,7 +826,7 @@ paths:
             exmample: 지속성
       responses:
         '200':
-          description: 성공 - OK. The requrest for the data is successfully done 
+          description: 성공 - OK. The request for the data is successfully done 
           content:
             application/json:
               schema:
@@ -992,7 +992,7 @@ components:
 
   responses:
     200:
-      description: 성공 - OK. The requrest for the data is successfully done
+      description: 성공 - OK. The request for the data is successfully done
     201:
       description: 등록 완료 - New data is created
     204:

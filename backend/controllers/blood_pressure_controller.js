@@ -5,7 +5,7 @@ const moment = require('moment');
 
 
 //=================================================================
-// requre URL:  /blood-pressure
+// request URL:  /blood-pressure
 //=================================================================
 // register new data in the table
 exports.register = function (req, res) {
@@ -63,7 +63,7 @@ exports.delete_all = function (req, res) {
 
 
 //=================================================================
-// requre URL:  /blood-pressure/id/:id 
+// request URL:  /blood-pressure/id/:id 
 //=================================================================
 // get data from the table by using parameter /id/:id
 
@@ -120,7 +120,7 @@ exports.delete_record_id = function (req, res) {
 }
 
 //=================================================================
-// requre URL:  /blood-pressure/date?startDate=?&endDate=?
+// request URL:  /blood-pressure/date?startDate=?&endDate=?
 //=================================================================
 // get data from the table which from startDate to endDate
 exports.get_records_date = function (req, res) {
@@ -148,7 +148,7 @@ exports.get_records_date = function (req, res) {
 
 // ** detail page api **
 //=================================================================
-// requre URL:  /blood-pressure/date/:today
+// request URL:  /blood-pressure/date/:today
 //=================================================================
 // get data from the table by using today value
 exports.get_records_today = function (req, res) {
@@ -171,7 +171,7 @@ exports.get_records_today = function (req, res) {
 
 // ** graph page api **
 //=================================================================
-// requre URL:  /blood-pressure/graph?startDate=?&endDate=?
+// request URL:  /blood-pressure/graph?startDate=?&endDate=?
 //=================================================================
 // get data from the table by using today value
 exports.get_records_graph = function (req, res) {
