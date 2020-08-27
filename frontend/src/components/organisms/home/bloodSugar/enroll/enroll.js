@@ -2,10 +2,14 @@ import React from 'react';
 import { Button, DatePicker, Form, Radio, InputNumber, Input } from 'antd';
 import './enroll.scss';
 import moment from 'moment';
-import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import { formatDate } from '../../../../../utils/calculate/formatDate';
 import 'react-toastify/dist/ReactToastify.css';
+import {
+  getBloodSugar,
+  enrollBloodSugar,
+  updateBloodSugar,
+} from '../../../../../utils/api/bloodSugar';
 
 const Enroll = () => {
   const dateFormat = 'YYYY/MM/DD';
@@ -34,15 +38,7 @@ const Enroll = () => {
     } else {
       setDisable(true);
     }
-    const response = await axios.get(
-      `http://miok.site:3001/api/blood-sugar/record/`,
-      {
-        params: {
-          today,
-          when: e.target.value,
-        },
-      },
-    );
+    const response = await getBloodSugar(today, e.target.value);
     if (response.status === 200) {
       setUpdate(true);
       setDataID(response.data.result[0].id);
@@ -71,18 +67,13 @@ const Enroll = () => {
     data.today = formatDate(data.today);
     console.log(data);
     if (isUpdate) {
-      const response = await axios
-        .put(`http://miok.site:3001/api/blood-sugar/id/${dataID}`, data)
-        .catch(() => {
-          toast.error('에러가 났어요!');
-        });
+      const response = await updateBloodSugar(dataID, data).catch(() => {
+        toast.error('에러가 났어요!');
+      });
       toast.success('수정에 성공하였습니다!');
       console.log(response);
     } else {
-      const response = await axios.post(
-        'http://miok.site:3001/api/blood-sugar',
-        data,
-      );
+      const response = await enrollBloodSugar(data);
       removeFormData();
       toast.success('등록에 성공하였습니다!');
       console.log(response);
