@@ -4,9 +4,11 @@ import { Input } from 'antd';
 import './Whoareyou.scss';
 import history from '../../pages/history';
 
+const name = '박미옥';
+
 const Whoareyou = () => {
   const searchFunc = (value) => {
-    if (value === '박미옥') {
+    if (value === name) {
       history.push('/secondpage');
     } else {
       history.push('/Error');
@@ -22,7 +24,7 @@ const Whoareyou = () => {
           <Search
             placeholder="이름을 입력하세요"
             enterButton="확인"
-            size="middle"
+            size="large"
             onSearch={searchFunc}
           />
         </div>
