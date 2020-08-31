@@ -1,9 +1,9 @@
 import React from 'react';
 import { Table, Button, DatePicker } from 'antd';
 import moment from 'moment';
-import axios from 'axios';
 import { formatDate } from '../../../../../utils/calculate/formatDate.js';
 import { ToastContainer, toast } from 'react-toastify';
+import { getInsulinDate } from '../../../../../utils/api/insulin.js';
 
 const { RangePicker } = DatePicker;
 
@@ -17,14 +17,9 @@ const History = () => {
     moment(end_date, dateFormat),
   ]);
   const getData = async () => {
-    const response = await axios.get(
-      `http://miok.site:3001/api/insulin/date/`,
-      {
-        params: {
-          startDate: formatDate(dates[0]),
-          endDate: formatDate(dates[1]),
-        },
-      },
+    const response = await getInsulinDate(
+      formatDate(dates[0]),
+      formatDate(dates[1]),
     );
     let arr = [];
     let last_key = 0;

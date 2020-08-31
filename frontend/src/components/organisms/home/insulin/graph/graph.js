@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { DatePicker, Button } from 'antd';
 import CustomChart from './CustomChart';
-import axios from 'axios';
 import { countDate, newArray } from '../../../../../utils/calculate/countDate';
+import { getInsulinGraph } from '../../../../../utils/api/insulin';
 
 const Graph = () => {
   const [date1, setDate1] = useState('');
@@ -29,10 +29,7 @@ const Graph = () => {
       dates: newArray(date1, date2, date3, date4),
       cnt: cnt,
     };
-    const response = await axios.post(
-      'http://miok.site:3001/api/insulin/graph',
-      data,
-    );
+    const response = await getInsulinGraph(data);
     console.log(response);
     setArrData(response.data.result);
   };

@@ -13,12 +13,20 @@ import {
 import './enroll.scss';
 import moment from 'moment';
 import { PlusOutlined } from '@ant-design/icons';
-import axios from 'axios';
 import {
   formatDate,
   formatTime,
 } from '../../../../../utils/calculate/formatDate';
 import { ToastContainer, toast } from 'react-toastify';
+import {
+  getLongtypeInsulin,
+  getShorttypeInsulin,
+  enrollInsulin,
+  getInsulin,
+  updateInsulin,
+  enrollInsulinType,
+  getInsulinLong,
+} from '../../../../../utils/api/insulin';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -52,15 +60,11 @@ const Enroll = () => {
 
   const getinsulinType = async (data) => {
     if (data === '지속성') {
-      const response = await axios.get(
-        `http://miok.site:3001/api/type-insulin/long`,
-      );
+      const response = await getLongtypeInsulin();
       console.log(response);
       setinsulinType(response.data.result);
     } else {
-      const response = await axios.get(
-        `http://miok.site:3001/api/type-insulin/short`,
-      );
+      const response = await getShorttypeInsulin();
       console.log(response);
       setinsulinType(response.data.result);
     }
@@ -74,10 +78,7 @@ const Enroll = () => {
       name: insulinName,
       type: insulinSpecies,
     };
-    const response = await axios.post(
-      `http://miok.site:3001/api/type-insulin`,
-      data,
-    );
+    const response = await enrollInsulinType(data);
     console.log(response);
   };
 
@@ -118,15 +119,7 @@ const Enroll = () => {
       setEtcDisable(true);
     }
     if (form.getFieldValue('type') === '속효성') {
-      const response = await axios.get(
-        `http://miok.site:3001/api/insulin/record/short`,
-        {
-          params: {
-            today: today,
-            when: e.target.value,
-          },
-        },
-      );
+      const response = await getInsulin(today, e.target.value);
       console.log(response);
       if (response.status === 200) {
         setUpdate(true);
@@ -156,18 +149,13 @@ const Enroll = () => {
     data.time = formatTime(data.time);
     console.log(data);
     if (isUpdate) {
-      const response = await axios
-        .put(`http://miok.site:3001/api/insulin/id/${dataID}`, data)
-        .catch((error) => {
-          toast.error('에러가 났어요!');
-        });
+      const response = await updateInsulin(dataID, data).catch((error) => {
+        toast.error('에러가 났어요!');
+      });
       toast.success('수정에 성공하였습니다!');
       console.log(response);
     } else {
-      const response = await axios.post(
-        'http://miok.site:3001/api/insulin',
-        data,
-      );
+      const response = await enrollInsulin(data);
       removeFormData();
       toast.success('등록에 성공하였습니다!');
       console.log(response);
@@ -175,14 +163,7 @@ const Enroll = () => {
   };
 
   const getlongTypeData = React.useCallback(async () => {
-    const response = await axios.get(
-      `http://miok.site:3001/api/insulin/record/long`,
-      {
-        params: {
-          today: today,
-        },
-      },
-    );
+    const response = await getInsulinLong(today);
     console.log(response);
     if (response.status === 200) {
       setUpdate(true);
