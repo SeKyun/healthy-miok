@@ -1,13 +1,16 @@
 import React from 'react';
 import { Table, Button, Popconfirm, DatePicker } from 'antd';
 import moment from 'moment';
-import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import { formatDate } from '../../../../../utils/calculate/formatDate';
 import {
   setBloodPressureStatus,
   StatusLight,
 } from '../../../../../utils/calculate/setBloodPressureStatus';
+import {
+  deleteBloodPressure,
+  getBloodPressureDate,
+} from '../../../../../utils/api/bloodPressure';
 
 const { RangePicker } = DatePicker;
 
@@ -25,23 +28,16 @@ const History = () => {
   };
   const handleDelete = async (id) => {
     console.log(id);
-    const response = await axios.delete(
-      `http://miok.site:3001/api/blood-pressure/id/${id}`,
-    );
+    const response = await deleteBloodPressure(id);
     console.log(response);
     toast.success('성공적으로 데이터를 삭제하였습니다!');
     setdataSource(dataSource.filter((item) => item.id !== id));
   };
 
   const getData = async () => {
-    const response = await axios.get(
-      `http://miok.site:3001/api/blood-pressure/date/`,
-      {
-        params: {
-          startDate: formatDate(dates[0]),
-          endDate: formatDate(dates[1]),
-        },
-      },
+    const response = await getBloodPressureDate(
+      formatDate(dates[0]),
+      formatDate(dates[1]),
     );
     console.log(response);
     response.data.result.map((it) => (it.today = it.today.substring(0, 10)));

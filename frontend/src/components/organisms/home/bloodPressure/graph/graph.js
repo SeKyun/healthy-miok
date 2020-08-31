@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Checkbox, DatePicker, Button } from 'antd';
-import axios from 'axios';
 import {
   LineChart,
   Line,
@@ -11,6 +10,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
+import { getGraphBloodPressure } from '../../../../../utils/api/bloodPressure';
 const { RangePicker } = DatePicker;
 
 const Graph = () => {
@@ -45,17 +45,7 @@ const Graph = () => {
       low,
       bpm,
     };
-    const response = await axios.post(
-      `http://miok.site:3001/api/blood-pressure/graph/`,
-      data,
-      {
-        params: {
-          startDate: stTime,
-          endDate: edTime,
-        },
-      },
-    );
-    console.log(response);
+    const response = await getGraphBloodPressure(data, stTime, edTime);
     setData(response.data.result);
   };
   return (

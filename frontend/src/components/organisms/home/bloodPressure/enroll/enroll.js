@@ -6,8 +6,8 @@ import {
   formatDate,
   formatTime,
 } from '../../../../../utils/calculate/formatDate';
-import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
+import { enrollBloodPressure } from '../../../../../utils/api/bloodPressure';
 
 const { TextArea } = Input;
 const enroll = () => {
@@ -19,11 +19,9 @@ const enroll = () => {
     data.today = formatDate(data.today);
     data.time = formatTime(data.time);
     console.log(data);
-    const response = await axios
-      .post(`http://miok.site:3001/api/blood-pressure`, data)
-      .catch((error) => {
-        toast.error('에러가 났어요!');
-      });
+    const response = await enrollBloodPressure(data).catch((error) => {
+      toast.error('에러가 났어요!');
+    });
     toast.success('등록에 성공하였습니다!');
     console.log(response);
   };
