@@ -10,11 +10,12 @@ let type_insulin = require('./type_insulin');
 let medicine = require('./medicine'); 
 let medication = require('./medication'); 
 
-// /* GET home page. */
-// possible error point 
-// 이거 고쳐야 하는데......
+// // /* GET home page. */
+// // possible error point 
+// // 이거 고쳐야 하는데......
 router.get('/', function(req, res, next) {
-  res.sendFile(path.join(__dirname, "../../frontend/public", "index.html")); 
+  // res.sendFile(path.join(__dirname))
+  // res.sendFile(path.join(__dirname, "../../frontend/public", "index.html")); 
   // res.render('index', { tit le: 'Express' });
 });
 

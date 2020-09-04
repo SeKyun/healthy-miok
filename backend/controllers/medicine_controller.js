@@ -16,6 +16,7 @@ exports.register = function (req, res) {
         kor_name: req.body.name, 
         company: req.body.company,
         dose: req.body.dose,
+        note: req.body.note,
         memo: req.body.memo,  
         link: req.body.link, 
         registered: now
