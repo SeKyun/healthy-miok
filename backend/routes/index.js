@@ -19,10 +19,10 @@ router.get('/', function(req, res, next) {
   // res.render('index', { tit le: 'Express' });
 });
 
-router.get("/swagger", function(req, res, next) {
-  res.sendFile(path.join(__dirname, "../public/docs", "index.html")); 
+// router.get("/swagger", function(req, res, next) {
+//   res.sendFile(path.join("docs", "index.html")); 
 
-})
+// })
 
 router.use("/greeting", greeting); 
 router.use("/blood-sugar", blood_sugar); 
