@@ -13,7 +13,7 @@ info:
   #   url: https://github.com/SeKyun/healthy-miok
 
 servers:
-	- url: http://miok.site:3001/api
+	- url: http://52.79.207.8:3001/api
 	description: miok.site main api route'
 
 paths:
