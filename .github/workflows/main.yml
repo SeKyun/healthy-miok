@@ -16,8 +16,9 @@ jobs:
                   username: ${{ secrets.BACK_USERNAME }}
                   password: ${{ secrets.BACK_PASSWORD }}
                   script: |
-                      pm2 stop www
+                      killall nodemon
                       cd healthy-miok
+                      sudo git pull
                       cd backend 
                       sudo npm install
                       sudo npm start

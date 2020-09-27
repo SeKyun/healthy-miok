@@ -3,9 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "pm2 start ./bin/www",
-    "test": "nodemon start ./bin/www",
-    "stop": "pm2 stop ./bin/www"
+    "start": "nodemon start ./bin/www",
+    "test": "nodemon start ./bin/www"
   },
   "dependencies": {
     "acorn": ">=5.7.4",

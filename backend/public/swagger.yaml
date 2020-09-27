@@ -3,17 +3,9 @@ info:
   title: Healthy-Miok
   description: Miok's health care web page
 	version: 1.0.0
-  # termsOfService: https://github.com/SeKyun/healthy-miok
-  # contact:
-  #   name: SeKyun
-  #   url: miok.site
-  #   email: sekyun0501@gmail.com
-  # license:
-  #   name: SeKyun License
-  #   url: https://github.com/SeKyun/healthy-miok
 
 servers:
-	- url: http://52.79.207.8:3001/api
+	- url: http://52.78.89.231:3001/api
 	description: miok.site main api route'
 
 paths:
@@ -224,7 +216,7 @@ paths:
   
   /blood-sugar/record?today=?&when=?:
     get:
-      summary:
+      summary: 해당 날짜와 시기 혈당 조회
       tags:
         - blood-sugar
       description:
@@ -259,7 +251,7 @@ paths:
   
   /blood-sugar/date:
     get:
-      summary:
+      summary: 해당 날짜 혈당 조회
       tags:
         - blood-sugar
       description:
@@ -319,7 +311,7 @@ paths:
   
   /blood-sugar/when/{when}:
     get: 
-      summary:
+      summary: 해당 시기 혈당 조회
       tags:
         - blood-sugar
       description:
@@ -458,8 +450,27 @@ paths:
                   default: null
                   example: 아침에 일어나서 바로 혈압 재봤음.
                   description: 메모하고 싶은 내용을 자유롭게 기재. 
-              
+      responses:
+        '204':
+          description: 데이터 없음 - The request for the data is successfully done, and there is no result data.
+        '500':
+          description: 데이터 베이스 오류 - The request for database blood_pressure is REJECTED!
+        default:
+          description: 예상치 못한 오류 - Unexpected error.
+
     delete:
+      summary: 해당 id 혈압 수정
+      tags:
+        - blood-pressure
+      description: 해당 id를 가지는 혈압의 기록을 삭제한다.
+      responses:
+        '204':
+          description: 데이터 없음 - The request for the data is successfully done, and there is no result data.
+        '500':
+          description: 데이터 베이스 오류 - The request for database blood_pressure is REJECTED!
+        default:
+          description: 예상치 못한 오류 - Unexpected error.
+
 
 
 # =========== 인슐린 api ===========
@@ -869,6 +880,7 @@ paths:
 # =============== 약 api ==============
   /medicine:
     get:
+      summary: 모든 약 조회
       description: 모든 약 조회
       tags:
         - medicine
@@ -886,6 +898,7 @@ paths:
         default:
           description: 예상치 못한 오류
     post: 
+      summary: 새로운 약 등록
       description: 새로운 약 등록
       tags:
        - medicine
@@ -923,7 +936,8 @@ paths:
         default:
           description: 예상치 못한 오류 
     delete:
-      description: 모든 데이터 삭제 
+      summary: 모든 약 정보 삭제
+      description: 모든 약 정보 삭제 
       tags:
         - medicine
       responses:
@@ -934,6 +948,7 @@ paths:
   
   /medicine/name-list:
     get:
+      summary: 모든 약 리스트 조회
       description: 모든 약 이름 조회
       tags:
         - medicine
@@ -954,6 +969,7 @@ paths:
   
   /medicine/{kor_name}:
     get:
+      summary: 해당 약 이름 정보 조회
       description: 해당 약 이름 정보 조회
       tags:
         - medicine
@@ -977,6 +993,7 @@ paths:
           description: 오류 - database Error
   
     put:
+      summary: 해당 약 이름 정보 수정
       description: 해당 약 이름 정보 수정
       tags:
         - medicine
@@ -1011,6 +1028,7 @@ paths:
           description: 오류 - database Error
           
     delete:
+      summary: 해당 약 정보 삭제
       description: 해당 약 이름 정보 삭제
       tags:
         - medicine
@@ -1032,6 +1050,7 @@ paths:
 
   /medication:
     get:
+      summary: 모든 투약 정보 조회
       description: 모든 투약 조회
       tags:
         - medication
@@ -1045,6 +1064,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/Medication'
     post:
+      summary: 새로운 투약 기록 등록
       description: 새로운 투약 등록
       tags:
           - medication
@@ -1079,6 +1099,7 @@ paths:
         '500':
           description: 데이터베이스 오류 - the request for database blood_sugar is REJECTED!
     delete:
+      summary: 모든 투약 기록 삭제
       description: 모든 투약 기록 삭제
       tags:
         - medication
@@ -1090,6 +1111,7 @@ paths:
   
   /medication/id/{id}:
     get:
+      summary: 해당 id 투약 기록 조회
       description: 해당 id 투약 기록 조회
       tags:
         - medication
@@ -1114,6 +1136,7 @@ paths:
         500:
           description: 데이터 베이스 오류
     put:
+      summary: 해당 id 투약 기록 수정
       description: 해당 id 투약 기록 수정
       tags:
         - medication
@@ -1153,6 +1176,7 @@ paths:
         500:
           description: --  
     delete:
+      summary: 해당 id 투약 기록 삭제
       description: 해당 id 투약 기록 삭제
       tags:
         - medication
@@ -1172,6 +1196,7 @@ paths:
   
   /medication/date/{today}:
     get:
+      summary: 해당 날짜 모든 투약 기록 조회
       description: 해당 날짜 모든 투약 기록 조회
       tags:
         - medication
@@ -1197,9 +1222,9 @@ paths:
         500: 
           description: 데이터 베이스 오류
 
-
   /medication/date?startDate=?&endDate=?:
     get:
+      summary: 해당 기간 투약 기록 조회
       descriptioin: 해당 기간 모든 투약 기록 조회
       tags:
       - medication
