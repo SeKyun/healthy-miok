@@ -109,8 +109,8 @@ tmp/
 temp/
 
 # Database Config file
-config/dev.js
-config/key.js
-config/prod.js
+# config/dev.js
+# config/key.js
+# config/prod.js
 
 # End of https://www.gitignore.io/api/node
