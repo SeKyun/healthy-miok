@@ -19,5 +19,6 @@ jobs:
                       cd healthy-miok
                       sudo git pull
                       cd backend 
+                      pm2 stop ./bin/www
                       sudo npm install
                       sudo npm start
