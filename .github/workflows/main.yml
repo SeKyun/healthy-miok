@@ -16,7 +16,6 @@ jobs:
                   username: ${{ secrets.BACK_USERNAME }}
                   password: ${{ secrets.BACK_PASSWORD }}
                   script: |
-                      pm2 stop ./bin/www
                       cd healthy-miok
                       sudo git pull
                       cd backend 
