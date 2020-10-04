@@ -5,13 +5,12 @@ info:
 	version: 1.0.0
 
 servers:
-	- url: http://miok.site:3001/api
+	- url: http://52.78.89.231:3001/api
 	description: miok.site main api route'
 
 paths:
 
 # =========== 인사말 api ===========
-
   /greeting:
     get:
       summary: 인사말 조회
@@ -33,11 +32,10 @@ paths:
                   content:
                     type: string
                     example: 행복한 하루가 되시기를 바래요! 
-        '500':
-          description: 데이터베이스 오류 - the request for database greeting is REJECTED! 
-        default:
-          description: 예상치 못한 오류 - Unexpected error. 
-
+        '500': 
+          description: 데이터 베이스 에러 
+        default: 
+          description: 예상치 못한 오류
 
 # =========== 혈당 api ===========
 
@@ -107,7 +105,7 @@ paths:
       description: 현재까지 기록한 모든 혈당(blood-sugar) 기록을 가져오기
       responses:
         '200':
-          description: 성공 - OK. The requrest for the data is successfully done 
+          description: 성공 - OK. The request for the data is successfully done 
           content:
             application/json:
               schema:
@@ -147,7 +145,7 @@ paths:
           example: 258
       responses:
         '200':
-          description: 성공 - OK. The requrest for the data is successfully done 
+          description: 성공 - OK. The request for the data is successfully done 
           content:
             application/json:
               schema:
@@ -218,7 +216,7 @@ paths:
   
   /blood-sugar/record?today=?&when=?:
     get:
-      summary:
+      summary: 해당 날짜와 시기 혈당 조회
       tags:
         - blood-sugar
       description:
@@ -239,7 +237,7 @@ paths:
           example: 아침 식전
       responses:
         '200':
-          description: 성공 - OK. The requrest for the data is successfully done 
+          description: 성공 - OK. The request for the data is successfully done 
           content:
             application/json:
               schema:
@@ -253,7 +251,7 @@ paths:
   
   /blood-sugar/date:
     get:
-      summary:
+      summary: 해당 날짜 혈당 조회
       tags:
         - blood-sugar
       description:
@@ -272,7 +270,7 @@ paths:
           example: '2020-05-31'
       reponses:
         '200':
-          description: 성공 - OK. The requrest for the data is successfully done 
+          description: 성공 - OK. The request for the data is successfully done 
           content:
             application/json:
               schema:
@@ -299,7 +297,7 @@ paths:
           description: 
       responses:
         '200':
-          description: 성공 - OK. The requrest for the data is successfully done 
+          description: 성공 - OK. The request for the data is successfully done 
           content:
             application/json:
               schema:
@@ -313,7 +311,7 @@ paths:
   
   /blood-sugar/when/{when}:
     get: 
-      summary:
+      summary: 해당 시기 혈당 조회
       tags:
         - blood-sugar
       description:
@@ -328,7 +326,7 @@ paths:
             description: Enum에 있는 요소만 선택 가능
       responses:
         '200':
-          description: 성공 - OK. The requrest for the data is successfully done 
+          description: 성공 - OK. The request for the data is successfully done 
           content:
             application/json:
               schema:
@@ -373,7 +371,7 @@ paths:
       description: 현재까지 기록한 모든 혈압(blood-pressure) 기록을 가져오기
       responses:
         '200':
-          description: 성공 - OK. The requrest for the data is successfully done 
+          description: 성공 - OK. The request for the data is successfully done 
           content:
             application/json:
               schema:
@@ -407,7 +405,7 @@ paths:
         $ref: '#components/parameters/Id'
       responses:
         '200':
-          description: 성공 - OK. The requrest for the data is successfully done 
+          description: 성공 - OK. The request for the data is successfully done 
           content:
             application/json:
               schema:
@@ -452,8 +450,27 @@ paths:
                   default: null
                   example: 아침에 일어나서 바로 혈압 재봤음.
                   description: 메모하고 싶은 내용을 자유롭게 기재. 
-              
+      responses:
+        '204':
+          description: 데이터 없음 - The request for the data is successfully done, and there is no result data.
+        '500':
+          description: 데이터 베이스 오류 - The request for database blood_pressure is REJECTED!
+        default:
+          description: 예상치 못한 오류 - Unexpected error.
+
     delete:
+      summary: 해당 id 혈압 수정
+      tags:
+        - blood-pressure
+      description: 해당 id를 가지는 혈압의 기록을 삭제한다.
+      responses:
+        '204':
+          description: 데이터 없음 - The request for the data is successfully done, and there is no result data.
+        '500':
+          description: 데이터 베이스 오류 - The request for database blood_pressure is REJECTED!
+        default:
+          description: 예상치 못한 오류 - Unexpected error.
+
 
 
 # =========== 인슐린 api ===========
@@ -514,7 +531,7 @@ paths:
         - insulin
       responses:
         '200':
-          description: 성공 - OK. The requrest for the data is successfully done 
+          description: 성공 - OK. The request for the data is successfully done 
           content:
             application/json:
               schema:
@@ -553,7 +570,7 @@ paths:
           example: 258
       responses:
         '200':
-          description: 성공 - OK. The requrest for the data is successfully done 
+          description: 성공 - OK. The request for the data is successfully done 
           content:
             application/json:
               schema:
@@ -621,7 +638,7 @@ paths:
             descripion:  Enum에 있는 요소만 선택 가능
       responses:
         '200':
-          description: 성공 - OK. The requrest for the data is successfully done 
+          description: 성공 - OK. The request for the data is successfully done 
           content:
             application/json:
               schema:
@@ -645,7 +662,7 @@ paths:
             example: '2020-05-01'
       responses:
         '200':
-          description: 성공 - OK. The requrest for the data is successfully done 
+          description: 성공 - OK. The request for the data is successfully done 
           content:
             application/json:
               schema:
@@ -677,7 +694,7 @@ paths:
             example: '2020-05-01'
       responses:
         '200':
-          description: 성공 - OK. The requrest for the data is successfully done 
+          description: 성공 - OK. The request for the data is successfully done 
           content:
             application/json:
               schema:
@@ -706,7 +723,7 @@ paths:
             exmample: '2020-05-01'
       responses:
         '200':
-          description: 성공 - OK. The requrest for the data is successfully done 
+          description: 성공 - OK. The request for the data is successfully done 
           content:
             application/json:
               schema:
@@ -736,7 +753,7 @@ paths:
             descripion:  Enum에 있는 요소만 선택 가능
       responses:
         '200':
-          description: 성공 - OK. The requrest for the data is successfully done 
+          description: 성공 - OK. The request for the data is successfully done 
           content:
             application/json:
               schema:
@@ -786,7 +803,7 @@ paths:
         - type-insulin
       responses:
         '200':
-          description: 성공 - OK. The requrest for the data is successfully done 
+          description: 성공 - OK. The request for the data is successfully done 
           content:
             application/json:
               schema:
@@ -826,7 +843,7 @@ paths:
             exmample: 지속성
       responses:
         '200':
-          description: 성공 - OK. The requrest for the data is successfully done 
+          description: 성공 - OK. The request for the data is successfully done 
           content:
             application/json:
               schema:
@@ -859,7 +876,391 @@ paths:
           description: 데이터 베이스 오류 - The request for database type-insulin is REJECTED!
         default:
           description: 예상치 못한 오류 - Unexpected error.
+
+# =============== 약 api ==============
+  /medicine:
+    get:
+      summary: 모든 약 조회
+      description: 모든 약 조회
+      tags:
+        - medicine
+      responses:
+        200:
+          description: 성공 - The requrest for insulin is successfully done
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Medicine'
+        500: 
+          description: 오류 - database Error
+        default:
+          description: 예상치 못한 오류
+    post: 
+      summary: 새로운 약 등록
+      description: 새로운 약 등록
+      tags:
+       - medicine
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                properties:
+                  kor_name:
+                    type: string(100)
+                    example: 노바스크 정 5mg
+                  company:
+                    type: string(50)
+                    example: 화이자
+                  link:
+                    type: string(225)
+                    example: https://terms.naver.com/entry.nhn?docId=2141147&cid=51000&categoryId=51000
+                  note:
+                    type: string(225)
+                    example: 혈압 강하제 
+                  dose:
+                    type: string(10)
+                    example: 5mg
+                  memo:
+                    type: string(225)
+                    example: 임의로 복용량을 줄이면 안됨.
+      responses:
+        201:
+          description: 등록 완료
+        500: 
+          description: 오류 - database Error
+        default:
+          description: 예상치 못한 오류 
+    delete:
+      summary: 모든 약 정보 삭제
+      description: 모든 약 정보 삭제 
+      tags:
+        - medicine
+      responses:
+        204: 
+          description: 삭제완료
+        500:
+          description: 오류 - database Error
   
+  /medicine/name-list:
+    get:
+      summary: 모든 약 리스트 조회
+      description: 모든 약 이름 조회
+      tags:
+        - medicine
+      responses:
+        200: 
+          description: 성공 - The requrest for insulin is successfully done
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    kor_name:
+                      type: string(100)
+                      example: 노바스크 정 5mg
+        500:
+          description: 오류 - database Error
+  
+  /medicine/{kor_name}:
+    get:
+      summary: 해당 약 이름 정보 조회
+      description: 해당 약 이름 정보 조회
+      tags:
+        - medicine
+      parameters: 
+        - in: path
+          name: kor_name
+          required: true
+          description: 약 한글 이름
+          schema:
+            type: string(100)
+            example: 노바스크 정 5mg
+      responses:
+        200:
+          description: 성공 - The requrest for insulin is successfully done
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Medicine'                  
+        500:
+          description: 오류 - database Error
+  
+    put:
+      summary: 해당 약 이름 정보 수정
+      description: 해당 약 이름 정보 수정
+      tags:
+        - medicine
+      parameters: 
+        - in: path
+          name: kor_name
+          required: true
+          description: 약 한글 이름
+          schema:
+            type: string(100)
+            example: 노바스크 정 5mg
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                link:
+                  type: string(225)
+                  example: https://terms.naver.com/entry.nhn?docId=2141147&cid=51000&categoryId=51000
+                note:
+                  type: string(225)
+                  example: 혈압 강하제 
+                memo:
+                  type: string(225)
+                  example: 임의로 복용량을 줄이면 안됨.
+      responses:
+        204:
+          description: 성공, 반환 값 없음 - The requrest for insulin is successfully done
+        500:
+          description: 오류 - database Error
+          
+    delete:
+      summary: 해당 약 정보 삭제
+      description: 해당 약 이름 정보 삭제
+      tags:
+        - medicine
+      parameters:
+        - in: path
+          name: kor_name
+          required: true
+          description: 약 한글 이름
+          schema:
+            type: string(100)
+            example: 노바스크 정 5mg
+      responses: 
+        204:
+          description: 성공, 반환 값 없음 - The requrest for insulin is successfully done
+        500:
+          description: 오류 - database Error
+
+# =========== 투약 api =============
+
+  /medication:
+    get:
+      summary: 모든 투약 정보 조회
+      description: 모든 투약 조회
+      tags:
+        - medication
+      responses:
+        200:
+          description: 성공 - The requrest for insulin is successfully done
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Medication'
+    post:
+      summary: 새로운 투약 기록 등록
+      description: 새로운 투약 등록
+      tags:
+          - medication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                kor_name:
+                  type: string(100)
+                  example: 노바스크 정 5mg
+                today:
+                  type: date
+                  example: '2020-07-27'
+                _time:
+                  type: time
+                  example: '18:52:34'
+                _when:
+                  type: string(20)
+                  example: 저녁 식후
+                unit:
+                  type: integer
+                  example: 1
+                memo:
+                  type: string(225)
+                  example: 밥먹고 1시간 후에 먹음
+      responses:
+        '201':
+          description: 등록완료 - New blood-sugar data is CREATED
+        '500':
+          description: 데이터베이스 오류 - the request for database blood_sugar is REJECTED!
+    delete:
+      summary: 모든 투약 기록 삭제
+      description: 모든 투약 기록 삭제
+      tags:
+        - medication
+      responses:
+        '204':
+          description: 성공, 반환 데이터 없음 - The request for the data is successfully done and there is no result data
+        '500':
+          description: 데이터 베이스 오류 - The request for database blood_sugar is REJECTED!
+  
+  /medication/id/{id}:
+    get:
+      summary: 해당 id 투약 기록 조회
+      description: 해당 id 투약 기록 조회
+      tags:
+        - medication
+      parameters: 
+        - in: path
+          name: id
+          required: true
+          description: 투약 기록 id
+          schema:
+            type: integer
+            example: 10
+      responses:
+        200:
+          description: 성공 - The requrest for insulin is successfully done
+          content: 
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Medication' 
+        204:
+          description: 성공, 반환 데이터 없음.
+        500:
+          description: 데이터 베이스 오류
+    put:
+      summary: 해당 id 투약 기록 수정
+      description: 해당 id 투약 기록 수정
+      tags:
+        - medication
+      parameters: 
+        - in: path
+          name: id
+          required: true
+          description: 투약 기록 id
+          schema:
+            type: integer
+            example: 10
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                kor_name:
+                  type: string(100)
+                  example: 노바스크 정 5mg
+                _time:
+                  type: time
+                  example: '18:52:34'
+                _when:
+                  type: string(20)
+                  example: 저녁 식후
+                unit:
+                  type: integer
+                  example: 1
+                memo:
+                  type: string(225)
+                  example: 밥먹고 1시간 후에 먹음
+      responses:
+        204: 
+          descriptioin: --
+        500:
+          description: --  
+    delete:
+      summary: 해당 id 투약 기록 삭제
+      description: 해당 id 투약 기록 삭제
+      tags:
+        - medication
+      parameters: 
+        - in: path
+          name: id
+          required: true
+          description: 투약 기록 id
+          schema:
+            type: integer
+            example: 10
+      responses:
+        204: 
+          description: --
+        500:
+          description: --
+  
+  /medication/date/{today}:
+    get:
+      summary: 해당 날짜 모든 투약 기록 조회
+      description: 해당 날짜 모든 투약 기록 조회
+      tags:
+        - medication
+      parameters:
+        - in: path
+          name: today
+          required: true
+          description: 해당 날짜
+          schema:
+            type: date
+            example: '2020-07-27'
+      responses:
+        200:
+          description: 성공
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Medication'
+        204:
+          description: 성공, 반환 데이터 없음.
+        500: 
+          description: 데이터 베이스 오류
+
+  /medication/date?startDate=?&endDate=?:
+    get:
+      summary: 해당 기간 투약 기록 조회
+      descriptioin: 해당 기간 모든 투약 기록 조회
+      tags:
+      - medication
+      parameters:
+        - in: query
+          name: startDate
+          schema:
+            type: date
+          required: true
+          example: '2020-07-27'
+        - in: query
+          name: endDate
+          schema:
+            type: date
+          required: true
+          example: '2020-07-28'
+      responses:
+        200:
+          description: 성공
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Medication'
+        204:
+          description: 성공, 반환 데이터 없음.
+        500: 
+          description: 데이터 베이스 오류
+
+    
+
+      
+                    
+        
+
 # define resuable parameters:
 components:
   #----------------------------------
@@ -867,6 +1268,7 @@ components:
   #----------------------------------
   schemas:
     Blood-Sugar:
+      description: Model containing blood-sugar info
       type: object
       properties:
         id:
@@ -904,6 +1306,7 @@ components:
           example: 2시에 저혈당이 와서 혈당 잼, 바나나, 초콜렛 먹음. 
     
     Blood-Pressure:
+      description: Model containing blood-pressure info
       type: object
       properties:
         id: 
@@ -936,6 +1339,7 @@ components:
           example: 운동 후 2시간 정도 뒤에 쟀음. 
     
     Insulin:
+      description: Model containing insulin info
       type: object
       properties:
         id: 
@@ -972,6 +1376,7 @@ components:
           example: 간식으로 아이스크림 먹어서 맞음. 
     
     Type-Insulin:
+      description: Model containing type-insuline info
       type: object
       properties:
         _name:
@@ -981,6 +1386,67 @@ components:
           type: string
           example: 지속성
     
+    Medicine:
+      description: Model containing medicine info
+      type: object
+      properties:
+        eng_name:
+          type: string(100)
+          example: NORVASC TAB 5mg
+        kor_name:
+          type: string(100)
+          example: 노바스크 정 5mg
+        company:
+          type: string(50)
+          example: 화이자
+        link:
+          type: string(225)
+          example: https://terms.naver.com/entry.nhn?docId=2141147&cid=51000&categoryId=51000
+        note:
+          type: string(225)
+          example: 혈압 강하제
+        registered:
+          type: datetime
+          example: '2020-07-27 12:22:46'
+        abbr:
+          type: string(50)
+          example: pfizer | NV 5
+        dose:
+          type: string(10)
+          example: 5mg
+        memo:
+          type: string(225)
+          example: 임의로 복용량을 줄이면 안됨. 
+
+    Medication:
+      description: Model containing medication info
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 10
+        kor_name:
+          type: string(100)
+          example: 노바스크 정 5mg
+        today:
+          type: date
+          example: '2020-07-27'
+        _time:
+          type: time
+          example: '18:52:34'
+        _when:
+          type: string(20)
+          example: 저녁 식후
+        unit:
+          type: integer
+          example: 1
+        memo:
+          type: string(225)
+          example: 밥먹고 1시간 후에 먹음
+        edited:
+          type: datetime
+          example: '2020-07-27 18:52:34'
+
   parameters:
     Id:
       - in: path
@@ -992,7 +1458,7 @@ components:
 
   responses:
     200:
-      description: 성공 - OK. The requrest for the data is successfully done
+      description: 성공 - OK. The request for the data is successfully done
     201:
       description: 등록 완료 - New data is created
     204:

@@ -7,7 +7,7 @@ const url = require('url');
 
 
 //=================================================================
-// requre URL:  /insulin
+// request URL:  /insulin
 //=================================================================
 // register new data in the table
 exports.register = function (req, res) {
@@ -115,7 +115,7 @@ exports.delete_all = function (req, res) {
 
 
 //=================================================================
-// requre URL:  /insulin/id/:id 
+// request URL:  /insulin/id/:id 
 //=================================================================
 
 // get data from the table by using parameter /id/:id
@@ -172,7 +172,7 @@ exports.delete_record_id = function (req, res) {
 
 
 //=================================================================
-// requre URL:  /insulin/record/short?today=?&when=?
+// request URL:  /insulin/record/short?today=?&when=?
 //=================================================================
 
 // get data from the table by using today and when
@@ -198,7 +198,7 @@ exports.get_record_short = function (req, res) {
 }
 
 //=================================================================
-// requre URL:  /insulin/record/long?today=?
+// request URL:  /insulin/record/long?today=?
 //=================================================================
 exports.get_record_long = function (req, res) {
     let queryData = url.parse(req.url, true).query; 
@@ -222,7 +222,7 @@ exports.get_record_long = function (req, res) {
 
 
 //=================================================================
-// requre URL:  /insulin/date?startDate=?&endDate=?
+// request URL:  /insulin/date?startDate=?&endDate=?
 //=================================================================
 // get data from the table which from startDate to endDate
 exports.get_records_date = function (req, res) {
@@ -252,7 +252,7 @@ exports.get_records_date = function (req, res) {
 
 // **graph api **
 //=================================================================
-// requre URL:  /insulin/date/:today
+// request URL:  /insulin/date/:today
 //=================================================================
 
 // get data from the table by using today value
@@ -277,7 +277,7 @@ exports.get_records_today = function (req, res) {
 
 // **graph api **
 //=================================================================
-// requre URL:  /insulin/graph
+// request URL:  /insulin/graph
 //=================================================================
 // get data from the table by using when value
 exports.get_records_graph = function (req, res) {

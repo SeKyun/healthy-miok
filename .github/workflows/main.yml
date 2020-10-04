@@ -1,22 +1,24 @@
 name: React build
 on:
-  push: # master Branch에서 push 이벤트가 일어났을 때만 실행
-    branches:
-      - Kyun
-      - dodie
+    push: # master Branch에서 push 이벤트가 일어났을 때만 실행
+        branches:
+            - Kyun
+            - dodie
 
 jobs:
-  build:
-    runs-on: ubuntu-18.04
-    steps:
-      - name: executing remote ssh commands using password
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST }} #ssh 이용 배포
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
-          script: |
-            cd healthyMiok
-            cd healthy-miok
-            sudo git pull
-    if: contains(github.ref, 'kyun') # 브랜치가 kyun일 때만 사용
+    build:
+        runs-on: ubuntu-18.04
+        steps:
+            - name: executing remote ssh commands using password
+              uses: appleboy/ssh-action@master
+              with:
+                  host: ${{ secrets.BACK_HOST }}
+                  username: ${{ secrets.BACK_USERNAME }}
+                  password: ${{ secrets.BACK_PASSWORD }}
+                  script: |
+                      cd healthy-miok
+                      sudo git pull
+                      cd backend 
+                      pm2 stop ./bin/www
+                      sudo npm install
+                      sudo npm start

@@ -6,7 +6,7 @@ exports.get_greeting = function(req, res) {
     let sql = "SELECT COUNT(id) AS count FROM greeting ";
     db.query(sql, function (err, result) {
         if (err) {
-            return result.status(500).send ({
+            return res.status(500).send ({
                 msg: "database ERROR - while counting the rows of table greeting ", 
                 success: false, 
                 result: err
@@ -19,7 +19,7 @@ exports.get_greeting = function(req, res) {
         sql = "SELECT * FROM greeting WHERE id=?";
         db.query(sql, [num], function (err, result) {
             if (err) {
-                return result.status(500).send ({
+                return res.status(500).send ({
                     msg: "database ERROR - while getting the rows of table greeting", 
                     success: false, 
                     result: err
