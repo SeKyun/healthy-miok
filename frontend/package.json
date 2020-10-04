@@ -21,9 +21,11 @@
     "querystring": "^0.2.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-iframe": "^1.8.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
     "react-toastify": "^6.0.5",
+    "recharts": "^1.8.5",
     "sass-loader": "^8.0.2",
     "webpack": "4.42.0",
     "yarn": "^1.22.4"
