@@ -1,4 +1,6 @@
 
+require('dotenv').config();
+
 //possible error point 
 // if (process.env.NODE_ENV === 'developmet') {
 //     // local에서 개발 중일 떄 
@@ -8,10 +10,11 @@
 //     module.exports = require('./prod'); 
 // }
 
+
 module.exports = {
-    mysqlHOST: 'hm-database-1.cdhyuazklwwj.ap-northeast-2.rds.amazonaws.com',
-    mysqlPORT: 3306,
-    mysqlUSER: 'admin',
-    mysqlPASSWORD: 'wnwn102930!', 
-    mysqlDATABASE: 'healthy_miok'
+    mysqlHOST: process.env.DB_HOST,
+    mysqlPORT: process.env.DB_PORT,
+    mysqlUSER: process.env.DB_USER,
+    mysqlPASSWORD: process.env.DB_PASSWORD, 
+    mysqlDATABASE: process.env.DB_NAME
 }
