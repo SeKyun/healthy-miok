@@ -4,12 +4,14 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors'); 
+var greenlock = require('greenlock-express'); 
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 // var history = require('connect-history-api-fallback'); 
 
 var app = express();
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -21,6 +23,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 // app.use(history()); 
+
+greenlock.init({
+  packageRoot: __dirname,
+  configDir: "./greenlock.d",
+  maintainerEmail: "dodi258@naver.com",
+  cluster: false,
+}).serve(app); 
 
 // possible error point 
 app.use(express.static(path.join(__dirname, "public")));
