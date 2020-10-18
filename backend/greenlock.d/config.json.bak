@@ -14,5 +14,7 @@
     "accountKeyType": "EC-P256",
     "serverKeyType": "RSA-2048"
   },
-  "sites": []
+  "sites": [
+    "miok-server.site"
+  ]
 }
