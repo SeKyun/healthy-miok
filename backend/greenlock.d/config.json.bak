@@ -14,13 +14,5 @@
     "accountKeyType": "EC-P256",
     "serverKeyType": "RSA-2048"
   },
-  "sites": [
-    {
-      "subject": "miok-server.site",
-      "altnames": [
-        "miok-server.site"
-      ],
-      "renewAt": 1
-    }
-  ]
+  "sites": []
 }
