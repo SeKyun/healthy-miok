@@ -4,7 +4,6 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors'); 
-var greenlock = require('greenlock-express'); 
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -24,12 +23,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 // app.use(history()); 
 
-greenlock.init({
-  packageRoot: __dirname,
-  configDir: "./greenlock.d",
-  maintainerEmail: "dodi258@naver.com",
-  cluster: false,
-}).serve(app); 
+
 
 // possible error point 
 app.use(express.static(path.join(__dirname, "public")));
