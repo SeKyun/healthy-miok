@@ -20,7 +20,7 @@
     "express": "~4.16.1",
     "fs": "0.0.1-security",
     "greenlock-express": "^4.0.3",
-    "http-errors": "~1.6.3",
+    "http-errors": "^1.6.3",
     "https": "^1.0.0",
     "jade": "~1.11.0",
     "moment": "^2.25.3",

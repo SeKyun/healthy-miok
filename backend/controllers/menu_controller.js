@@ -6,7 +6,7 @@ exports.get_menu = function (req, res) {
 	let queryData = url.parse(req.url, true).query;
 	let country = queryData.country;
 	let type = queryData.type;
-	const MENU_CNT = 7;
+	const MENU_CNT = 6;
 	let menues = ""; 
 	let index = 0; 
 	let result = 0; 
@@ -31,9 +31,11 @@ exports.get_menu = function (req, res) {
 			menues = menu_list.japan[type];
 			break; 
 	}
-
+	 
 	index = Math.floor(Math.random() * MENU_CNT); 
+	
 	result = menues[index]; 
+	console.log(result + " " + index);
 
 	return res_handler.sendSuccess(result, 200, res, 'menu'); 
 
