@@ -7,11 +7,34 @@ exports.get_menu = function (req, res) {
 	let country = queryData.country;
 	let type = queryData.type;
 	const MENU_CNT = 7;
-	if (country === 'korea') {
-		let menues = menu_list.korea[type];
-		let index = Math.floor(Math.random() * MENU_CNT);
-		let result = menues[index];
+	let menues = ""; 
+	let index = 0; 
+	let result = 0; 
 
-		return res_handler.sendSuccess(result, 200, res, 'menu');
+	switch(country) {
+		case 'korea':
+			menues = menu_list.korea[type]; 
+			break; 
+		case 'boonsick':
+			menues = menu_list.boonsick[type]; 
+			break; 
+		case 'ameria':
+			menues = menu_list.america[type]; 
+			break; 
+		case 'europe':
+			menues = menu_list.europe[type]; 
+			break; 
+		case 'china':
+			menues = menu_list.china[type]; 
+			break; 
+		case 'japan':
+			menues = menu_list.japan[type];
+			break; 
 	}
+
+	index = Math.floor(Math.random() * MENU_CNT); 
+	result = menues[index]; 
+
+	return res_handler.sendSuccess(result, 200, res, 'menu'); 
+
 };
