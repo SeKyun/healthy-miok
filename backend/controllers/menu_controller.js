@@ -1,7 +1,7 @@
 const menu_list = require('../data/menu.json');
 const res_handler = require('../library/status_handler');
 const url = require('url');
-// const kakao_api = require('../library/kakao_open_api_image'); 
+const kakao_api = require('../library/kakao_open_api_image'); 
 const request = require('request'); 
 const KAKAO_REST_API_KEY = 'KakaoAK 89b667c46778ddf37b089136557f0da3'; 
 // const res_handler = require('../library/status_handler'); 
@@ -51,7 +51,7 @@ exports.get_menu = async function (req, res) {
 		const MENU_CNT = 6;
 		let menues = {}; 
 		let index = 0; 
-		let result = [{"menu":"", "img_url": ""}, {"menu":"", "img_url": ""}]; 
+		let result = [{"menu":"", "img_url":""}, {"menu":"", "img_url":""}]; 
 		switch(country) {
 			case 'korea':
 				menues = menu_list.korea.food_list[type]; 
@@ -95,17 +95,20 @@ exports.get_menu = async function (req, res) {
 		result[1].menu = menues[menu_idxes[1]]; 
 		
 		console.log(result); 
-		
-		// result.menu = menues[index];
-		// result.image_url = menues.img
-		// result.image_url = await get_img_url(result.menu); 
+		console.log("1");
+		let img_url = await kakao_api.get_img_url(result[0].menu);
+		console.log("3"); 
+		console.log(img_url); 
+		// // result.menu = menues[index];
+		// // result.image_url = menues.img
+		// // result.image_url = await get_img_url(result.menu); 
 
-		return res_handler.sendSuccess(result, 200, res, 'menu');
+		// return res_handler.sendSuccess(result, 200, res, 'menu');
 
 	} catch (error) {
-		let result = {}; 
-		console.log(error); 
-		return res_handler.sendSuccess(result, 200, res, 'menu');
+		// let result = {}; 
+		// console.log(error); 
+		// return res_handler.sendSuccess(result, 200, res, 'menu');
 
 	} finally {
 		
