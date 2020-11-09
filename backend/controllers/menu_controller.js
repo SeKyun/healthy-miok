@@ -94,11 +94,15 @@ exports.get_menu = async function (req, res) {
 		result[0].menu = menues[menu_idxes[0]]; 
 		result[1].menu = menues[menu_idxes[1]]; 
 		
-		console.log(result); 
+		console.log("**** result0: " + result[0].menu);
+
+		console.log("**** result1: " + result[1].menu);
 		console.log("1");
-		let img_url = await kakao_api.get_img_url(result[0].menu);
-		console.log("3"); 
-		console.log(img_url); 
+		// let img_url = await kakao_api.get_img_url(result[0].menu);
+		// console.log("3"); 
+		// console.log(img_url); 
+
+		return result; 
 		// // result.menu = menues[index];
 		// // result.image_url = menues.img
 		// // result.image_url = await get_img_url(result.menu); 
