@@ -25,12 +25,12 @@ exports.naver_weather_controller = function() {
                 tempmin: $(this).children("div.main_info").children("div.info_data").children("ul.info_list").find("li").children("span.merge").children("span.min").children("span.num").text(),
                 tempmax: $(this).children("div.main_info").children("div.info_data").children("ul.info_list").find("li").children("span.merge").children("span.max").children("span.num").text(),
                 sensible: $(this).children("div.main_info").children("div.info_data").children("ul.info_list").find("li").children("span.sensible").find("em").children("span.num").text(),
-                smog_value: $(this).children("div.sub_info").children("div.detail_box").children("dl.indicator").children("dd").children("span.num").eq(0).text(),
-                smog_status: $(this).children("div.sub_info").children("div.detail_box").children("dl.indicator").children("dd").eq(0).text().slice(-2),
-                microsmog_value: $(this).children("div.sub_info").children("div.detail_box").children("dl.indicator").children("dd").children("span.num").eq(1).text(),
-                microsmog_status: $(this).children("div.sub_info").children("div.detail_box").children("dl.indicator").children("dd").eq(1).text().slice(-2),
-                ozone_value: $(this).children("div.sub_info").children("div.detail_box").children("dl.indicator").children("dd").children("span.num").eq(2).text(),
-                ozone_status: $(this).children("div.sub_info").children("div.detail_box").children("dl.indicator").children("dd").eq(2).text().slice(-2),
+                smog_v: $(this).children("div.sub_info").children("div.detail_box").children("dl.indicator").children("dd").children("span.num").eq(0).text(),
+                smog_s: $(this).children("div.sub_info").children("div.detail_box").children("dl.indicator").children("dd").eq(0).text().slice(-2),
+                micro_v: $(this).children("div.sub_info").children("div.detail_box").children("dl.indicator").children("dd").children("span.num").eq(1).text(),
+                micro_s: $(this).children("div.sub_info").children("div.detail_box").children("dl.indicator").children("dd").eq(1).text().slice(-2),
+                ozone_v: $(this).children("div.sub_info").children("div.detail_box").children("dl.indicator").children("dd").children("span.num").eq(2).text(),
+                ozone_s: $(this).children("div.sub_info").children("div.detail_box").children("dl.indicator").children("dd").eq(2).text().slice(-2),
                 city_name: $("#main_pack > section.sc_new.cs_weather._weather > div > div.api_cs_wrap > div.blind > h3").text(),
             }
         });
