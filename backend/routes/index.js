@@ -10,6 +10,7 @@ let type_insulin = require('./type_insulin');
 let medicine = require('./medicine');
 let medication = require('./medication');
 let weather = require('./weather'); 
+let detective_test = require('./detective_test');
 
 //menu api
 let menu = require('./menu');
@@ -37,5 +38,6 @@ router.use('/medicine', medicine);
 router.use('/medication', medication);
 router.use('/menu', menu);
 router.use('/weather', weather); 
+router.use('/detective_test', detective_test); 
 
 module.exports = router;
