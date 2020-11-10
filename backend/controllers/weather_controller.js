@@ -31,7 +31,7 @@ exports.naver_weather_controller = function() {
                 micro_s: $(this).children("div.sub_info").children("div.detail_box").children("dl.indicator").children("dd").eq(1).text().slice(-2),
                 ozone_v: $(this).children("div.sub_info").children("div.detail_box").children("dl.indicator").children("dd").children("span.num").eq(2).text(),
                 ozone_s: $(this).children("div.sub_info").children("div.detail_box").children("dl.indicator").children("dd").eq(2).text().slice(-2),
-                city_name: $("#main_pack > section.sc_new.cs_weather._weather > div > div.api_cs_wrap > div.weather_box > div.weather_area._mainArea > div.sort_box._areaSelectLayer > div > div > span > em").text(),
+                city_name: $("#main_pack > section.sc_new.cs_weather._weather > div > div.api_cs_wrap > div.blind > h3").text(),
             }
         });
         try {
