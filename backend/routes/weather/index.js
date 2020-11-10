@@ -11,7 +11,7 @@ router.get('/', async function (req, res, next) {
     const result = await controller.naver_weather_controller.getHtml(key_word); 
     console.log("naver_result: " + result); 
     // 검색이 안되었을 경우에
-    if (! result) {
+    if (! result.cast_txt) {
         res.status(404).send(
             result
         )
