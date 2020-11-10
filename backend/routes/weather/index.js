@@ -11,7 +11,7 @@ router.get('/', async function (req, res, next) {
     const result = await controller.naver_weather_controller.getHtml(key_word); 
     console.log("naver_result: " + result); 
     // 검색이 안되었을 경우에
-    if (! result[0]) {
+    if (! result) {
         res.status(404).send(
             result
         )
@@ -19,14 +19,14 @@ router.get('/', async function (req, res, next) {
     // 검색이 가능해졌을 경우. 
     else {
         console.log("NAVER RESULT!!!!!!!!!!:" + result); 
-        let smog_s = result[0].smog_s;
+        let smog_s = result.smog_s;
         
         if (smog_s === '좋음') {
-            result[0].smog_img_url = "https://i.pinimg.com/originals/57/89/2d/57892d8f88d5503f5dfc7532ff2642a6.png"; 
+            result.smog_img_url = "https://i.pinimg.com/originals/57/89/2d/57892d8f88d5503f5dfc7532ff2642a6.png"; 
         } else if (smog_s === '보통') {
-            result[0].smog_img_url = "https://i.pinimg.com/originals/85/c7/29/85c729ec1093b130df2c208d60d54571.png";
+            result.smog_img_url = "https://i.pinimg.com/originals/85/c7/29/85c729ec1093b130df2c208d60d54571.png";
         } else {
-            result[0].smog_img_url = "https://i.pinimg.com/originals/64/42/35/644235f76829abe9d3e87825ae766049.png"; 
+            result.smog_img_url = "https://i.pinimg.com/originals/64/42/35/644235f76829abe9d3e87825ae766049.png"; 
         }
 
         res.json(result); 
