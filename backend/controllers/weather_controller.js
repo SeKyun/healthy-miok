@@ -61,7 +61,10 @@ exports.naver_weather_controller = function() {
                     ulList[0].img_url = "https://i.pinimg.com/originals/29/c3/c6/29c3c6b8fe913b54cf8a507c9154d43a.jpg"; 
                 } else if (cast_status.includes('번개') || cast_status.includes('뇌우')) {
                     ulList[0].img_url = "https://i.pinimg.com/originals/72/4a/9a/724a9a8ed0cfc18bff99f170fe426f92.jpg"; 
-                } else {
+                } else if (cast_status.includes('우박')) {
+                    ulList[0].img_url = "https://i.pinimg.com/originals/bd/cd/e1/bdcde1292eadd3bba1f98556962bea92.jpg"; 
+                }
+                else {
                     ulList[0].img_url = "https://i.pinimg.com/originals/08/33/46/083346e944bf3658a6acd5e4d2e99706.jpg"; 
                 }
             }
