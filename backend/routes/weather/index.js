@@ -29,8 +29,6 @@ router.get('/', async function (req, res, next) {
             result[0].smog_img_url = "https://i.pinimg.com/originals/64/42/35/644235f76829abe9d3e87825ae766049.png"; 
         }
 
-        const kweather_result = await controller.google_weather_controller.getHtml(result[0].city_name);
-        result[0].img_src = "http://kweather.co.kr/" + kweather_result;  
         res.json(result); 
     }
     

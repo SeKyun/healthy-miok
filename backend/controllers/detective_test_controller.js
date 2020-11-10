@@ -18,14 +18,14 @@ exports.get_result = function (req, res) {
         cnt: q_total,
     };
     if (q_total < 2) {
-        r.comment = '보통 사람의 추리력을 지녔어요!';
+        r.comment = '보통 사람의 추리력을 지녔어요!   어려운 문제였으니 상심하지 말라구~';
         r.img_url = 'https://i.pinimg.com/originals/87/7a/45/877a456a618b506059121e309d45c015.png'
 
     } else if (q_total < 4) {
-        r.comment = '예리한 추리력을 지녔어요! 당신.. 추리 좀 하는 놈인가?';
+        r.comment = '예리한 추리력을 지녔어요!    당신.. 추리 좀 하는 놈인가?';
         r.img_url = 'https://i.pinimg.com/564x/81/35/22/8135224c100c7fa7b35b5142e4fa3d17.jpg' 
     } else if (q_total >= 4) {
-        r.comment = '아주 뛰어난 추리력을 지녔어요!! ';
+        r.comment = '아주 뛰어난 추리력을 지녔어요!!     당신.. 추리 알파고인가?';
         r.img_url = 'https://i.pinimg.com/564x/73/1a/7f/731a7f0e2038600129c9e2c812f9f00e.jpg'
     }
 
