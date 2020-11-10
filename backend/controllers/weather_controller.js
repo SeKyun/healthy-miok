@@ -62,7 +62,7 @@ exports.naver_weather_controller = function() {
             }
         }
 
-        const data = ulList.filter(n => n.todaytemp); 
+        const data = ulList[0]; 
         return data; 
 
     }
