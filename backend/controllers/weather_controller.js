@@ -53,7 +53,7 @@ exports.naver_weather_controller = function() {
                     ulList[0].img_url = "https://i.pinimg.com/originals/d3/bb/3e/d3bb3e4691aa6195fcae51754f8e6dd8.jpg"; 
                 } else if (cast_status.includes('흐린')) {
                     ulList[0].img_url = "https://i.pinimg.com/originals/15/ee/08/15ee08e3318acc82e4352eed7b917cda.jpg"; 
-                } else if (cast_status.includes('안개')) {
+                } else if (cast_status.includes('안개') || cast_status.includes('연무')) {
                     ulList[0].img_url = "https://i.pinimg.com/originals/ea/45/bc/ea45bcb6f91c8167b3abd306d01585a1.jpg"; 
                 } else if (cast_status.includes('우박')) {
                     ulList[0].img_url = "https://i.pinimg.com/originals/bd/cd/e1/bdcde1292eadd3bba1f98556962bea92.jpg"; 
