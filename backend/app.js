@@ -52,6 +52,20 @@ app.use(function(err, req, res) {
   res.render('error');
 });
 
- 
+
+//https 적용 
+require('greenlock-express')
+    .init({
+        packageRoot: __dirname,
+
+        // contact for security and critical bug notices
+        maintainerEmail: "dodi258@naver.com",
+
+        // where to look for configuration
+        configDir: './greenlock.d',
+
+        // whether or not to run at cloudscale
+        cluster: false
+    }).serve(app); 
 
 module.exports = app;

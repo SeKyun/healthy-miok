@@ -18,7 +18,14 @@ app.set('port', port);
 /**
  * Create HTTP server.
  */
-
+// require('greenlock-express')
+//   .init({
+//     packageRoot: __dirname, 
+//     configDir: "./greenlock.d",
+//     maintainerEmail: "dodi258@naver.com",
+//     cluster: false
+//   })
+//   .serve(app); 
 var server = http.createServer(app);
 
 /**

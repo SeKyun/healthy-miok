@@ -1,6 +1,5 @@
 {
   "defaults": {
-    "subscriberEmail": "dodi258@naver.com",
     "store": {
       "module": "greenlock-store-fs"
     },
@@ -12,13 +11,15 @@
     "renewOffset": "-45d",
     "renewStagger": "3d",
     "accountKeyType": "EC-P256",
-    "serverKeyType": "RSA-2048"
+    "serverKeyType": "RSA-2048",
+    "subscriberEmail": "dodi258@naver.com"
   },
   "sites": [
     {
       "subject": "miok-server.site",
       "altnames": [
-        "miok-server.site"
+        "miok-server.site",
+        "www.miok-server.site"
       ],
       "renewAt": 1
     }
