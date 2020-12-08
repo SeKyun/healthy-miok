@@ -1,5 +1,6 @@
 {
   "defaults": {
+    "subcriberEmail": "dodi258@naver.com",
     "store": {
       "module": "greenlock-store-fs"
     },
@@ -11,8 +12,7 @@
     "renewOffset": "-45d",
     "renewStagger": "3d",
     "accountKeyType": "EC-P256",
-    "serverKeyType": "RSA-2048",
-    "subscriberEmail": "dodi258@naver.com"
+    "serverKeyType": "RSA-2048"
   },
   "sites": []
 }
